@@ -16,6 +16,7 @@ module.exports = {
   },
   ignorePatterns: ['test/**/*'],
   rules: {
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "indent": ["warn", 2, { "SwitchCase": 1 }],
     "no-use-before-define": "off",
     "max-len": ["error", {
