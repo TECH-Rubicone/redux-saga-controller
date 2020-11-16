@@ -1,10 +1,10 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const INPUT_PATH = './src/my-library.ts';
+const INPUT_PATH = './src/index.js';
 const OUTPUT_PATH = './dist';
-const FILE_NAME = 'my-library';
-const LIBRARY_NAME = 'MyLibrary';
+const FILE_NAME = 'redux-saga-controller';
+const LIBRARY_NAME = 'redux-saga-controller';
 
 const config = {
   target: 'web',
