@@ -1,0 +1,53 @@
+{
+  "name": "redux-saga-controller",
+  "version": "0.0.1",
+  "description": "A tool to simplify work with react, redux and sagas",
+  "main": "./dist/my-library.js",
+  "types": "./dist/my-library.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start:dev": "webpack --mode=development --watch --progress",
+    "build:prod": "webpack --mode=production",
+    "prepublishOnly": "webpack --mode=production",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TODO/TODO.git"
+  },
+  "keywords": [
+    "framework",
+    "typescript",
+    "scss",
+    "npm"
+  ],
+  "author": "Intelliceed",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TODO/TODO/issues"
+  },
+  "homepage": "https://github.com/TODO/TODO#readme",
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@types/jest": "^26.0.15",
+    "@typescript-eslint/eslint-plugin": "^4.8.0",
+    "@typescript-eslint/parser": "^4.8.0",
+    "babel-loader": "^8.2.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "eslint": "^7.13.0",
+    "eslint-plugin-import": "^2.22.1",
+    "jest": "^26.6.3",
+    "node-sass": "^5.0.0",
+    "ts-jest": "^26.4.4",
+    "ts-loader": "^8.0.11",
+    "typescript": "^4.0.5",
+    "webpack": "^5.4.0",
+    "webpack-cli": "^4.2.0"
+  }
+}
