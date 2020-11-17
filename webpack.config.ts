@@ -17,7 +17,7 @@ const config: Configuration = {
   },
   output: {
     path: path.resolve(__dirname, OUTPUT_PATH),
-    filename: `${FILE_NAME}.bundle.js`,
+    filename: `${FILE_NAME}.js`,
     library: LIBRARY_NAME,
     libraryTarget: 'umd',
     globalObject: 'this',

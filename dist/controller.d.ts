@@ -9,11 +9,16 @@ export declare class Controller<T extends string, I> {
     subscriber: any;
     action: Record<T | "updateCtrl" | "clearCtrl", ActionCreator<AnyAction>>;
     constructor({ types, prefix, initial, subscriber }: {
-        types: Array<T>;
-        prefix?: string;
         initial: I;
+        prefix?: string;
         subscriber: any;
+        types: Array<T>;
     });
     set channel(channel: any | null);
     get channel(): any | null;
 }
+export declare const c: Controller<"initialize" | "updateData" | "TYPE_2", {
+    test: number;
+    foo: number;
+    bar: number;
+}>;
