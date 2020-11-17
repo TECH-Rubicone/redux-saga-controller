@@ -1,16 +1,20 @@
 # Add 'documentation' label to any md file changes
-   documentation:
-     - ./*.md
+  documentation:
+    - ./*.md
 
 # Add '@domain/core' label to any change within the 'core' package
   core:
-     - ./src/**/*.ts
+    - ./src/**/*.ts
 
 # Add 'test' label to any change to *.spec.js files within the source dir
-   test:
-     - src/**/*.spec.js
+  test:
+    - src/**/*.spec.js
 
-# Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
-   build:
-     - webpack.config.ts
+# Add 'build' label to any change webpack.config.ts
+  build:
+    - webpack.config.ts
+
+# Add 'workflow' label to any change webpack.config.ts
+  workflow:
+    - .github/**/*
 
