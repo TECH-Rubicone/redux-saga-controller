@@ -1,4 +1,3 @@
-// NOTE -
 
 // outsource dependencies
 import { useCallback, useEffect } from 'react';

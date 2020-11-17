@@ -1,6 +1,4 @@
 
-// outsource dependencies
-
 // local dependencies
 import { sagas } from './saga';
 import { reducer } from './reducer';

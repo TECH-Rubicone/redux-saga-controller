@@ -24,7 +24,7 @@ export const subscribeAction = <T extends string, I> (controller: Controller<T, 
   payload: { controller },
 });
 
-function * subscribeSaga <T extends string, I> ({ type, payload: { controller } } : ControllerAction<T, I>) {
+function * subscribeSaga <T extends string, I> ({ payload: { controller } } : ControllerAction<T, I>) {
   // console.log(`%c ${type}: ${payload.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
   //   , '\n payload:', payload
   // );
@@ -38,7 +38,7 @@ export const unsubscribeAction = <T extends string, I> (controller: Controller<T
   payload: { controller },
 });
 
-function * unsubscribeSaga <T extends string, I> ({ type, payload: { controller } } : ControllerAction<T, I>) {
+function * unsubscribeSaga <T extends string, I> ({ payload: { controller } } : ControllerAction<T, I>) {
   // console.log(`%c ${type}: ${payload.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
   //   , '\n payload:', payload
   // );

@@ -1,4 +1,3 @@
-// NOTE -
 
 // NOTE CSD - controller stored data
 const CSD_REDUCER_PATH = 'controller';

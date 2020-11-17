@@ -1,4 +1,3 @@
-// NOTE -
 
 // outsource dependencies
 import { useMemo } from 'react';
