@@ -7,17 +7,18 @@ import { useDispatch } from 'react-redux';
 // local dependencies
 import { Controller } from './index';
 
-/* HOOK */
+// HOOK
 export const useActions = <T extends string, I>(controller: Controller<T, I>) => {
   const dispatch = useDispatch();
   const actionCreators = controller.action;
   return useMemo(() => {
-    const cache = {};
-    // TODO prepare actions
-    Object.keys(actionCreators).map(actionName => {
-      const action = actionCreators[actionName];
-      return cache[actionName] = payload => dispatch(action(payload));
-    });
+    const cache = {} as Record<string, (payload?: any) => any>;
+    for (const name in actionCreators) {
+      if (actionCreators.hasOwnProperty(name)) {
+        const action = actionCreators[name as T];
+        cache[name] = payload => dispatch(action(payload));
+      }
+    }
     return cache;
   }, [actionCreators, dispatch]);
 };
