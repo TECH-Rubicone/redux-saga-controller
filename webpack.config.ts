@@ -11,7 +11,6 @@ const FILE_NAME = 'redux-saga-controller';
 const LIBRARY_NAME = 'redux-saga-controller';
 
 const config: Configuration = {
-  target: 'web',
   entry: {
     index: INPUT_PATH,
   },

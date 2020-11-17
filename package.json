@@ -22,20 +22,17 @@
     "url": "git+https://github.com/zanusilker/redux-saga-controller.git"
   },
   "keywords": [
-    "framework",
+    "redux",
+    "react",
+    "controller",
+    "redux-saga",
     "typescript",
-    "scss",
-    "npm"
+    "redux-saga-controller"
   ],
   "author": "Intelliceed",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zanusilker/redux-saga-controller/issues"
-  },
-  "husky": {
-    "hooks": {
-      "pre-push": "npm run lint"
-    }
   },
   "homepage": "https://github.com/zanusilker/redux-saga-controller#readme",
   "devDependencies": {
