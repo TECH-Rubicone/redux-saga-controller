@@ -1,3 +1,4 @@
+# NOTE EXAMPLE
 # This is a basic workflow to help you get started with Actions
 
 name: CI
@@ -18,10 +19,3 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      # Install dependencies
-      - name: Install modules
-        run: npm i
-      # Runs a single command using the runners shell
-      - name: Run ESLint
-        run: npm run lint
