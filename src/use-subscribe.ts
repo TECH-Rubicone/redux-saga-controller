@@ -5,7 +5,7 @@ import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // local dependencies
-import Controller from './controller';
+import { Controller } from './controller';
 import { unsubscribeAction, subscribeAction } from './saga';
 import { removeCSDAction, createCSDAction, selectMetaCSD } from './reducer';
 
@@ -42,5 +42,3 @@ export const useSubscribe = <T extends string, I>(controller: Controller<T, I>) 
   }, [subscribe, unsubscribe]);
   return meta.connected;
 };
-
-export default useSubscribe;

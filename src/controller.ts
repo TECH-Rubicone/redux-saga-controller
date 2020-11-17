@@ -8,19 +8,18 @@ import { selectCSD, updateCSD, clearCSD } from './reducer';
 
 import { ActionCreator, DefaultActions } from './types';
 
-
 export class Controller<T extends string, I> {
+  initial: I;
+
   name: string;
 
-  initial: I;
+  subscriber: () => any;
 
   TYPE = {} as Record<T, string>;
 
-  action = {} as Record<T | DefaultActions, ActionCreator>;
-
   selector: (name: string) => any;
 
-  subscriber: () => any;
+  action = {} as Record<T | DefaultActions, ActionCreator>;
 
   constructor ({
     types, prefix, initial, subscriber
@@ -45,8 +44,6 @@ export class Controller<T extends string, I> {
     this.selector = selectCSD(this.name);
   }
 }
-
-export default Controller;
 
 // export const c = new Controller({
 //   types: ['initialize', 'updateData', 'TYPE_2'],

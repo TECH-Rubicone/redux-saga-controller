@@ -1,12 +1,10 @@
-// NOTE +
-
 
 // outsource dependencies
 import { fork, takeEvery, cancel, put } from 'redux-saga/effects';
 
 // local dependencies
 import { Action } from './interfaces';
-import Controller from './controller';
+import { Controller } from './controller';
 import { updateCSDMetaAction } from './reducer';
 
 // NOTE specific saga action types to subscribe and unsubscribe controller by annotation
@@ -20,7 +18,6 @@ export const subscribeAction = <T extends string, I>(controller: Controller<T, I
   payload: { controller },
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function * subscribeSaga ({ type, payload: { controller } } : Action) {
   // console.log(`%c ${type}: ${payload.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
   //   , '\n payload:', payload
@@ -41,7 +38,6 @@ export const unsubscribeAction = <T extends string, I>(controller: Controller<T,
   payload: { controller },
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function * unsubscribeSaga ({ type, payload: { controller } } : Action) {
   // console.log(`%c ${type}: ${payload.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
   //   , '\n payload:', payload
@@ -56,5 +52,3 @@ export function * sagas () {
   yield takeEvery(TYPE.SUBSCRIBE, subscribeSaga);
   yield takeEvery(TYPE.UNSUBSCRIBE, unsubscribeSaga);
 }
-
-export default sagas;

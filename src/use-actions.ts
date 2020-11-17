@@ -22,5 +22,3 @@ export const useActions = <T extends string, I>(controller: Controller<T, I>) =>
     return cache;
   }, [actionCreators, dispatch]);
 };
-
-export default useActions;

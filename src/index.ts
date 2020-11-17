@@ -7,9 +7,9 @@ import { sagas } from './saga';
 import { reducer } from './reducer';
 import { Controller } from './controller';
 
-import useActions from './use-actions';
-import useReducer from './use-reducer';
-import useSubscribe from './use-subscribe';
+import { useActions } from './use-actions';
+import { useReducer } from './use-reducer';
+import { useSubscribe } from './use-subscribe';
 
 /**
  * Controller require connection to react-redux and redux-saga

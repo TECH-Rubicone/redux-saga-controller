@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 // local dependencies
 import { selectCSD } from './reducer';
-import Controller from './controller';
+import { Controller } from './controller';
 
 // HOOK
 export const useReducer = <T extends string, I>(controller: Controller<T, I>) : I => {
@@ -15,5 +15,3 @@ export const useReducer = <T extends string, I>(controller: Controller<T, I>) : 
   const actual = useSelector(selectCSD(name));
   return useMemo(() => ({ ...initial, ...actual }), [initial, actual]);
 };
-
-export default useReducer;
