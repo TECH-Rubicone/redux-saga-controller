@@ -21,7 +21,7 @@ jobs:
         
       # Install dependencies
       - name: Install modules
-      - run: npm i
+        run: npm i
       # Runs a single command using the runners shell
       - name: Run ESLint
         run: eslint src
