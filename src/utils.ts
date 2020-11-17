@@ -1,5 +1,5 @@
 
-/** Used to generate unique IDs. */
+// Used to generate unique IDs.
 const idCounter: Record<string, number> = {};
 
 /**
@@ -27,4 +27,3 @@ export const uniqueId = (prefix = '$controller$') => {
 
   return `${prefix}${id}`;
 };
-

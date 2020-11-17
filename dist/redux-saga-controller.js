@@ -297,7 +297,6 @@ eval("\n\nvar __assign = this && this.__assign || function () {\n  __assign = Ob
   \*********************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: top-level-this-exports, __webpack_exports__, __webpack_require__ */
-/*! CommonJS bailout: this is used directly at 3:18-22 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -327,7 +326,6 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", ({\n  value: true\n}));
   \****************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: top-level-this-exports, __webpack_exports__, __webpack_require__ */
-/*! CommonJS bailout: this is used directly at 3:15-19 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -363,7 +361,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", ({\n  value: true\n}));
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", ({\n  value: true\n}));\nexports.uniqueId = void 0;\n/** Used to generate unique IDs. */\n\nvar idCounter = {};\n/**\n * Generates a unique ID. If `prefix` is given, the ID is appended to it.\n * @param {string} [prefix=''] The value to prefix the ID with.\n * @returns {string} Returns the unique ID.\n * @see random\n * @example\n *\n * uniqueId('contact_')\n * // => 'contact_104'\n *\n * uniqueId()\n * // => '105'\n */\n\nexports.uniqueId = function (prefix) {\n  if (prefix === void 0) {\n    prefix = '$controller$';\n  }\n\n  if (!idCounter[prefix]) {\n    idCounter[prefix] = 0;\n  }\n\n  var id = ++idCounter[prefix];\n\n  if (prefix === '$controller$') {\n    return \"\" + id;\n  }\n\n  return \"\" + prefix + id;\n};\n\n//# sourceURL=webpack://redux-saga-controller/./src/utils.ts?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", ({\n  value: true\n}));\nexports.uniqueId = void 0; // Used to generate unique IDs.\n\nvar idCounter = {};\n/**\n * Generates a unique ID. If `prefix` is given, the ID is appended to it.\n * @param {string} [prefix=''] The value to prefix the ID with.\n * @returns {string} Returns the unique ID.\n * @see random\n * @example\n *\n * uniqueId('contact_')\n * // => 'contact_104'\n *\n * uniqueId()\n * // => '105'\n */\n\nexports.uniqueId = function (prefix) {\n  if (prefix === void 0) {\n    prefix = '$controller$';\n  }\n\n  if (!idCounter[prefix]) {\n    idCounter[prefix] = 0;\n  }\n\n  var id = ++idCounter[prefix];\n\n  if (prefix === '$controller$') {\n    return \"\" + id;\n  }\n\n  return \"\" + prefix + id;\n};\n\n//# sourceURL=webpack://redux-saga-controller/./src/utils.ts?");
 
 /***/ }),
 
