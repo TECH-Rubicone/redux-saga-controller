@@ -15,7 +15,7 @@ jest.config.js
 setupJest.ts
 coverage
 
-#  lint
+# lint
 .eslintrc.json
 
 # IDE - VSCode
