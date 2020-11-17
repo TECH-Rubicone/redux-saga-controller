@@ -247,13 +247,12 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /*! flagged exports */
 /*! export Controller [provided] [no usage info] [missing usage info prevents renaming] */
 /*! export __esModule [provided] [no usage info] [missing usage info prevents renaming] */
-/*! export c [provided] [no usage info] [missing usage info prevents renaming] */
 /*! other exports [not provided] [no usage info] */
 /*! runtime requirements: __webpack_exports__, __webpack_require__ */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", ({\n  value: true\n}));\nexports.c = exports.Controller = void 0; // local dependencies\n\nvar utils_1 = __webpack_require__(/*! ./utils */ \"./src/utils.ts\");\n\nvar reducer_1 = __webpack_require__(/*! ./reducer */ \"./src/reducer.ts\");\n\nvar Controller =\n/** @class */\nfunction () {\n  function Controller(_a) {\n    var types = _a.types,\n        prefix = _a.prefix,\n        initial = _a.initial,\n        subscriber = _a.subscriber;\n    this._channel = null;\n    this.TYPE = {};\n    this.action = {};\n    this.name = utils_1.uniqueId(prefix);\n    this.initial = initial;\n    this.subscriber = subscriber; // TODO forbid to pass properties\n\n    this.action.clearCtrl = reducer_1.clearCSD(this.name); // TODO allow to pass only properties as in initial\n\n    this.action.updateCtrl = reducer_1.updateCSD(this.name);\n\n    var _loop_1 = function (type) {\n      this_1.TYPE[type] = \"TEST/\" + type.toUpperCase();\n\n      this_1.action[type] = function (payload) {\n        return {\n          type: type,\n          payload: payload\n        };\n      };\n    };\n\n    var this_1 = this; // NOTE prepare types and actions\n\n    for (var _i = 0, types_1 = types; _i < types_1.length; _i++) {\n      var type = types_1[_i];\n\n      _loop_1(type);\n    }\n\n    this.selector = reducer_1.selectCSD(this.name);\n  }\n\n  Object.defineProperty(Controller.prototype, \"channel\", {\n    get: function () {\n      return this._channel;\n    },\n    set: function (channel) {\n      if (channel && this._channel) {\n        console.error(\"%c DUPLICATION \" + this.name + \" \", 'color: #FF6766; font-weight: bolder; font-size: 18px;', '\\n Please make sure you use only one instance of Controller within DOM in same time', '\\n CACHE:', this);\n      }\n\n      this._channel = channel;\n    },\n    enumerable: false,\n    configurable: true\n  });\n  return Controller;\n}();\n\nexports.Controller = Controller;\nexports.c = new Controller({\n  types: ['initialize', 'updateData', 'TYPE_2'],\n  prefix: 'custom',\n  initial: {\n    test: 1,\n    foo: 2,\n    bar: 3\n  },\n  subscriber: function () {\n    return null;\n  }\n}); // console.log(c.action.updateData);\n\n//# sourceURL=webpack://redux-saga-controller/./src/controller.ts?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", ({\n  value: true\n}));\nexports.Controller = void 0; // local dependencies\n\nvar utils_1 = __webpack_require__(/*! ./utils */ \"./src/utils.ts\");\n\nvar reducer_1 = __webpack_require__(/*! ./reducer */ \"./src/reducer.ts\");\n\nvar Controller =\n/** @class */\nfunction () {\n  function Controller(_a) {\n    var types = _a.types,\n        prefix = _a.prefix,\n        initial = _a.initial,\n        subscriber = _a.subscriber;\n    this.TYPE = {};\n    this.action = {};\n    this._channel = null;\n    this.name = utils_1.uniqueId(prefix);\n    this.initial = initial;\n    this.subscriber = subscriber; // TODO forbid to pass properties\n\n    this.action.clearCtrl = reducer_1.clearCSD(this.name); // TODO allow to pass only properties as in initial\n\n    this.action.updateCtrl = reducer_1.updateCSD(this.name);\n\n    var _loop_1 = function (type) {\n      this_1.TYPE[type] = \"TEST/\" + type.toUpperCase();\n\n      this_1.action[type] = function (payload) {\n        return {\n          type: type,\n          payload: payload\n        };\n      };\n    };\n\n    var this_1 = this; // NOTE prepare types and actions\n\n    for (var _i = 0, types_1 = types; _i < types_1.length; _i++) {\n      var type = types_1[_i];\n\n      _loop_1(type);\n    }\n\n    this.selector = reducer_1.selectCSD(this.name);\n  }\n\n  Object.defineProperty(Controller.prototype, \"channel\", {\n    get: function () {\n      return this._channel;\n    },\n    set: function (channel) {\n      if (channel && this._channel) {\n        console.error(\"%c DUPLICATION \" + this.name + \" \", 'color: #FF6766; font-weight: bolder; font-size: 18px;', '\\n Please make sure you use only one instance of Controller within DOM in same time', '\\n CACHE:', this);\n      }\n\n      this._channel = channel;\n    },\n    enumerable: false,\n    configurable: true\n  });\n  return Controller;\n}();\n\nexports.Controller = Controller; // export const c = new Controller({\n//   types: ['initialize', 'updateData', 'TYPE_2'],\n//   prefix: 'custom',\n//   initial: { test: 1, foo: 2, bar: 3 },\n//   subscriber: () => null\n// });\n// console.log(c);\n\n//# sourceURL=webpack://redux-saga-controller/./src/controller.ts?");
 
 /***/ }),
 
@@ -285,9 +284,6 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", ({\n  value: true\n}));
   \************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: top-level-this-exports, __webpack_exports__ */
-/*! CommonJS bailout: this is used directly at 3:15-19 */
-/*! CommonJS bailout: exports.clearCSDAction(...) prevents optimization as exports is passed as call context at 86:11-33 */
-/*! CommonJS bailout: exports.updateCSDAction(...) prevents optimization as exports is passed as call context at 92:11-34 */
 /***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
@@ -377,7 +373,6 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", ({\n  value: true\n}));
   \**********************************************************************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: module, __webpack_require__ */
-/*! CommonJS bailout: module.exports is used directly at 103:0-14 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -475,7 +470,6 @@ eval("\n\nif (false) {} else {\n  module.exports = __webpack_require__(/*! ./cjs
   \*********************************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: module */
-/*! CommonJS bailout: module.exports is used directly at 65:0-14 */
 /***/ ((module) => {
 
 "use strict";
@@ -489,7 +483,6 @@ eval("/*\nobject-assign\n(c) Sindre Sorhus\n@license MIT\n*/\n\n\n/* eslint-disa
   \***************************************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: module, __webpack_require__ */
-/*! CommonJS bailout: module.exports is used directly at 102:0-14 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -503,7 +496,6 @@ eval("/**\n * Copyright (c) 2013-present, Facebook, Inc.\n *\n * This source cod
   \************************************************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: module, __webpack_require__ */
-/*! CommonJS bailout: module.exports is used directly at 38:0-14 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -517,7 +509,6 @@ eval("/**\n * Copyright (c) 2013-present, Facebook, Inc.\n *\n * This source cod
   \******************************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: module, __webpack_require__ */
-/*! CommonJS bailout: module.exports is used directly at 14:2-16 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 eval("/**\n * Copyright (c) 2013-present, Facebook, Inc.\n *\n * This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.\n */\n\nif (true) {\n  var ReactIs = __webpack_require__(/*! react-is */ \"./node_modules/prop-types/node_modules/react-is/index.js\");\n\n  // By explicitly using `prop-types` you are opting into new development behavior.\n  // http://fb.me/prop-types-in-prod\n  var throwOnDirectAccess = true;\n  module.exports = __webpack_require__(/*! ./factoryWithTypeCheckers */ \"./node_modules/prop-types/factoryWithTypeCheckers.js\")(ReactIs.isElement, throwOnDirectAccess);\n} else {}\n\n\n//# sourceURL=webpack://redux-saga-controller/./node_modules/prop-types/index.js?");
@@ -530,7 +521,6 @@ eval("/**\n * Copyright (c) 2013-present, Facebook, Inc.\n *\n * This source cod
   \*************************************************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: module */
-/*! CommonJS bailout: module.exports is used directly at 12:0-14 */
 /***/ ((module) => {
 
 "use strict";
@@ -1328,16 +1318,6 @@ eval("/** @license React v0.20.1\n * scheduler-tracing.development.js\n *\n * Co
 /*! export unstable_wrapCallback [provided] [no usage info] [missing usage info prevents renaming] */
 /*! other exports [not provided] [no usage info] */
 /*! runtime requirements: __webpack_exports__ */
-/*! CommonJS bailout: exports.unstable_now(...) prevents optimization as exports is passed as call context at 52:26-46 */
-/*! CommonJS bailout: exports.unstable_now(...) prevents optimization as exports is passed as call context at 125:13-33 */
-/*! CommonJS bailout: exports.unstable_now(...) prevents optimization as exports is passed as call context at 149:24-44 */
-/*! CommonJS bailout: exports.unstable_now(...) prevents optimization as exports is passed as call context at 193:15-35 */
-/*! CommonJS bailout: exports.unstable_now(...) prevents optimization as exports is passed as call context at 548:28-48 */
-/*! CommonJS bailout: exports.unstable_now(...) prevents optimization as exports is passed as call context at 565:25-45 */
-/*! CommonJS bailout: exports.unstable_shouldYield(...) prevents optimization as exports is passed as call context at 578:74-102 */
-/*! CommonJS bailout: exports.unstable_now(...) prevents optimization as exports is passed as call context at 591:20-40 */
-/*! CommonJS bailout: exports.unstable_now(...) prevents optimization as exports is passed as call context at 695:20-40 */
-/*! CommonJS bailout: exports.unstable_now(...) prevents optimization as exports is passed as call context at 804:24-44 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";

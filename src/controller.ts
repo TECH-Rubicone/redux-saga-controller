@@ -21,8 +21,6 @@ export class Controller<T extends string, I> {
 
   name: string;
 
-  private _channel: any | null = null;
-
   TYPE = {} as Record<T, string>;
 
   selector: (name: string) => any;
@@ -30,6 +28,8 @@ export class Controller<T extends string, I> {
   subscriber: any; // TODO type Generator<ForkEffect<never>, void, unknown>
 
   action = {} as Record<T | DefaultActions, ActionCreator<AnyAction>>;
+
+  private _channel: any | null = null;
 
   constructor ({ types, prefix, initial, subscriber } : {
     initial: I,
@@ -68,12 +68,11 @@ export class Controller<T extends string, I> {
   }
 }
 
-export const c = new Controller({
-  types: ['initialize', 'updateData', 'TYPE_2'],
-  prefix: 'custom',
-  initial: { test: 1, foo: 2, bar: 3 },
-  subscriber: () => null
-});
-
-// console.log(c.action.updateData);
+// export const c = new Controller({
+//   types: ['initialize', 'updateData', 'TYPE_2'],
+//   prefix: 'custom',
+//   initial: { test: 1, foo: 2, bar: 3 },
+//   subscriber: () => null
+// });
+// console.log(c);
 
