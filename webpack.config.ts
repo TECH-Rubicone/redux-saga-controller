@@ -1,26 +1,29 @@
-const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const INPUT_PATH = './src/index.ts';
+// outsource dependencies
+import path from 'path';
+import { Configuration } from 'webpack';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+
 const OUTPUT_PATH = './dist';
+const INPUT_PATH = './src/index.ts';
+
 const FILE_NAME = 'redux-saga-controller';
 const LIBRARY_NAME = 'redux-saga-controller';
 
-const config = {
+const config: Configuration = {
   target: 'web',
   entry: {
     index: INPUT_PATH,
   },
   output: {
     path: path.resolve(__dirname, OUTPUT_PATH),
-    filename: `${FILE_NAME}.js`,
+    filename: `${FILE_NAME}.bundle.js`,
     library: LIBRARY_NAME,
     libraryTarget: 'umd',
     globalObject: 'this',
     umdNamedDefine: true,
   },
   watchOptions: {
-    aggregateTimeout: 600,
     ignored: /node_modules/,
   },
   plugins: [
@@ -35,12 +38,8 @@ const config = {
         test: /\.ts(x?)$/,
         exclude: [/node_modules/, /test/],
         use: [
-          {
-            loader: 'babel-loader',
-          },
-          {
-            loader: 'ts-loader',
-          },
+          { loader: 'babel-loader' },
+          { loader: 'ts-loader' },
         ],
       },
     ],
@@ -50,14 +49,5 @@ const config = {
   },
 };
 
-module.exports = (env, argv) => {
-  if (argv.mode === 'development') {
-    // * add some development rules here
-  } else if (argv.mode === 'production') {
-    // * add some prod rules here
-  } else {
-    throw new Error('Specify env');
-  }
-
-  return config;
-};
+// eslint-disable-next-line import/no-default-export
+export default config;
