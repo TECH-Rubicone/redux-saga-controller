@@ -17,18 +17,18 @@ export declare const createCSDAction: (name: string, initial: any) => {
         initial: any;
     };
 };
-export declare const updateCSDAction: (name: string, payload: any) => {
+export declare const updateCSDAction: (name: string, data: any) => {
     type: string;
     payload: {
         name: string;
-        payload: any;
+        data: any;
     };
 };
-export declare const updateCSDMetaAction: (name: string, payload: any) => {
+export declare const updateCSDMetaAction: (name: string, data: any) => {
     type: string;
     payload: {
         name: string;
-        payload: any;
+        data: any;
     };
 };
 export declare const clearCSD: (name: string) => () => {
@@ -37,18 +37,16 @@ export declare const clearCSD: (name: string) => () => {
         name: string;
     };
 };
-export declare const updateCSD: (name: string) => (payload: any) => {
+export declare const updateCSD: (name: string) => (data: any) => {
     type: string;
     payload: {
         name: string;
-        payload: any;
+        data: any;
     };
 };
 export declare const selectCSD: (name: string) => (state: any) => any;
 export declare const selectMetaCSD: (name: string) => (state: any) => any;
 export declare const reducer: (state: any, action: {
     type: string;
-    name: string;
     payload: any;
-    initial: any;
 }) => any;

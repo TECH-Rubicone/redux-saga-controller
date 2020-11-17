@@ -16,7 +16,13 @@ const useReducerSubscribe = <T extends string, I>(controller: Controller<T, I>) 
   const dispatch = useDispatch();
   const remove = useCallback(() => dispatch(removeCSDAction(name)), [name, dispatch]);
   const create = useCallback(() => dispatch(createCSDAction(name, initial)), [initial, name, dispatch]);
-  useEffect(() => create() && remove, [create, remove]);
+  // TODO Simplify next record
+  useEffect(() => {
+    create();
+    return () => {
+      remove();
+    };
+  }, [create, remove]);
   return null;
 };
 
@@ -27,7 +33,13 @@ export const useSubscribe = <T extends string, I>(controller: Controller<T, I>) 
   const meta = useSelector(selectMetaCSD(controller.name));
   const subscribe = useCallback(() => dispatch(subscribeAction(controller)), [controller, dispatch]);
   const unsubscribe = useCallback(() => dispatch(unsubscribeAction(controller)), [controller, dispatch]);
-  useEffect(() => subscribe() && unsubscribe, [subscribe, unsubscribe]);
+  // TODO Simplify next record
+  useEffect(() => {
+    subscribe();
+    return () => {
+      unsubscribe();
+    };
+  }, [subscribe, unsubscribe]);
   return meta.connected;
 };
 

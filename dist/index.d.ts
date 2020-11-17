@@ -18,12 +18,12 @@ export { sagas, reducer, Controller, };
  * IMPORTANT in one time in the DOM  "useController" can subscribed not more than one time for one controller
  * if you need get some useful thing of controller outside of component subscriber use hook helpers
  */
-export declare const useController: <T extends string, I>(controller: Controller<T, I>) => {}[];
+export declare const useController: <T extends string, I>(controller: Controller<T, I>) => (boolean | I | Record<string, (payload?: any) => any>)[];
 /**
  * HOOK helper "useControllerActions"
  * provide ability to use controller actions outside of component subscriber
  */
-export declare const useControllerActions: <T extends string, I>(controller: Controller<T, I>) => {};
+export declare const useControllerActions: <T extends string, I>(controller: Controller<T, I>) => Record<string, (payload?: any) => any>;
 /**
  * HOOK "useControllerData"
  * provide ability to use controller data outside of component subscriber

@@ -14,8 +14,3 @@ export declare class Controller<T extends string, I> {
     });
 }
 export default Controller;
-export declare const c: Controller<"initialize" | "updateData" | "TYPE_2", {
-    test: number;
-    foo: number;
-    bar: number;
-}>;
