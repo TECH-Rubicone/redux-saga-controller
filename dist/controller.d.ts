@@ -1,16 +1,19 @@
-import { ActionCreator } from './types';
+import { ActionCreator, AnyAction } from 'redux';
+export declare type DefaultActions = 'updateCtrl' | 'clearCtrl';
 export declare class Controller<T extends string, I> {
-    name: string;
     initial: I;
+    name: string;
+    private _channel;
     TYPE: Record<T, string>;
-    action: Record<T | "updateCtrl" | "clearCtrl", ActionCreator>;
     selector: (name: string) => any;
-    subscriber: () => any;
+    subscriber: any;
+    action: Record<T | "updateCtrl" | "clearCtrl", ActionCreator<AnyAction>>;
     constructor({ types, prefix, initial, subscriber }: {
         types: Array<T>;
-        prefix: string;
+        prefix?: string;
         initial: I;
-        subscriber: () => void;
+        subscriber: any;
     });
+    set channel(channel: any | null);
+    get channel(): any | null;
 }
-export default Controller;

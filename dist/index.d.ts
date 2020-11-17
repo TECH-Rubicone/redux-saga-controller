@@ -14,8 +14,8 @@ import { Controller } from './controller';
 export { sagas, reducer, Controller, };
 /**
  * HOOK "useController"
- * contain all hooks which required to make controller alive
- * IMPORTANT in one time in the DOM  "useController" can subscribed not more than one time for one controller
+ * contain all hooks which are required to make controller alive
+ * IMPORTANT in one time in the DOM "useController" can subscribed not more than one time for one controller
  * if you need get some useful thing of controller outside of component subscriber use hook helpers
  */
 export declare const useController: <T extends string, I>(controller: Controller<T, I>) => (boolean | I | Record<string, (payload?: any) => any>)[];

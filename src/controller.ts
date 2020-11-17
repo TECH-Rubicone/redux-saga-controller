@@ -1,29 +1,42 @@
 // NOTE -
 
 // outsource dependencies
+import { ActionCreator, AnyAction } from 'redux';
+import { ForkEffect } from 'redux-saga/effects';
 
 // local dependencies
 import { uniqueId } from './utils';
-import { ActionCreator, DefaultActions } from './types';
 import { selectCSD, updateCSD, clearCSD } from './reducer';
+
+interface Generator<T = unknown, TReturn = any, TNext = unknown>
+  extends Iterator<T, TReturn, TNext> {
+  next(...args: [] | [TNext]): IteratorResult<T, TReturn>;
+  return(value: TReturn): IteratorResult<T, TReturn>;
+  throw(e: any): IteratorResult<T, TReturn>;
+  [Symbol.iterator](): Generator<T, TReturn, TNext>;
+}
+
+export type DefaultActions = 'updateCtrl' | 'clearCtrl'
 
 export class Controller<T extends string, I> {
   initial: I;
 
   name: string;
 
-  subscriber: () => any;
+  private _channel: any | null = null;
 
   TYPE = {} as Record<T, string>;
 
   selector: (name: string) => any;
 
-  action = {} as Record<T | DefaultActions, ActionCreator>;
+  subscriber: any; // TODO type Generator<ForkEffect<never>, void, unknown>
+
+  action = {} as Record<T | DefaultActions, ActionCreator<AnyAction>>;
 
   constructor ({
     types, prefix, initial, subscriber
   } : {
-    types: Array<T>, prefix?: string, initial: I, subscriber: () => void
+    types: Array<T>, prefix?: string, initial: I, subscriber: any
   }) {
     this.name = uniqueId(prefix);
 
@@ -41,6 +54,20 @@ export class Controller<T extends string, I> {
     this.initial = initial;
     this.subscriber = subscriber;
     this.selector = selectCSD(this.name);
+  }
+
+  set channel (channel: any | null) {
+    if (channel && this._channel) {
+      console.error(`%c DUPLICATION ${this.name} `, 'color: #FF6766; font-weight: bolder; font-size: 18px;'
+        , '\n Please make sure you use only one instance of Controller within DOM in same time'
+        , '\n CACHE:', this
+      );
+    }
+    this._channel = channel;
+  }
+
+  get channel () {
+    return this._channel;
   }
 }
 
