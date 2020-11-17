@@ -33,6 +33,7 @@ module.exports = {
     curly: ['warn', 'all'],
     eqeqeq: ['warn', 'smart'],
     radix: ['warn', 'as-needed'],
+    'space-infix-ops': ['error', { int32Hint: false }],
     'no-console': ['warn', { allow: ['error', 'warn', 'info'] }],
     'import/no-unresolved': ['off'],
     'import/no-default-export': ['error'],

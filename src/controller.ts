@@ -1,12 +1,11 @@
 // NOTE -
 
 // outsource dependencies
-import _ from 'lodash';
 
 // local dependencies
-import { selectCSD, updateCSD, clearCSD } from './reducer';
-
+import { uniqueId } from './utils';
 import { ActionCreator, DefaultActions } from './types';
+import { selectCSD, updateCSD, clearCSD } from './reducer';
 
 export class Controller<T extends string, I> {
   initial: I;
@@ -24,9 +23,9 @@ export class Controller<T extends string, I> {
   constructor ({
     types, prefix, initial, subscriber
   } : {
-    types: Array<T>, prefix: string, initial: I, subscriber: () => void
+    types: Array<T>, prefix?: string, initial: I, subscriber: () => void
   }) {
-    this.name = _.uniqueId(_.isString(prefix) ? prefix : 'controller');
+    this.name = uniqueId(prefix);
 
     // TODO forbid to pass properties
     this.action.clearCtrl = clearCSD(this.name);
