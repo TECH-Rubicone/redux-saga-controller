@@ -16,7 +16,7 @@ setupJest.ts
 coverage
 
 #  lint
-.eslintrc.js
+.eslintrc.json
 
 # IDE - VSCode
 .vscode

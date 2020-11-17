@@ -11,8 +11,8 @@
     "start:dev": "webpack --mode=development --watch --progress",
     "build:prod": "webpack --mode=production",
     "prepublishOnly": "webpack --mode=production",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
-    "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage"
@@ -22,10 +22,12 @@
     "url": "git+https://github.com/zanusilker/redux-saga-controller.git"
   },
   "keywords": [
-    "framework",
+    "redux",
+    "react",
+    "controller",
+    "redux-saga",
     "typescript",
-    "scss",
-    "npm"
+    "redux-saga-controller"
   ],
   "author": "Intelliceed",
   "license": "MIT",
@@ -36,25 +38,32 @@
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@types/jest": "^26.0.15",
+    "@types/node": "^14.14.7",
+    "@types/webpack": "^4.41.25",
     "@typescript-eslint/eslint-plugin": "^4.8.0",
     "@typescript-eslint/parser": "^4.8.0",
     "babel-loader": "^8.2.1",
     "clean-webpack-plugin": "^3.0.0",
     "eslint": "^7.13.0",
     "eslint-plugin-import": "^2.22.1",
+    "husky": "^4.3.0",
     "jest": "^26.6.3",
     "node-sass": "^5.0.0",
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.11",
+    "ts-node": "^9.0.0",
     "typescript": "^4.0.5",
     "webpack": "^5.4.0",
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
-    "lodash": "^4.17.20",
+    "@types/react": "^16.9.56",
+    "@types/react-redux": "^7.1.11",
+    "@types/redux": "^3.6.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
     "redux-saga": "^1.1.3"
   }
 }
