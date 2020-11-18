@@ -13,6 +13,7 @@
     "prepublishOnly": "webpack --mode=production",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
+    "editorconfig:checker": "editorconfig-checker --exclude '.git|node_modules|.DS_Store|dist'",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage"
@@ -44,6 +45,7 @@
     "@typescript-eslint/parser": "^4.8.0",
     "babel-loader": "^8.2.1",
     "clean-webpack-plugin": "^3.0.0",
+    "editorconfig-checker": "^3.3.0",
     "eslint": "^7.13.0",
     "eslint-plugin-import": "^2.22.1",
     "husky": "^4.3.0",
