@@ -1,0 +1,31 @@
+{
+  "verbose": true,
+  "setupFiles": [
+    "<rootDir>/jest-setup.js"
+  ],
+  "moduleDirectories": [
+    "node_modules",
+    "src"
+  ],
+  "testURL": "http://localhost/",
+  "testEnvironmentOptions": {
+    "resources": "usable"
+  },
+  "collectCoverageFrom": [
+    "<rootDir>/src/**/*.js"
+  ],
+  "coveragePathIgnorePatterns": [
+    "node_modules",
+    ".mock"
+  ],
+  "roots": [
+    "<rootDir>/src"
+  ],
+  "testMatch": [
+    "**/__tests__/**/*.+(ts|tsx|js|jsx)",
+    "**/?(*.)+(spec|test).+(ts|tsx|js|jsx)"
+  ],
+  "transform": {
+    "^.+\\.(ts|tsx)$": "ts-jest"
+  }
+}
