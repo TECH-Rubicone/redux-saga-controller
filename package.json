@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TECH-Rubicon/redux-saga-controller.git"
+    "url": "git+https://github.com/TECH-Rubicone/redux-saga-controller.git"
   },
   "keywords": [
     "redux",
@@ -33,9 +33,9 @@
   "author": "Intelliceed",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TECH-Rubicon/redux-saga-controller/issues"
+    "url": "https://github.com/TECH-Rubicone/redux-saga-controller/issues"
   },
-  "homepage": "https://github.com/TECH-Rubicon/redux-saga-controller#readme",
+  "homepage": "https://github.com/TECH-Rubicone/redux-saga-controller#readme",
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@types/jest": "^26.0.15",
