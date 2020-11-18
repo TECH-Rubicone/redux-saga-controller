@@ -1,6 +1,6 @@
 {
   "name": "redux-saga-controller",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A tool to simplify work with react, redux and sagas",
   "main": "./dist/redux-saga-controller.js",
   "types": "./dist/redux-saga-controller.d.ts",
