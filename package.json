@@ -14,7 +14,7 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "editorconfig:checker": "editorconfig-checker --exclude '.git|node_modules|.DS_Store|dist'",
-    "test": "jest",
+    "test": "echo \\\"Info: no test specified\\\"",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage"
   },
