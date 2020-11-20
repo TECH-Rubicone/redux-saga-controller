@@ -34,3 +34,4 @@ export declare const useControllerData: <T extends string, I>(controller: Contro
  * provide ability to connect controller without passing data or actions
  */
 export declare const useControllerSubscribe: <T extends string, I>(controller: Controller<T, I>) => boolean;
+export default Controller;

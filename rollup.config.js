@@ -8,7 +8,7 @@ import typescript from 'rollup-plugin-typescript2';
 import pkg from './package.json';
 
 // configure
-const PACKAGE_NAME = 'redux-saga-controller';
+const FILE_NAME = 'index';
 
 const extensions = ['.ts'];
 const noDeclarationFiles = { compilerOptions: { declaration: false } };
@@ -27,7 +27,7 @@ export default [
   // CommonJS
   {
     input: 'src/index.ts',
-    output: { file: `lib/${PACKAGE_NAME}.js`, format: 'cjs', indent: false },
+    output: { file: `lib/${FILE_NAME}.js`, format: 'cjs', indent: false },
     external: makeExternalPredicate([
       ...Object.keys(pkg.dependencies || {}),
       ...Object.keys(pkg.peerDependencies || {}),
@@ -48,7 +48,7 @@ export default [
   // ES
   {
     input: 'src/index.ts',
-    output: { file: `es/${PACKAGE_NAME}.js`, format: 'es', indent: false },
+    output: { file: `es/${FILE_NAME}.js`, format: 'es', indent: false },
     external: makeExternalPredicate([
       ...Object.keys(pkg.dependencies || {}),
       ...Object.keys(pkg.peerDependencies || {}),
