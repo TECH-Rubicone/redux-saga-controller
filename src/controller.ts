@@ -60,6 +60,10 @@ export class Controller<T extends string, I> {
         , '\n CACHE:', this
       );
     }
+    console.error(`%c set channel ${this.name} `, 'color: #000; font-weight: bolder; font-size: 16px;'
+      , '\n CACHE:', this
+      , '\n channel:', channel
+    );
     this._channel = channel;
   }
 
@@ -67,11 +71,3 @@ export class Controller<T extends string, I> {
     return this._channel;
   }
 }
-
-// export const c = new Controller({
-//   types: ['initialize', 'updateData', 'TYPE_2'],
-//   prefix: 'custom',
-//   initial: { test: 1, foo: 2, bar: 3 },
-//   subscriber: () => null
-// });
-// console.log(c);
