@@ -55,3 +55,5 @@ export const useControllerData = useReducer;
  * provide ability to connect controller without passing data or actions
  */
 export const useControllerSubscribe = useSubscribe;
+
+export default Controller;
