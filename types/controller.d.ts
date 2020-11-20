@@ -6,7 +6,7 @@ export declare class Controller<T extends string, I> {
     TYPE: Record<T, string>;
     selector: (name: string) => any;
     subscriber: any;
-    action: Record<T | "updateCtrl" | "clearCtrl", ActionCreator<AnyAction>>;
+    action: Record<"updateCtrl" | "clearCtrl" | T, ActionCreator<AnyAction>>;
     private _channel;
     constructor({ types, prefix, initial, subscriber }: {
         initial: I;
