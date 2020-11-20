@@ -24,7 +24,7 @@
     "build": "rollup -c",
     "start": "rollup -c -w",
     "clean": "rimraf lib dist es coverage types",
-    "check-types": "tsc --noEmit",
+    "check-types": "npm run install-peers && tsc --noEmit",
     "install-peers": "install-peers -f",
     "prepublishOnly": "npm run clean && npm run check-types && npm run lint && npm test && npm run build"
   },
