@@ -10,11 +10,11 @@
   test:
     - src/**/*.spec.js
 
-# Add 'build' label to any change webpack.config.ts
+# Add 'build' label to any change rollup.config.ts
   build:
-    - webpack.config.ts
+    - rollup.config.ts
 
-# Add 'workflow' label to any change webpack.config.ts
+# Add 'workflow' label to any change in .github
   workflow:
     - .github/**/*
 
