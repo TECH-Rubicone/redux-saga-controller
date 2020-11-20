@@ -46,8 +46,8 @@ export class Controller<T extends string, I> {
     this.action.updateCtrl = updateCSD(this.name);
     // NOTE prepare types and actions
     for (const type of types) {
-      this.TYPE[type] = `TEST/${type.toUpperCase()}`;
-      this.action[type] = (payload?: any) => ({ type, payload });
+      this.TYPE[type] = `${this.name}/${type.toUpperCase()}`;
+      this.action[type] = (payload?: any) => ({ type: this.TYPE[type], payload });
     }
 
     this.selector = selectCSD(this.name);
@@ -60,7 +60,7 @@ export class Controller<T extends string, I> {
         , '\n CACHE:', this
       );
     }
-    console.error(`%c set channel ${this.name} `, 'color: #000; font-weight: bolder; font-size: 16px;'
+    console.info(`%c set channel ${this.name} `, 'color: #FF6766; font-weight: bolder; font-size: 16px;'
       , '\n CACHE:', this
       , '\n channel:', channel
     );

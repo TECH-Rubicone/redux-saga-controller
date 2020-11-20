@@ -142,13 +142,12 @@ const subscribeAction = controller => ({
 });
 
 function* subscribeSaga({
+  type,
   payload: {
     controller
   }
 }) {
-  // console.log(`%c ${type}: ${payload.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
-  //   , '\n payload:', payload
-  // );
+  console.info(`%c ${type}: ${controller.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;', '\n controller:', controller);
   controller.channel = yield fork(controller.subscriber); // NOTE store mark in to redux to provide correct watching of changes
 
   yield put(updateCSDMetaAction(controller.name, {
@@ -164,14 +163,13 @@ const unsubscribeAction = controller => ({
 });
 
 function* unsubscribeSaga({
+  type,
   payload: {
     controller
   }
 }) {
-  // console.log(`%c ${type}: ${payload.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
-  //   , '\n payload:', payload
-  // );
-  // NOTE store mark in to redux to provide correct watching of changes
+  console.info(`%c ${type}: ${controller.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;', '\n payload:', controller); // NOTE store mark in to redux to provide correct watching of changes
+
   yield put(updateCSDMetaAction(controller.name, {
     connected: false
   }));
@@ -250,6 +248,7 @@ class Controller {
       console.error(`%c DUPLICATION ${this.name} `, 'color: #FF6766; font-weight: bolder; font-size: 18px;', '\n Please make sure you use only one instance of Controller within DOM in same time', '\n CACHE:', this);
     }
 
+    console.error(`%c set channel ${this.name} `, 'color: #000; font-weight: bolder; font-size: 16px;', '\n CACHE:', this, '\n channel:', channel);
     this._channel = channel;
   }
 
@@ -257,13 +256,7 @@ class Controller {
     return this._channel;
   }
 
-} // export const c = new Controller({
-//   types: ['initialize', 'updateData', 'TYPE_2'],
-//   prefix: 'custom',
-//   initial: { test: 1, foo: 2, bar: 3 },
-//   subscriber: () => null
-// });
-// console.log(c);
+}
 
 // outsource dependencies
 
