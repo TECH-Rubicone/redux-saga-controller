@@ -55,7 +55,6 @@
     "space-infix-ops": ["error", {"int32Hint": false}],
     "no-console": ["warn", {"allow": ["error", "warn", "info"]}],
     "import/no-unresolved": ["off"],
-    "import/no-default-export": ["error"],
     "semi-spacing": ["warn", {"before": false, "after": true}],
     "no-fallthrough": ["warn", {"commentPattern": "no-break"}],
     "no-extend-native": ["warn", {"exceptions": ["Error", "Array"]}],
