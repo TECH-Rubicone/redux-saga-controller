@@ -3,6 +3,8 @@
 
 .idea
 
+dist/
+
 .DS_Store
 
 # IDE - VSCode
