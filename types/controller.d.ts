@@ -1,7 +1,7 @@
 import { ActionCreator, AnyAction } from 'redux';
 export declare type DefaultActions = 'updateCtrl' | 'clearCtrl';
 export declare class Controller<T extends string, I> {
-    initial: I;
+    initial: {};
     name: string;
     TYPE: Record<T, string>;
     selector: (name: string) => any;

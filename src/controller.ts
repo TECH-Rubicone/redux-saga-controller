@@ -17,7 +17,7 @@ interface Generator<T = unknown, TReturn = any, TNext = unknown>
 export type DefaultActions = 'updateCtrl' | 'clearCtrl'
 
 export class Controller<T extends string, I> {
-  initial: I;
+  initial = {};
 
   name: string;
 
@@ -31,12 +31,13 @@ export class Controller<T extends string, I> {
 
   private _channel: any | null = null;
 
-  constructor ({ types, prefix, initial, subscriber } : {
+  constructor ({ types = [], prefix, initial, subscriber } : {
     initial: I,
     prefix?: string,
     subscriber: any,
     types: Array<T>,
   }) {
+    // TODO Add validation for all properties
     this.name = uniqueId(prefix);
     this.initial = initial;
     this.subscriber = subscriber;
