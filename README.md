@@ -178,3 +178,5 @@ const isControllerSubscribed = useControllerSubscribe(controller);
 
 - [ ] Add checking all arguments on the initialization
 - [ ] Add debug mode
+- [ ] Add tests
+- [ ] Update documentation
