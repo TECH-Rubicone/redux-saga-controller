@@ -17,11 +17,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@master
         with:
-          node-version: 12.x
+          node-version: 12
+          # Specifies the registry, this field is required!
+          registry-url: https://registry.npmjs.org/
       # clean install of your projects' deps. We use "npm ci" to avoid package lock changes
       - run: npm ci
-      # update npm registry
-      - run: npm set registry https://registry.npmjs.org/
       # NOTE set up git since we will later push to the repo
       - run: git config --global user.name "GitHub CD bot"
       - run: git config --global tech.email "tech.rubicone@gmail.com"
