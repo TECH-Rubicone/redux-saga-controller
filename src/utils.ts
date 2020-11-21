@@ -15,13 +15,13 @@ const idCounter: Record<string, number> = {};
  * uniqueId()
  * // => '105'
  */
-export const uniqueId = (prefix = '$controller$') => {
+export const uniqueId = (prefix = 'controller_') => {
   if (!idCounter[prefix]) {
     idCounter[prefix] = 0;
   }
 
   const id = ++idCounter[prefix];
-  if (prefix === '$controller$') {
+  if (prefix === 'controller_') {
     return `${id}`;
   }
 
