@@ -1,7 +1,7 @@
 # Dependencies
 node_modules
 
-# Build files
+# Ignore built files
 dist
 lib
 es

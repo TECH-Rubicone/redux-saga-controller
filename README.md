@@ -164,7 +164,7 @@ const isControllerSubscribed = useControllerSubscribe(controller);
 - [x] Remove build files from repository
 - [x] check `.editorconfig`
 - [x] check `.gitignore`
-- [ ] check `.eslintignore`
+- [x] check `.eslintignore`
 - [ ] check `.eslintrc.json`
 - [ ] check `tsconfig.json`
 - [ ] check `rollup.config.js`
