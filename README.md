@@ -163,7 +163,7 @@ const isControllerSubscribed = useControllerSubscribe(controller);
 - [ ] Check and setup correct `peerDependencies`, `devDependencies` and `dependencies`
 - [x] Remove build files from repository
 - [x] check `.editorconfig`
-- [ ] check `.gitignor`
+- [x] check `.gitignore`
 - [ ] check `.eslintignore`
 - [ ] check `.eslintrc.json`
 - [ ] check `tsconfig.json`

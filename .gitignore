@@ -1,21 +1,22 @@
-# dependencies
-/node_modules
+# Dependencies
+node_modules
 
-.idea
-
-# build files
-es/
-lib/
-types/
-
-.DS_Store
+# Build files
+dist
+lib
+es
+types
 
 # IDE - VSCode
-.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history/*
+*.code-workspace
 
+# Local History for Visual Studio Code
+.history/
+
+# IDE - WebStorm
+.idea
