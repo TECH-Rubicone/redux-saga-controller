@@ -24,7 +24,7 @@ jobs:
         with: # All of theses inputs are optional
           tag_name: "v%s"
           tag_message: "v%s"
-          commit_pattern: "^release (\\S+)"
+          commit_pattern: "^release"
           workspace: "."
           publish_command: "npm"
           publish_args: "--non-interactive"
