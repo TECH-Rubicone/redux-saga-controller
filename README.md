@@ -47,10 +47,11 @@ sagaMiddleware.run(controllerSaga);
 
 ##### Step 2: Prepare controller annotation
 
-From controller you will get
+To setup controller you need
 
 | Field      | Type          | Require/Optional | Default value              | Description                                                                              |
 |------------|---------------|------------------|----------------------------|------------------------------------------------------------------------------------------|
+| DEBUG      | boolean       | optional         | false                      | In DEBUG mode you will get additional information in console                             |
 | prefix     | string        | optional         | controller_${unique_index} | The unique name of controller and field name in the store                                |
 | initial    | object        | optional         | {}                         | Initial data of your store                                                               |
 | types      | Array[string] | optional         | []                         | All list types which you need (Actions for these types will be generated automatically)  |
