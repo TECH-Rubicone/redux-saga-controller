@@ -2,6 +2,7 @@
 // local dependencies
 import { sagas } from './saga';
 import { reducer } from './reducer';
+
 import { Controller } from './controller';
 
 import { useActions } from './use-actions';
@@ -12,10 +13,10 @@ import { useSubscribe } from './use-subscribe';
  * Controller require connection to react-redux and redux-saga
  * please make sure you connected to react-redux
  * @example
- * import { reducer as controller } from './services/controller.service';
+ * import { reducer as controller } from 'redux-saga-controller';
  *
  * and setup saga subscriber
- * import { sagas as controllerSagas } from './services/controller.service';
+ * import { sagas as controllerSagas } from 'redux-saga-controller';
  *
  */
 export {

@@ -8,6 +8,7 @@ import { Controller } from './controller';
 import { updateCSDMetaAction } from './reducer';
 
 interface ControllerAction<T extends string, I> extends Action{
+  type: string;
   payload: {
     controller: Controller<T, I>
   }
@@ -25,9 +26,11 @@ export const subscribeAction = <T extends string, I> (controller: Controller<T, 
 });
 
 function * subscribeSaga <T extends string, I> ({ type, payload: { controller } } : ControllerAction<T, I>) {
-  console.info(`%c ${type}: ${controller.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
-    , '\n controller:', controller
-  );
+  if (controller.DEBUG) {
+    console.info(`%c ${type}: ${controller.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
+      , '\n controller:', controller
+    );
+  }
   controller.channel = yield fork(controller.subscriber);
   // NOTE store mark in to redux to provide correct watching of changes
   yield put(updateCSDMetaAction(controller.name, { connected: true }));
@@ -39,9 +42,11 @@ export const unsubscribeAction = <T extends string, I> (controller: Controller<T
 });
 
 function * unsubscribeSaga <T extends string, I> ({ type, payload: { controller } } : ControllerAction<T, I>) {
-  console.info(`%c ${type}: ${controller.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
-    , '\n payload:', controller
-  );
+  if (controller.DEBUG) {
+    console.info(`%c ${type}: ${controller.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
+      , '\n controller:', controller
+    );
+  }
   // NOTE store mark in to redux to provide correct watching of changes
   yield put(updateCSDMetaAction(controller.name, { connected: false }));
   yield cancel(controller.channel);

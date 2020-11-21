@@ -31,13 +31,17 @@ export class Controller<T extends string, I> {
 
   private _channel: any | null = null;
 
-  constructor ({ types = [], prefix, initial, subscriber } : {
+  DEBUG: boolean;
+
+  constructor ({ types = [], prefix, initial, subscriber, DEBUG = false } : {
     initial: I,
+    DEBUG: boolean,
     prefix?: string,
     subscriber: any,
     types: Array<T>,
   }) {
     // TODO Add validation for all properties
+    this.DEBUG = DEBUG;
     this.name = uniqueId(prefix);
     this.initial = initial;
     this.subscriber = subscriber;
@@ -61,10 +65,12 @@ export class Controller<T extends string, I> {
         , '\n CACHE:', this
       );
     }
-    console.info(`%c set channel ${this.name} `, 'color: #FF6766; font-weight: bolder; font-size: 16px;'
-      , '\n CACHE:', this
-      , '\n channel:', channel
-    );
+    if (this.DEBUG) {
+      console.info(`%c set channel ${this.name} `, 'color: #FF6766; font-weight: bolder; font-size: 16px;'
+        , '\n CACHE:', this
+        , '\n channel:', channel
+      );
+    }
     this._channel = channel;
   }
 
