@@ -4,7 +4,7 @@ import { ActionCreator, AnyAction } from 'redux';
 
 // local dependencies
 import { uniqueId } from './utils';
-import { selectCSD, updateCSD, clearCSD } from './reducer';
+import { selectCSD, updateCSD, clearCSD, State } from './reducer';
 
 interface Generator<T = unknown, TReturn = any, TNext = unknown>
   extends Iterator<T, TReturn, TNext> {
@@ -17,13 +17,13 @@ interface Generator<T = unknown, TReturn = any, TNext = unknown>
 export type DefaultActions = 'updateCtrl' | 'clearCtrl'
 
 export class Controller<T extends string, I> {
-  initial = {};
+  initial = {} as I;
 
   name: string;
 
   TYPE = {} as Record<T, string>;
 
-  selector: (name: string) => any;
+  selector: (state: Record<string, Record<string, State<I>>>) => State<unknown>;
 
   subscriber: any; // TODO type Generator<ForkEffect<never>, void, unknown>
 
@@ -35,7 +35,7 @@ export class Controller<T extends string, I> {
 
   constructor ({ types = [], prefix, initial, subscriber, DEBUG = false } : {
     initial: I,
-    DEBUG: boolean,
+    DEBUG?: boolean,
     prefix?: string,
     subscriber: any,
     types: Array<T>,
@@ -48,14 +48,14 @@ export class Controller<T extends string, I> {
     // TODO forbid to pass properties
     this.action.clearCtrl = clearCSD(this.name);
     // TODO allow to pass only properties as in initial
-    this.action.updateCtrl = updateCSD(this.name);
+    this.action.updateCtrl = updateCSD<I>(this.name);
     // NOTE prepare types and actions
     for (const type of types) {
       this.TYPE[type] = `${this.name}/${type.toUpperCase()}`;
-      this.action[type] = (payload?: any) => ({ type: this.TYPE[type], payload });
+      this.action[type] = (payload?: unknown) => ({ type: this.TYPE[type], payload });
     }
 
-    this.selector = selectCSD(this.name);
+    this.selector = selectCSD<I>(this.name);
   }
 
   set channel (channel: any | null) {

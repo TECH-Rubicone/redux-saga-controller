@@ -13,7 +13,7 @@
 - Release Notes
 - Older Documentation
 
-### Getting StartedGetting Started
+### Getting Started
 
 #### Basic Usage Guide
 
@@ -178,6 +178,6 @@ const isControllerSubscribed = useControllerSubscribe(controller);
 ### For controller
 
 - [ ] Add checking all arguments on the initialization
-- [ ] Add debug mode
+- [x] Add debug mode
 - [ ] Add tests
 - [ ] Update documentation
