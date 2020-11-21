@@ -1,0 +1,41 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Pull request
+
+# Controls when the action will run. Triggers the workflow on pull request to master
+on:
+  pull_request
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "pull-request"
+  pull-request:
+    name: Pull request
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Set up Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: ${{ matrix.node-verssion }}
+      - name: Auto assign
+        uses: kentaro-m/auto-assign-action@v1.1.2
+        with:
+          configuration-path: ".github/auto-assign.yml" # Only needed if you use something other than .github/auto_assign.yml
+      - name: Labeler
+        uses: actions/labeler@v2
+          with:
+            repo-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: NPM Install dependencies
+        run: npm ci # npm i for auto build it is faster
+      - name: Editorconfig checker
+        run: npm run editorconfig:checker # check code by .editorconfig
+      - name: ESLint
+        run: npm run lint # run eslint
