@@ -158,23 +158,23 @@ const isControllerSubscribed = useControllerSubscribe(controller);
 
 ### For project
 
-- Setup tags and github actions
-- Implement git conventional commits
-- Check and setup correct `peerDependencies`, `devDependencies` and `dependencies`
-- Remove build files from repository
-- check `.editorconfig`
-- check `.browserslistrc` (not used)
-- check `.gitignor`
-- check `.eslintignore`
-- check `.eslintrc.json`
-- check `tsconfig.json`
-- check `rollup.config.js`
-- check `package.json`
-- check `.npmignore`
-- check `jest-setup.ts`
-- check `jest.config.json`
+- [ ] Setup tags and github actions
+- [x] Implement git conventional commits
+- [ ] Check and setup correct `peerDependencies`, `devDependencies` and `dependencies`
+- [x] Remove build files from repository
+- [ ] check `.editorconfig`
+- [ ] check `.browserslistrc` (not used)
+- [ ] check `.gitignor`
+- [ ] check `.eslintignore`
+- [ ] check `.eslintrc.json`
+- [ ] check `tsconfig.json`
+- [ ] check `rollup.config.js`
+- [ ] check `package.json`
+- [ ] check `.npmignore`
+- [ ] check `jest-setup.ts`
+- [ ] check `jest.config.json`
 
 ### For controller
 
-- Add checking all arguments on the initialization
-- Add debug mode
+- [ ] Add checking all arguments on the initialization
+- [ ] Add debug mode
