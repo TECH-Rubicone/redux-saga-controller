@@ -3,7 +3,10 @@
 
 .idea
 
-#dist/
+# build files
+es/
+lib/
+types/
 
 .DS_Store
 
