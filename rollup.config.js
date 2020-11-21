@@ -9,6 +9,7 @@ import pkg from './package.json';
 
 // configure
 const FILE_NAME = 'index';
+const INPUT_FILE = 'src/index.ts';
 
 const extensions = ['.ts'];
 const noDeclarationFiles = { compilerOptions: { declaration: false } };
@@ -23,49 +24,49 @@ const makeExternalPredicate = (externalArr) => {
   return (id) => pattern.test(id);
 };
 
+const prepare = ({ input, output, format, tsconfig, babelconfig }) => ({
+  input,
+  output: { file: `${output}/${FILE_NAME}.js`, format, indent: false },
+  external: makeExternalPredicate([
+    ...Object.keys(pkg.dependencies || {}),
+    ...Object.keys(pkg.peerDependencies || {}),
+  ]),
+  plugins: [
+    nodeResolve({ extensions }),
+    typescript(tsconfig),
+    babel(babelconfig),
+  ],
+});
+
 export default [
   // CommonJS
-  {
-    input: 'src/index.ts',
-    output: { file: `lib/${FILE_NAME}.js`, format: 'cjs', indent: false },
-    external: makeExternalPredicate([
-      ...Object.keys(pkg.dependencies || {}),
-      ...Object.keys(pkg.peerDependencies || {}),
-    ]),
-    plugins: [
-      nodeResolve({ extensions }),
-      typescript({ useTsconfigDeclarationDir: true }),
-      babel({
-        extensions,
-        plugins: [
-          ['@babel/plugin-transform-runtime', { version: babelRuntimeVersion }],
-        ],
-        babelHelpers: 'runtime',
-      }),
-    ],
-  },
+  prepare({
+    input: INPUT_FILE,
+    output: 'lib',
+    format: 'cjs',
+    tsconfig: { useTsconfigDeclarationDir: true },
+    babel: {
+      extensions,
+      plugins: [
+        ['@babel/plugin-transform-runtime', { version: babelRuntimeVersion }],
+      ],
+    }
+  }),
 
   // ES
-  {
-    input: 'src/index.ts',
-    output: { file: `es/${FILE_NAME}.js`, format: 'es', indent: false },
-    external: makeExternalPredicate([
-      ...Object.keys(pkg.dependencies || {}),
-      ...Object.keys(pkg.peerDependencies || {}),
-    ]),
-    plugins: [
-      nodeResolve({ extensions }),
-      typescript({ tsconfigOverride: noDeclarationFiles }),
-      babel({
-        extensions,
-        plugins: [
-          [
-            '@babel/plugin-transform-runtime',
-            { version: babelRuntimeVersion, useESModules: true },
-          ],
+  prepare({
+    input: INPUT_FILE,
+    output: 'es',
+    format: 'es',
+    tsconfig: { tsconfigOverride: noDeclarationFiles },
+    babel: {
+      extensions,
+      plugins: [
+        [
+          '@babel/plugin-transform-runtime',
+          { version: babelRuntimeVersion, useESModules: true },
         ],
-        babelHelpers: 'runtime',
-      }),
-    ],
-  },
+      ],
+    }
+  }),
 ];
