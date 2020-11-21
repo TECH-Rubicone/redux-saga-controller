@@ -170,7 +170,7 @@ const isControllerSubscribed = useControllerSubscribe(controller);
 - [ ] check `tsconfig.json`
 - [ ] check `rollup.config.js`
 - [x] check `package.json`
-- [ ] check `.npmignore`
+- [x] check `.npmignore`
 - [ ] check `jest-setup.ts`
 - [ ] check `jest.config.json`
 

@@ -1,25 +1,32 @@
-
-# source code
-src
-index.html
-
+# Use a .npmignore file to keep stuff out of your package.
 # compiler
 tsconfig.json
-webpack.config.js
-postcss.config.js
-
+rollup.config.js
 
 # tests
 test
-jest.config.js
-setupJest.ts
+jest.config.json
+jest-setup.ts
 coverage
 
 # lint
 .eslintrc.json
+.eslintignore
 
 # IDE - VSCode
-.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
 
-# git
-.git
+# Local History for Visual Studio Code
+.history/
+
+# IDE - WebStorm
+.idea
+
+# workflow
+.huskyrc
+.editorconfig
