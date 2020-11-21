@@ -26,7 +26,8 @@
     "clean": "rimraf lib dist es coverage types",
     "check-types": "npm run install-peers && tsc --noEmit",
     "install-peers": "install-peers -f",
-    "prepublishOnly": "npm run clean && npm run check-types && npm run lint && npm test && npm run build"
+    "check:code": "npm run editorconfig:checker && npm run check-types && npm run lint && npm test",
+    "prepublishOnly": "npm run clean && npm run check:code && npm run build"
   },
   "repository": {
     "type": "git",

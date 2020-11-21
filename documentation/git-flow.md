@@ -15,6 +15,7 @@
 | performance   | Refactoring commit, that improves performance                                                                                                                                                                                                                      |
 | suggestion    | Any new feature or idea that is not part of a release or a sprint. A branch for playing around.                                                                                                                                                                    |
 | test          | Commits, that add missing tests or correcting existing tests                                                                                                                                                                                                       |
+| release       | Commit patter to run automatically publishing to npm                                                                                                                                                                                                               |
 
 ### Branch naming:
 
