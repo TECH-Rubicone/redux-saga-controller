@@ -17,16 +17,16 @@
   "scripts": {
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "editorconfig:checker": "editorconfig-checker --exclude '.git|node_modules|.DS_Store|dist'",
-    "test": "echo \\\"Info: no test specified\\\"",
+    "editorconfig:checker": "editorconfig-checker --exclude '.git|node_modules|dist|lib|es|types'",
+    "test": "echo \"Info: no test specified\"",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:coverage": "jest --coverage",
     "build": "rollup -c",
     "start": "rollup -c -w",
-    "clean": "rimraf lib dist es coverage types",
-    "check-types": "npm run install-peers && tsc --noEmit",
+    "clean": "rimraf lib dist es types coverage",
+    "check:types": "npm run install-peers && tsc --noEmit",
     "install-peers": "install-peers -f",
-    "check:code": "npm run editorconfig:checker && npm run check-types && npm run lint && npm test",
+    "check:code": "npm run editorconfig:checker && npm run check:types && npm run lint && npm test",
     "prepublishOnly": "npm run clean && npm run check:code && npm run build"
   },
   "repository": {
@@ -41,7 +41,7 @@
     "typescript",
     "redux-saga-controller"
   ],
-  "author": "Intelliceed",
+  "author": "Tech Rubicone <tech.rubicone@gmail.com>",
   "bugs": {
     "url": "https://github.com/TECH-Rubicone/redux-saga-controller/issues"
   },
@@ -89,15 +89,6 @@
       "optional": true
     }
   },
-  "npmName": "redux-saga-controller",
-  "npmFileMap": [
-    {
-      "basePath": "/dist/",
-      "files": [
-        "*.js"
-      ]
-    }
-  ],
   "jest": {
     "testRegex": "(/test/.*\\.spec\\.[tj]s)$",
     "coverageProvider": "v8"
