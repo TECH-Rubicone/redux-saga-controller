@@ -1,20 +1,30 @@
 # Add 'documentation' label to any md file changes
-  documentation:
-    - ./*.md
+documentation:
+  - ./*.md
+  - ./documentation/*.md
 
-# Add '@domain/core' label to any change within the 'core' package
-  core:
-    - ./src/**/*.ts
+# Add 'core' label to any change within the 'core' package
+core:
+  - ./src/**/*
 
 # Add 'test' label to any change to *.spec.js files within the source dir
-  test:
-    - src/**/*.spec.js
+test:
+  - src/**/*.spec.js
+  - test/**/*
+  - jest.config.json
+  - jest-setup.ts
 
 # Add 'build' label to any change rollup.config.ts
-  build:
-    - rollup.config.ts
+build:
+  - rollup.config.ts
+  - ts.config.ts
+  - package.json
+  - package-lock.json
 
-# Add 'workflow' label to any change in .github
-  workflow:
-    - .github/**/*
+# Add 'ci' label to any change in .github
+ci:
+  - .github/**/*
 
+# workflow
+workflow:
+  - ./.*
