@@ -31,8 +31,8 @@ jobs:
           configuration-path: ".github/auto-assign.yml" # Only needed if you use something other than .github/auto_assign.yml
       - name: Labeler
         uses: actions/labeler@v2
-          with:
-            repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
       - name: NPM Install dependencies
         run: npm ci # npm i for auto build it is faster
       - name: Editorconfig checker
