@@ -45,7 +45,7 @@ const store = createStore(
 sagaMiddleware.run(controllerSaga);
 ```
 
-##### Step 2 of 4: Prepare controller annotation
+##### Step 2: Prepare controller annotation
 
 From controller you will get
 
@@ -138,7 +138,7 @@ You will get from controller
 // NOTE You will get
 ```
 
-##### Step 3 Use it inside your react components
+##### Step 3: Use it inside your react components
 
 React hooks
 
