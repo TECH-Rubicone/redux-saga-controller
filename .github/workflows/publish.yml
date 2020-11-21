@@ -24,9 +24,9 @@ jobs:
       # NOTE upgrade npm version in package.json to the tag used in the release.
       - run: npm version ${{ github.event.release.tag_name }}
       - run: npm publish
-          env:
-            # Use a token to publish to NPM. See below for how to set it up
-            NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        env:
+          # Use a token to publish to NPM. See below for how to set it up
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       # push the version changes to GitHub
       - run: git push
         env:
