@@ -162,7 +162,7 @@ const isControllerSubscribed = useControllerSubscribe(controller);
 - [x] Implement git conventional commits
 - [ ] Check and setup correct `peerDependencies`, `devDependencies` and `dependencies`
 - [x] Remove build files from repository
-- [ ] check `.editorconfig`
+- [x] check `.editorconfig`
 - [ ] check `.browserslistrc` (not used)
 - [ ] check `.gitignor`
 - [ ] check `.eslintignore`
