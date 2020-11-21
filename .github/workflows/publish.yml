@@ -22,17 +22,15 @@ jobs:
           registry-url: https://registry.npmjs.org/
       # clean install of your projects' deps. We use "npm ci" to avoid package lock changes
       - run: npm ci
+      # NOTE set up git since we will later push to the repo
+      - run: git config --global user.name "GitHub CD bot"
+      - run: git config --global user.email "tech.rubicone@gmail.com"
       # NOTE upgrade npm version in package.json to the tag used in the release.
       - run: npm version ${{ github.event.release.tag_name }}
       - run: npm publish
         env:
           # Use a token to publish to NPM. See below for how to set it up
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-      # NOTE set up git since we will later push to the repo
-      - run: git config --global user.name "GitHub CD bot"
-      - run: git config --global user.email "tech.rubicone@gmail.com"
-      - run: git add .
-      - run: git commit -m ${{ github.event.release.tag_name }}
       # push the version changes to GitHub
       - run: git push origin master
         env:
