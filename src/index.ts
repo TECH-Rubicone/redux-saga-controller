@@ -11,11 +11,10 @@ import { useSubscribe } from './use-subscribe';
 
 /**
  * Controller require connection to react-redux and redux-saga
- * please make sure you connected to react-redux
- * @example
- * import { reducer as controller } from 'redux-saga-controller';
+ * please make sure you connected to react-redux and setup saga subscriber
  *
- * and setup saga subscriber
+ * @example
+ * import { reducer as controllerReducer } from 'redux-saga-controller';
  * import { sagas as controllerSagas } from 'redux-saga-controller';
  *
  */
@@ -23,8 +22,6 @@ export {
   // connect
   sagas,
   reducer,
-  // check correctness of minimum required data and make some prepare
-  Controller,
 };
 
 /**
@@ -33,7 +30,7 @@ export {
  * IMPORTANT in one time in the DOM "useController" can subscribed not more than one time for one controller
  * if you need get some useful thing of controller outside of component subscriber use hook helpers
  */
-export const useController = <T extends string, I>(controller: Controller<T, I>) => [
+export const useController = <T extends string, I extends Record<string, any>>(controller: Controller<T, I>) => [
   useReducer(controller),
   useActions(controller),
   useSubscribe(controller)
@@ -57,4 +54,5 @@ export const useControllerData = useReducer;
  */
 export const useControllerSubscribe = useSubscribe;
 
+// check correctness of minimum required data and make some preparation
 export default Controller;

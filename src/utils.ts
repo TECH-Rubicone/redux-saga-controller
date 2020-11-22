@@ -1,6 +1,6 @@
 
 // Used to generate unique IDs.
-const idCounter: Record<string, number> = {};
+const counter: Record<string, number> = {};
 
 /**
  * Generates a unique ID. If `prefix` is given, the ID is appended to it.
@@ -16,14 +16,27 @@ const idCounter: Record<string, number> = {};
  * // => '105'
  */
 export const uniqueId = (prefix = 'controller_') => {
-  if (!idCounter[prefix]) {
-    idCounter[prefix] = 0;
+  if (!counter[prefix]) {
+    counter[prefix] = 0;
   }
+  const id = ++counter[prefix];
+  return prefix === 'controller_' ? `${id}` : `${prefix}${id}`;
+};
 
-  const id = ++idCounter[prefix];
-  if (prefix === 'controller_') {
-    return `${id}`;
-  }
+export const isGeneratorFunction = (fn: any) => {
+  // FIXME on production build the generator will compile to "switch function"
+  return typeof fn === 'function';
+  // FIXME it means the validation is "isGeneratorFunction" should be simplified too
+  // return typeof fn === 'function' && fn.constructor && fn.constructor.name === 'GeneratorFunction';
+};
 
-  return `${prefix}${id}`;
+export const isString = (value: any) => typeof value === 'string';
+
+export const isBoolean = (value: any) => typeof value === 'boolean';
+
+export const isArray = Array.isArray;
+
+export const isObject = (value: any) => {
+  const type = typeof value;
+  return value != null && (type === 'object' || type === 'function');
 };

@@ -61,7 +61,6 @@ Example:
 
 ```js
 import Controller from 'redux-saga-controller';
-// import { Controller } from 'redux-saga-controller';
 
 // NOTE configure
 const initial = {

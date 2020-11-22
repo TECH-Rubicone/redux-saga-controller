@@ -13,15 +13,11 @@ const useReducerSubscribe = <T extends string, I>(controller: Controller<T, I>) 
   const name = controller.name;
   const initial = controller.initial;
   const dispatch = useDispatch();
-  const remove = useCallback(() => dispatch(removeCSDAction(name)), [name, dispatch]);
+  const remove = useCallback(() => {
+    dispatch(removeCSDAction(name));
+  }, [name, dispatch]);
   const create = useCallback(() => dispatch(createCSDAction(name, initial)), [initial, name, dispatch]);
-  // TODO Simplify next record
-  useEffect(() => {
-    create();
-    return () => {
-      remove();
-    };
-  }, [create, remove]);
+  useEffect(() => create() && remove, [create, remove]);
   return null;
 };
 
@@ -31,13 +27,9 @@ export const useSubscribe = <T extends string, I>(controller: Controller<T, I>) 
   const dispatch = useDispatch();
   const { connected } = useSelector(selectCSD<I>(controller.name));
   const subscribe = useCallback(() => dispatch(subscribeAction(controller)), [controller, dispatch]);
-  const unsubscribe = useCallback(() => dispatch(unsubscribeAction(controller)), [controller, dispatch]);
-  // TODO Simplify next record
-  useEffect(() => {
-    subscribe();
-    return () => {
-      unsubscribe();
-    };
-  }, [subscribe, unsubscribe]);
+  const unsubscribe = useCallback(() => {
+    dispatch(unsubscribeAction(controller));
+  }, [controller, dispatch]);
+  useEffect(() => subscribe() && unsubscribe, [subscribe, unsubscribe]);
   return connected;
 };
