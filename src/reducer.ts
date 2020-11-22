@@ -24,17 +24,23 @@ export const clearCSD = (name: string) => () => clearCSDAction(name);
 export const updateCSD = <T>(name: string) => (data: T) => updateCSDAction(name, data);
 
 // SELECTOR
-export type RootState<T> = Record<string, State<T>>
+export type RootState<T> = Record<string, ControllerState<T>>
 
-export interface State<I> {
+export interface ControllerState<I> {
   connected: boolean;
   actual: I;
   initial: I;
 }
 
-const selector = (state: Record<string, RootState<unknown>>) => state?.[CSD_REDUCER_PATH];
-export const selectCSD = <I>(name: string) =>
-  (state: Record<string, RootState<I>>) => selector(state)?.[name] || {};
+// TODO combine and create common selector
+export const selectAllCSD = <I>(name: string) =>
+  (state: Record<string, RootState<I>>) => state?.[CSD_REDUCER_PATH]?.[name];
+export const selectActualCSD = <I>(name: string) =>
+  (state: Record<string, RootState<I>>) => state?.[CSD_REDUCER_PATH]?.[name]?.actual;
+export const selectInitialCSD = <I>(name: string) =>
+  (state: Record<string, RootState<I>>) => state?.[CSD_REDUCER_PATH]?.[name]?.initial;
+export const selectConnectedCSD = <I>(name: string) =>
+  (state: Record<string, RootState<I>>) => state?.[CSD_REDUCER_PATH]?.[name]?.connected;
 
 interface CSDActionPayload {
   data: unknown;
@@ -80,7 +86,7 @@ export const reducer = (state: Record<string, CSDState> = {}, action: CSDAction)
       return {
         ...state,
         [name]: Object.assign({}, currentState, {
-          actual: initial,
+          actual: {},
         })
       };
     case TYPE.ADD:
@@ -89,7 +95,7 @@ export const reducer = (state: Record<string, CSDState> = {}, action: CSDAction)
         ...state,
         [name]: {
           initial,
-          actual: initial,
+          actual: {},
           connected: false,
         }
       };

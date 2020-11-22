@@ -30,3 +30,6 @@ coverage
 # workflow
 .huskyrc
 .editorconfig
+
+# examples
+example/

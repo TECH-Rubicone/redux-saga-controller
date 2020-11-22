@@ -11,6 +11,7 @@
     "esModuleInterop": true,
     "baseUrl": "./",
     "skipLibCheck": true,
+    "noEmitOnError": true,
     "declaration": true
   },
   "include": ["src", "rollup.config.ts"],

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // local dependencies
 import { Controller } from './controller';
 import { unsubscribeAction, subscribeAction } from './saga';
-import { removeCSDAction, createCSDAction, selectCSD } from './reducer';
+import { removeCSDAction, createCSDAction, selectConnectedCSD } from './reducer';
 
 // private HOOK
 const useReducerSubscribe = <T extends string, I>(controller: Controller<T, I>) : null => {
@@ -22,10 +22,10 @@ const useReducerSubscribe = <T extends string, I>(controller: Controller<T, I>) 
 };
 
 // HOOK
-export const useSubscribe = <T extends string, I>(controller: Controller<T, I>) : boolean => {
+export const useSubscribe = <T extends string, I>(controller: Controller<T, I>) => {
   useReducerSubscribe(controller);
   const dispatch = useDispatch();
-  const { connected } = useSelector(selectCSD<I>(controller.name));
+  const connected = useSelector(selectConnectedCSD<I>(controller.name));
   const subscribe = useCallback(() => dispatch(subscribeAction(controller)), [controller, dispatch]);
   const unsubscribe = useCallback(() => {
     dispatch(unsubscribeAction(controller));

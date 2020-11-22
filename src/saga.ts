@@ -20,12 +20,11 @@ const TYPE = (prefix => ({
   UNSUBSCRIBE: `${prefix}UNSUBSCRIBE`,
 }))('@CSD-action/');
 
-export const subscribeAction = <T extends string, I> (controller: Controller<T, I>) => ({
-  type: TYPE.SUBSCRIBE,
-  payload: { controller },
-});
+export const subscribeAction = <T extends string, I>
+  (controller: Controller<T, I>) => ({ type: TYPE.SUBSCRIBE, payload: { controller } });
 
-function * subscribeSaga <T extends string, I> ({ type, payload: { controller } } : ControllerAction<T, I>) {
+function * subscribeSaga <T extends string, I>
+({ type, payload: { controller } } : ControllerAction<T, I>) {
   if (controller.DEBUG) {
     console.info(`%c ${type}: ${controller.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
       , '\n controller:', controller
@@ -36,12 +35,11 @@ function * subscribeSaga <T extends string, I> ({ type, payload: { controller } 
   yield put(updateCSDMetaAction(controller.name, { connected: true }));
 }
 
-export const unsubscribeAction = <T extends string, I> (controller: Controller<T, I>) => ({
-  type: TYPE.UNSUBSCRIBE,
-  payload: { controller },
-});
+export const unsubscribeAction = <T extends string, I>
+  (controller: Controller<T, I>) => ({ type: TYPE.UNSUBSCRIBE, payload: { controller } });
 
-function * unsubscribeSaga <T extends string, I> ({ type, payload: { controller } } : ControllerAction<T, I>) {
+function * unsubscribeSaga <T extends string, I>
+({ type, payload: { controller } } : ControllerAction<T, I>) {
   if (controller.DEBUG) {
     console.info(`%c ${type}: ${controller.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
       , '\n controller:', controller
