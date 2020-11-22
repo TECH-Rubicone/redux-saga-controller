@@ -20,7 +20,7 @@ interface IInitial {
 }
 
 // NOTE Initial data for your redux state
-const initial = {
+const initial: IInitial = {
   initialized: false,
   disabled: false,
   data: {
