@@ -8,7 +8,7 @@
 - [API](#api)
 - [Example](./tree/master/example)
 - [Release Notes](./releases)
-- [License](#licence)
+- [License](#license)
 
 ## Getting Started
 
