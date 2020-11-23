@@ -4,8 +4,8 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 // local dependencies
-import { selectActualCSD } from './reducer';
 import { Controller } from './controller';
+import { selectActualCSD } from './reducer';
 
 // HOOK
 export const useReducer = <T extends string, I>(controller: Controller<T, I>) : I => {
