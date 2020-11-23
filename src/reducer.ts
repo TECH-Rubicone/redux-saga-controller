@@ -46,8 +46,8 @@ export const selectConnectedCSD = <I>(name: string) =>
   (state: State<I>) => selector<I>(state, name)?.connected;
 
 interface CSDActionPayload {
-  data: unknown;
   name: string;
+  data: unknown;
   initial: unknown;
 }
 
