@@ -48,6 +48,4 @@ export const useControllerData = useReducer;
 export const useControllerSubscribe = useSubscribe;
 
 // check correctness of minimum required data and make some preparation
-export default Controller;
-
 export { Controller };
