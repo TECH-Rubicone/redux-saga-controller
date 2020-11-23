@@ -26,7 +26,7 @@ export const subscribeAction = <T extends string, I>
 function * subscribeSaga <T extends string, I>
 ({ type, payload: { controller } } : ControllerAction<T, I>) {
   if (controller.DEBUG) {
-    console.info(`%c ${type}: ${controller.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
+    console.info(`%c ${type}: ${controller.name} `, 'color: #17a2b8; font-weight: bolder; font-size: 12px;'
       , '\n controller:', controller
     );
   }
@@ -41,7 +41,7 @@ export const unsubscribeAction = <T extends string, I>
 function * unsubscribeSaga <T extends string, I>
 ({ type, payload: { controller } } : ControllerAction<T, I>) {
   if (controller.DEBUG) {
-    console.info(`%c ${type}: ${controller.name} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
+    console.info(`%c ${type}: ${controller.name} `, 'color: #17a2b8; font-weight: bolder; font-size: 12px;'
       , '\n controller:', controller
     );
   }

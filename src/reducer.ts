@@ -24,7 +24,9 @@ export const clearCSD = (name: string) => () => clearCSDAction(name);
 export const updateCSD = <T>(name: string) => (data: T) => updateCSDAction(name, data);
 
 // SELECTOR
-export type RootState<T> = Record<string, ControllerState<T>>
+export type State<I> = Record<string, CSDState<I>>
+
+export type CSDState<T> = Record<string, ControllerState<T>>
 
 export interface ControllerState<I> {
   connected: boolean;
@@ -32,15 +34,16 @@ export interface ControllerState<I> {
   initial: I;
 }
 
-// TODO combine and create common selector
+const selector = <I>(state: State<I>, name: string) => state?.[CSD_REDUCER_PATH]?.[name];
+
 export const selectAllCSD = <I>(name: string) =>
-  (state: Record<string, RootState<I>>) => state?.[CSD_REDUCER_PATH]?.[name];
+  (state: State<I>) => selector<I>(state, name);
 export const selectActualCSD = <I>(name: string) =>
-  (state: Record<string, RootState<I>>) => state?.[CSD_REDUCER_PATH]?.[name]?.actual;
+  (state: State<I>) => selector<I>(state, name)?.actual;
 export const selectInitialCSD = <I>(name: string) =>
-  (state: Record<string, RootState<I>>) => state?.[CSD_REDUCER_PATH]?.[name]?.initial;
+  (state: State<I>) => selector<I>(state, name)?.initial;
 export const selectConnectedCSD = <I>(name: string) =>
-  (state: Record<string, RootState<I>>) => state?.[CSD_REDUCER_PATH]?.[name]?.connected;
+  (state: State<I>) => selector<I>(state, name)?.connected;
 
 interface CSDActionPayload {
   data: unknown;
@@ -52,14 +55,9 @@ interface CSDAction extends Action {
   payload: CSDActionPayload;
 }
 
-interface CSDState {
-  actual: Record<string, unknown>,
-  initial: Record<string, unknown>,
-  connected: boolean,
-}
-
 // REDUCER
-export const reducer = (state: Record<string, CSDState> = {}, action: CSDAction) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const reducer = (state: CSDState<Record<string, any>> = {}, action: CSDAction) => {
   // NOTE "name" it's required unique identifier for dynamic reducers
   const { type, payload } = action;
   // NOTE Data from the payload
@@ -73,7 +71,7 @@ export const reducer = (state: Record<string, CSDState> = {}, action: CSDAction)
     default: return state;
     case TYPE.REMOVE:
       // NOTE remove dynamic reducer
-      // TODO Check (We should delete this property to avoid extending store)
+      // FIXME Check (Maybe We should delete this property to avoid extending store)
       return {
         ...state,
         [name]: Object.assign({}, currentState, {
@@ -86,7 +84,7 @@ export const reducer = (state: Record<string, CSDState> = {}, action: CSDAction)
       return {
         ...state,
         [name]: Object.assign({}, currentState, {
-          actual: {},
+          actual: null,
         })
       };
     case TYPE.ADD:
@@ -95,7 +93,7 @@ export const reducer = (state: Record<string, CSDState> = {}, action: CSDAction)
         ...state,
         [name]: {
           initial,
-          actual: {},
+          actual: null,
           connected: false,
         }
       };
