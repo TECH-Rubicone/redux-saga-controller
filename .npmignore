@@ -1,32 +1,3 @@
-# Use a .npmignore file to keep stuff out of your package.
-# compiler
-tsconfig.json
-rollup.config.js
-
-# tests
-test
-jest.config.json
-jest-setup.ts
-coverage
-
-# lint
-.eslintrc.json
-.eslintignore
-
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-*.code-workspace
-
-# Local History for Visual Studio Code
-.history/
-
-# IDE - WebStorm
-.idea
-
-# workflow
-.huskyrc
-.editorconfig
+# ignore all except output files and all things which npm never ignore
+/*
+!/src

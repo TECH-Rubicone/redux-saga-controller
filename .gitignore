@@ -2,10 +2,10 @@
 node_modules
 
 # Ignore built files
-dist
 lib
 es
 types
+coverage
 
 # IDE - VSCode
 .vscode/*

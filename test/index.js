@@ -1,11 +1,14 @@
 
+// outsource dependencies
+
 // local dependencies
 import { sagas } from './saga';
 import { reducer } from './reducer';
-import { Controller } from './controller';
-import { useActions } from './use-actions';
-import { useReducer } from './use-reducer';
-import { useSubscribe } from './use-subscribe';
+import prepareController from './prepare';
+
+import useActions from './use-actions';
+import useReducer from './use-reducer';
+import useSubscribe from './use-subscribe';
 
 /**
  * Controller require connection to react-redux and redux-saga
@@ -22,16 +25,16 @@ export {
   sagas,
   reducer,
   // check correctness of minimum required data and make some prepare
-  Controller,
+  prepareController,
 };
 
 /**
  * HOOK "useController"
- * contain all hooks which are required to make controller alive
- * IMPORTANT in one time in the DOM "useController" can subscribed not more than one time for one controller
+ * contain all hooks which required to make controller alive
+ * IMPORTANT in one time in the DOM  "useController" can subscribed not more than one time for one controller
  * if you need get some useful thing of controller outside of component subscriber use hook helpers
  */
-export const useController = <T extends string, I>(controller: Controller<T, I>) => [
+export const useController = controller => [
   useReducer(controller),
   useActions(controller),
   useSubscribe(controller)
@@ -54,11 +57,3 @@ export const useControllerData = useReducer;
  * provide ability to connect controller without passing data or actions
  */
 export const useControllerSubscribe = useSubscribe;
-
-/**
- * "prepareController"
- * TODO types for controller options
- */
-export const prepareController = (options:any) => new Controller(options);
-
-export default Controller;
