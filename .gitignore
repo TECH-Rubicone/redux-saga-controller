@@ -20,3 +20,5 @@ types
 
 # IDE - WebStorm
 .idea
+
+*.local*

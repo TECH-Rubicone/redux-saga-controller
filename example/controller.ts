@@ -34,9 +34,9 @@ export const controller = new Controller({
   DEBUG: true, // Enable DEBUG Mode
   initial, // Setup initial data for redux state
   prefix: 'root', // Controller name
-  types: ['initialize', 'getSelf'], // Types for which action creators will be generated
+  types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
   subscriber: function * () {
-    yield takeEvery(controller.TYPE.initialize, initializeSaga);
+    yield takeEvery(controller.TYPE.INITIALIZE, initializeSaga);
   }
 });
 
@@ -72,10 +72,10 @@ function * initializeSaga ({ type, payload } : { type: string, payload: any }) {
   //////////////////////////
 
   // NOTE clearCtrl will setup actual to {}
-  yield put(controller.action.clearCtrl());
+  yield put(controller.action.CLEAR_CTRL());
   // NOTE will dispach an action getSelf
   // getSelf is equal to yield put({ type: controller.TYPE.getSelf })
-  yield put(controller.action.getSelf());
+  yield put(controller.action.GET_SELF());
   // NOTE it is partial update actual data object
-  yield put(controller.action.updateCtrl({ initialized: true }));
+  yield put(controller.action.UPDATE_CTRL({ initialized: true }));
 }

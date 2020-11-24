@@ -25,3 +25,4 @@
 - [x] Add Examples
 - [ ] Add tests
 - [ ] Update documentation
+- [ ] Extract to meta initial and connected

@@ -58,9 +58,9 @@ export const controller = new Controller({
   DEBUG: true, // Enable DEBUG Mode
   initial, // Setup initial data for redux state
   prefix: 'root', // Controller name
-  types: ['initialize', 'getSelf'], // Types for which action creators will be generated
+  types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
   subscriber: function * () {
-    yield takeEvery(controller.TYPE.initialize, initializeSaga);
+    yield takeEvery(controller.TYPE.INITIALIZE, initializeSaga);
   }
 });
 
@@ -70,8 +70,8 @@ function * initializeSaga ({ type, payload }) {
     console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
         , '\n payload:', payload
     );
-    yield put(controller.action.getSelf());
-    yield put(controller.action.updateCtrl({ initialized: true }));
+    yield put(controller.action.GET_SELF());
+    yield put(controller.action.UPDATE_CTRL({ initialized: true }));
 }
 ```
 
@@ -87,19 +87,19 @@ export const Example1 = memo(() => {
   // NOTE Prefer way
   const [
     { data, disabled, initialized },
-    { initialize, clearCtrl, getSelf },
+    { INITIALIZE, CLEAR_CTRL, GET_SELF },
     isControllerConnected
   ] = useController(controller);
 
   useEffect(() => {
-    initialize();
-    return clearCtrl;
-  }, [initialize, clearCtrl]);
+    INITIALIZE();
+    return CLEAR_CTRL;
+  }, [INITIALIZE, CLEAR_CTRL]);
 
   if (!initialized || !isControllerConnected) { return null; }
   return <div>
     <h1>Hello {data.name}! Your age is {data.age}</h1>
-    <button disabled={disabled} onClick={() => getSelf()}>Get Details</button>
+    <button disabled={disabled} onClick={() => GET_SELF()}>Get Details</button>
   </div>;
 });
 ```
@@ -122,8 +122,8 @@ import Controller from 'redux-saga-controller';
 export const controller = new Controller({
   DEBUG: true, // Enable DEBUG Mode
   initial: {}, // Setup initial data for redux state
-  prefix: 'me-controller', // Controller name
-  types: ['action1', 'action2'], // Types for which action creators will be generated
+  prefix: 'my-controller', // Controller name
+  types: ['ACTION_1', 'ACTION_2'], // Types for which action creators will be generated
   subscriber: function * () {}
 });
 ```

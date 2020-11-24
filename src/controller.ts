@@ -6,7 +6,7 @@ import { ActionCreator, AnyAction } from 'redux';
 import { isArray, isBoolean, isGeneratorFunction, isObject, isString, uniqueId } from './utils';
 import { updateCSD, clearCSD, selectAllCSD, selectInitialCSD, selectActualCSD, selectConnectedCSD } from './reducer';
 
-export type DefaultActions = 'updateCtrl' | 'clearCtrl'
+export type DefaultActions = 'UPDATE_CTRL' | 'CLEAR_CTRL'
 
 export class Controller<T extends string, I> {
   // NOTE Debug value to show additional logs when it is enabled
@@ -57,8 +57,8 @@ export class Controller<T extends string, I> {
     // NOTE Setup initial data if present and is valid
     if (isObject(initial)) { this.initial = initial; }
     // NOTE Prepare default actions
-    this.action.clearCtrl = clearCSD(this.name);
-    this.action.updateCtrl = updateCSD<I>(this.name);
+    this.action.CLEAR_CTRL = clearCSD(this.name);
+    this.action.UPDATE_CTRL = updateCSD<I>(this.name);
     // NOTE prepare createTypes and actions
     for (const type of types) {
       // NOTE Generate Acton types

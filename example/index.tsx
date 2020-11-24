@@ -12,19 +12,19 @@ export const Example1 = memo(() => {
   // NOTE Prefer way
   const [
     { data, disabled, initialized },
-    { initialize, clearCtrl, getSelf },
+    { INITIALIZE, CLEAR_CTRL, GET_SELF },
     isControllerConnected
   ] = useController(controller);
 
   useEffect(() => {
-    initialize();
-    return clearCtrl;
-  }, [initialize, clearCtrl]);
+    INITIALIZE();
+    return CLEAR_CTRL;
+  }, [INITIALIZE, CLEAR_CTRL]);
 
   if (!initialized || !isControllerConnected) { return null; }
   return <div>
     <h1>Hello {data.name}! Your age is {data.age}</h1>
-    <button disabled={disabled} onClick={() => getSelf()}>Get Details</button>
+    <button disabled={disabled} onClick={() => GET_SELF()}>Get Details</button>
   </div>;
 });
 
@@ -32,19 +32,19 @@ export const Example2 = memo(() => {
   // NOTE Prefer way because it will be use initial value if actual value doesn't exist
   const { data, disabled, initialized } = useControllerData(controller);
   // NOTE Actions are already wrapped with dispatch
-  const { initialize, clearCtrl, getSelf } = useControllerActions(controller);
+  const { INITIALIZE, CLEAR_CTRL, GET_SELF } = useControllerActions(controller);
   // NOTE isControllerConnected
   const isControllerConnected = useControllerSubscribe(controller);
 
   useEffect(() => {
-    initialize();
-    return clearCtrl;
-  }, [initialize, clearCtrl]);
+    INITIALIZE();
+    return CLEAR_CTRL;
+  }, [INITIALIZE, CLEAR_CTRL]);
 
   if (!initialized || !isControllerConnected) { return null; }
   return <div>
     <h1>Hello {data.name}! Your age is {data.age}</h1>
-    <button disabled={disabled} onClick={() => getSelf()}>Get Details</button>
+    <button disabled={disabled} onClick={() => GET_SELF()}>Get Details</button>
   </div>;
 });
 
@@ -57,14 +57,14 @@ export const Example3 = memo(() => {
   ] = useController(controller);
 
   useEffect(() => {
-    actions.initialize();
-    return actions.clearCtrl;
-  }, [actions.initialize, actions.clearCtrl]);
+    actions.INITIALIZE();
+    return actions.CLEAR_CTRL;
+  }, [actions.INITIALIZE, actions.CLEAR_CTRL]);
 
   if (!store.initialized || !isControllerConnected) { return null; }
   return <div>
     <h1>Hello {store.data.name}! Your age is {store.data.age}</h1>
-    <button disabled={store.disabled} onClick={() => actions.getSelf()}>Get Details</button>
+    <button disabled={store.disabled} onClick={() => actions.GET_SELF()}>Get Details</button>
   </div>;
 });
 
