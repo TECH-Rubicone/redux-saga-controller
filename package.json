@@ -9,20 +9,20 @@
   "jsnext:main": "es/index.js",
   "types": "types/index.d.ts",
   "files": [
+    "lib",
     "es",
     "src",
-    "lib",
     "types"
   ],
   "scripts": {
     "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
-    "test": "jest --collectCoverage --passWithNoTests",
-    "build": "npm run install:peers && rollup -c",
     "start": "rollup -c -w",
+    "lint:fix": "eslint src --fix",
     "install:peers": "install-peers -f",
     "clean": "rimraf lib dist es types coverage",
-    "check:types": "npm run install-peers && tsc --noEmit",
+    "build": "npm run install:peers && rollup -c",
+    "test": "jest --collectCoverage --passWithNoTests",
+    "check:types": "npm run install:peers && tsc --noEmit",
     "prepublishOnly": "npm run clean && npm run check:code && npm run build",
     "editorconfig:checker": "editorconfig-checker --exclude '.git|node_modules|dist|lib|es|types'",
     "check:code": "npm run editorconfig:checker && npm run check:types && npm run lint && npm test"

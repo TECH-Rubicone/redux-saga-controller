@@ -1,3 +1,6 @@
-# ignore all except output files and all things which npm never ignore
+# NOTE Ignore all except output files and all things which npm never ignore
 /*
 !/src
+!/lib
+!/es
+!/types

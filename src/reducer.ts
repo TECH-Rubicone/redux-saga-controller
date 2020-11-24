@@ -1,3 +1,4 @@
+import { Action } from 'redux';
 
 // NOTE CSD - controller stored data
 const CSD_REDUCER_PATH = 'controller';
@@ -15,47 +16,100 @@ const TYPE = (prefix => ({
 // ACTIONS
 export const clearCSDAction = (name: string) => ({ type: TYPE.CLEAR, payload: { name } });
 export const removeCSDAction = (name: string) => ({ type: TYPE.REMOVE, payload: { name } });
-export const createCSDAction = (name: string, initial: any) => ({ type: TYPE.ADD, payload: { name, initial } });
-export const updateCSDAction = (name: string, data: any) => ({ type: TYPE.UPDATE, payload: { name, data } });
-export const updateCSDMetaAction = (name: string, data: any) => ({ type: TYPE.META, payload: { name, data } });
+export const updateCSDAction = <T>(name: string, data: T) => ({ type: TYPE.UPDATE, payload: { name, data } });
+export const updateCSDMetaAction = <T>(name: string, data: T) => ({ type: TYPE.META, payload: { name, data } });
+export const createCSDAction = <T>(name: string, initial: T) => ({ type: TYPE.ADD, payload: { name, initial } });
 
 export const clearCSD = (name: string) => () => clearCSDAction(name);
-export const updateCSD = (name: string) => (data: any) => updateCSDAction(name, data);
+export const updateCSD = <T>(name: string) => (data: T) => updateCSDAction(name, data);
 
 // SELECTOR
-const selector = (state: any) => state?.[CSD_REDUCER_PATH];
-export const selectCSD = (name: string) => (state: any) => selector(state)?.[name] || {};
-export const selectMetaCSD = (name: string) => (state: any) => selector(state)?.META?.[name] || {};
+export type State<I> = Record<string, CSDState<I>>
+
+export type CSDState<T> = Record<string, ControllerState<T>>
+
+export interface ControllerState<I> {
+  connected: boolean;
+  actual: I;
+  initial: I;
+}
+
+const selector = <I>(state: State<I>, name: string) => state?.[CSD_REDUCER_PATH]?.[name];
+
+export const selectAllCSD = <I>(name: string) =>
+  (state: State<I>) => selector<I>(state, name);
+export const selectActualCSD = <I>(name: string) =>
+  (state: State<I>) => selector<I>(state, name)?.actual;
+export const selectInitialCSD = <I>(name: string) =>
+  (state: State<I>) => selector<I>(state, name)?.initial;
+export const selectConnectedCSD = <I>(name: string) =>
+  (state: State<I>) => selector<I>(state, name)?.connected;
+
+interface CSDActionPayload {
+  name: string;
+  data: unknown;
+  initial: unknown;
+}
+
+interface CSDAction extends Action {
+  payload: CSDActionPayload;
+}
 
 // REDUCER
-export const reducer = (state: any = {}, action: { type: string, payload: any }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const reducer = (state: CSDState<Record<string, any>> = {}, action: CSDAction) => {
   // NOTE "name" it's required unique identifier for dynamic reducers
-  const { type, payload = {} } = action;
+  const { type, payload } = action;
   // NOTE Data from the payload
   const name = payload?.name;
   const data = payload?.data;
   const initial = payload?.initial;
   // NOTE Data from the store
-  const current = state?.name || {};
-  const currentMeta = state?.META?.[name] || {};
-  const currentInitial = state?.META?.[name]?.initial || {};
+  const currentState = state?.[name];
 
   switch (type) {
     default: return state;
     case TYPE.REMOVE:
       // NOTE remove dynamic reducer
-      return { ...state, [name]: null, META: { ...state.META, [name]: { ...currentMeta, initial: null } } };
+      // FIXME Check (Maybe We should delete this property to avoid extending store)
+      return {
+        ...state,
+        [name]: Object.assign({}, currentState, {
+          initial: null,
+          actual: null
+        })
+      };
     case TYPE.CLEAR:
       // NOTE bring dynamic reducer state to initial values
-      return { ...state, [name]: { ...currentInitial } };
+      return {
+        ...state,
+        [name]: Object.assign({}, currentState, {
+          actual: null,
+        })
+      };
     case TYPE.ADD:
       // NOTE initialize new dynamic reducer
-      return { ...state, [name]: { ...initial }, META: { ...state.META, [name]: { ...currentMeta, initial } } };
+      return {
+        ...state,
+        [name]: {
+          initial,
+          actual: null,
+          connected: false,
+        }
+      };
     case TYPE.UPDATE:
       // NOTE most used action for dynamic reducers
-      return { ...state, [name]: { ...current, ...data } };
+      return {
+        ...state,
+        [name]: Object.assign({}, currentState, {
+          actual: Object.assign({}, currentState.actual, data),
+        })
+      };
     case TYPE.META:
       // NOTE internal controller information
-      return { ...state, META: { ...state.META, [name]: { ...currentMeta, ...data } } };
+      return {
+        ...state,
+        [name]: Object.assign({}, currentState, data)
+      };
   }
 };

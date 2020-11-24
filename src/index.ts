@@ -1,29 +1,21 @@
 
-// local dependencies
-import { sagas } from './saga';
-import { reducer } from './reducer';
+/**
+ * Controller require connection to react-redux and redux-saga
+ * please make sure you connected to react-redux and setup saga subscriber
+ *
+ * @example
+ * import { reducer as controllerReducer } from 'redux-saga-controller';
+ * import { sagas as controllerSagas } from 'redux-saga-controller';
+ *
+ */
+export { sagas } from './saga';
+export { reducer, ControllerState } from './reducer';
+
 import { Controller } from './controller';
+
 import { useActions } from './use-actions';
 import { useReducer } from './use-reducer';
 import { useSubscribe } from './use-subscribe';
-
-/**
- * Controller require connection to react-redux and redux-saga
- * please make sure you connected to react-redux
- * @example
- * import { reducer as controller } from './services/controller.service';
- *
- * and setup saga subscriber
- * import { sagas as controllerSagas } from './services/controller.service';
- *
- */
-export {
-  // connect
-  sagas,
-  reducer,
-  // check correctness of minimum required data and make some prepare
-  Controller,
-};
 
 /**
  * HOOK "useController"
@@ -34,8 +26,8 @@ export {
 export const useController = <T extends string, I>(controller: Controller<T, I>) => [
   useReducer(controller),
   useActions(controller),
-  useSubscribe(controller)
-];
+  useSubscribe(controller),
+] as const;
 
 /**
  * HOOK helper "useControllerActions"
@@ -61,4 +53,5 @@ export const useControllerSubscribe = useSubscribe;
  */
 export const prepareController = (options:any) => new Controller(options);
 
+export { Controller };
 export default Controller;
