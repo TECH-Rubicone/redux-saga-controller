@@ -4,26 +4,17 @@
 [![npm version](https://img.shields.io/npm/v/redux-saga-controller.svg)](https://www.npmjs.com/package/redux-saga-controller)
 [![npm](https://img.shields.io/npm/dm/redux-saga-controller.svg)](https://www.npmjs.com/package/redux-saga-controller)
 
-## DOCUMENTATION
+- [Getting Started](#getting-started)
+- [API](#api)
+- [Example](./tree/master/example)
+- [Release Notes](./releases)
+- [License](#license)
 
-- Getting Started
-- Examples
-- API
-- FAQ
-- Release Notes
-- Older Documentation
+## Getting Started
 
-### Getting StartedGetting Started
-
-#### Basic Usage Guide
-
-##### Step 1: Connect Controller to redux store
-
-Example:
+### Step 1: Connect Controller to redux store
 
 ```js
-
-// NOTE outsource dependencies
 import createSagaMiddleware from 'redux-saga';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { reducer as controllerReducer, sagas as controllerSaga } from 'redux-saga-controller';
@@ -43,43 +34,34 @@ const store = createStore(
 
 // NOTE Initialize application sagas
 sagaMiddleware.run(controllerSaga);
+
+export default store;
 ```
 
-##### Step 2: Prepare controller annotation
-
-From controller you will get
-
-| Field      | Type          | Require/Optional | Default value              | Description                                                                              |
-|------------|---------------|------------------|----------------------------|------------------------------------------------------------------------------------------|
-| prefix     | string        | optional         | controller_${unique_index} | The unique name of controller and field name in the store                                |
-| initial    | object        | optional         | {}                         | Initial data of your store                                                               |
-| types      | Array[string] | optional         | []                         | All list types which you need (Actions for these types will be generated automatically)  |
-| subscriber | Generator     | required         | undefined                  | Redux-saga subscriber                                                                    |
-
-Example:
+## Step 2: Prepare controller annotation
 
 ```js
 import Controller from 'redux-saga-controller';
-// import { Controller } from 'redux-saga-controller';
 
-// NOTE configure
+// NOTE Initial data for your redux state
 const initial = {
-    disabled: false,
-    initialized: false,
-    errorMessage: null,
-    data: null,
+  initialized: false,
+  disabled: false,
+  data: {
+    name: 'John',
+    age: 30,
+  }
 };
 
-// NOTE Create controller
+// NOTE Create Controller
 export const controller = new Controller({
-    initial, // NOTE pass your initial data for store
-    prefix: 'controller-prefix', // NOTE The field is optional
-    types: ['initialize', 'updateData'], // NOTE Count all actions which you need
-    *subscriber () {
-        // NOTE Subscribe to all actions which you need
-        yield takeEvery(controller.TYPE.initialize, initializeSaga);
-        yield takeEvery(controller.TYPE.updateData, updateDataSaga);
-    }
+  DEBUG: true, // Enable DEBUG Mode
+  initial, // Setup initial data for redux state
+  prefix: 'root', // Controller name
+  types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
+  subscriber: function * () {
+    yield takeEvery(controller.TYPE.INITIALIZE, initializeSaga);
+  }
 });
 
 export default controller;
@@ -88,61 +70,80 @@ function * initializeSaga ({ type, payload }) {
     console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
         , '\n payload:', payload
     );
-    yield put(controller.action.updateCtrl({ initialized: true }));
-}
-
-function * updateDataSaga ({ type, payload }) {
-    console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
-        , '\n payload:', payload
-    );
-    yield put(controller.action.updateCtrl({ data: [] }));
+    yield put(controller.action.GET_SELF());
+    yield put(controller.action.UPDATE_CTRL({ initialized: true }));
 }
 ```
 
-You will get from controller
+### Step 3: Use it inside your react components
+
+```jsx harmony
+import React from 'react';
+import { useController } from 'redux-saga-controller';
+
+import { controller } from './controller';
+
+export const Example1 = memo(() => {
+  // NOTE Prefer way
+  const [
+    { data, disabled, initialized },
+    { INITIALIZE, CLEAR_CTRL, GET_SELF },
+    isControllerConnected
+  ] = useController(controller);
+
+  useEffect(() => {
+    INITIALIZE();
+    return CLEAR_CTRL;
+  }, [INITIALIZE, CLEAR_CTRL]);
+
+  if (!initialized || !isControllerConnected) { return null; }
+  return <div>
+    <h1>Hello {data.name}! Your age is {data.age}</h1>
+    <button disabled={disabled} onClick={() => GET_SELF()}>Get Details</button>
+  </div>;
+});
+```
+
+## API
+
+### To setup controller you need
+
+| Field      | Type          | Require/Optional | Default value              | Description                                                                              |
+|------------|---------------|------------------|----------------------------|------------------------------------------------------------------------------------------|
+| DEBUG      | boolean       | optional         | false                      | In DEBUG mode you will get additional information in console                             |
+| prefix     | string        | optional         | controller_${unique_index} | The unique name of controller and field name in the store                                |
+| initial    | object        | optional         | {}                         | Initial data of your store                                                               |
+| types      | Array[string] | optional         | []                         | All list types which you need (Actions for these types will be generated automatically)  |
+| subscriber | Generator     | required         | undefined                  | Redux-saga subscriber                                                                    |
 
 ```js
-// NOTE Unique name of you controller
-// controller.name
+import Controller from 'redux-saga-controller';
 
-
-// NOTE All actions in your controller
-
-// default action creators
-
-// controller.action.updateCtrl
-// controller.action.clearCtrl
-
-// custom action creators
-
-// controller.action.initialize
-// controller.action.updateData
-
-
-// NOTE All action types which were passed (They are unique)
-
-// controller.TYPE.initialize
-// controller.TYPE.updateData
-
-
-// NOTE Selector to get all your data from the store
-// controller.selector
-
-
-// NOTE Redux saga channel
-// controller.channel
-
-
-// You redux saga subscriber
-// controller.subscriber
-// NOTE You will get
+export const controller = new Controller({
+  DEBUG: true, // Enable DEBUG Mode
+  initial: {}, // Setup initial data for redux state
+  prefix: 'my-controller', // Controller name
+  types: ['ACTION_1', 'ACTION_2'], // Types for which action creators will be generated
+  subscriber: function * () {}
+});
 ```
 
-##### Step 3: Use it inside your react components
+### Already created controller contains
 
-React hooks
+| Field             | Type                                                  | Description                                                  |
+|-------------------|-------------------------------------------------------|--------------------------------------------------------------|
+| DEBUG             | boolean                                               | In DEBUG mode you will get additional information in console |
+| initial           | I                                                     | Initial data of your store                                   |
+| name              | string                                                | The unique name of controller and field name in the store    |
+| TYPE              | Record<T, string>                                     | All list types which you passed                              |
+| selector          | ControllerState<I>                                    | Selector function which will return all controller state     |
+| selectorInitial   | state => I                                            | Selector function which will return initial data             |
+| selectorActual    | state => I                                            | Selector function which will return actual data              |
+| selectorConnected | state => boolean                                      | Selector function which will return isControllerConnected    |
+| subscriber        | Generator<ForkEffect<never>, void, unknown>;          | Generator function for redux-saga                            |
+| action            | Record<T \| DefaultActions, ActionCreator<AnyAction>> | All available action creators                                |
 
-Example:
+### React hooks 
 
 ```js
 // useController - to use you controller and you will get all data you need
@@ -151,32 +152,11 @@ const [reducer, actions, isControllerSubscribed] = useController(controller);
 // To get separately you can use next hooks
 const reducer = useControllerData(controller);
 const actions = useControllerActions(controller);
-const isControllerSubscribed = useControllerSubscribe(controller);
+const isControllerConnected = useControllerSubscribe(controller);
 ```
 
-## TODO
+## License
 
-### For project
+redux-saga-controller is [MIT licensed](./LICENSE).
 
-- [ ] Setup tags and github actions
-- [x] Implement git conventional commits
-- [ ] Check and setup correct `peerDependencies`, `devDependencies` and `dependencies`
-- [x] Remove build files from repository
-- [x] Add `changelog.md`
-- [x] check `.editorconfig`
-- [x] check `.gitignore`
-- [x] check `.eslintignore`
-- [ ] check `.eslintrc.json`
-- [ ] check `tsconfig.json`
-- [ ] check `rollup.config.js`
-- [x] check `package.json`
-- [x] check `.npmignore`
-- [ ] check `jest-setup.ts`
-- [ ] check `jest.config.json`
 
-### For controller
-
-- [ ] Add checking all arguments on the initialization
-- [ ] Add debug mode
-- [ ] Add tests
-- [ ] Update documentation
