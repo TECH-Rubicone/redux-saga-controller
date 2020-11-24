@@ -26,3 +26,6 @@
 - [ ] Add tests
 - [ ] Update documentation
 - [ ] Extract to meta initial and connected
+- [ ] Use local storage to enable debug mode
+- [ ] Controller name should generate not only unique but new one each time
+- [ ] Implement dynamic reducer name
