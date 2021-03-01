@@ -1,14 +1,9 @@
-
 # redux-saga-controller
-
-<p align="center"> 
-  <a href="https://codesandbox.io/s/redux-saga-controller031-sjc5r" target="_blank">CodeSandbox Demo</a>
-  <br><br>
-</p>
-
 
 [![npm version](https://img.shields.io/npm/v/redux-saga-controller.svg)](https://www.npmjs.com/package/redux-saga-controller)
 [![npm](https://img.shields.io/npm/dm/redux-saga-controller.svg)](https://www.npmjs.com/package/redux-saga-controller)
+
+##[CodeSandbox Demo](https://codesandbox.io/s/redux-saga-controller031-sjc5r)
 
 - [Getting Started](#getting-started)
 - [API](#api)
