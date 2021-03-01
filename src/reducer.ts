@@ -102,7 +102,7 @@ export const reducer = (state: CSDState<Record<string, any>> = {}, action: CSDAc
       return {
         ...state,
         [name]: Object.assign({}, currentState, {
-          actual: Object.assign({}, currentState.actual, data),
+          actual: Object.assign({}, currentState?.actual, data),
         })
       };
     case TYPE.META:
