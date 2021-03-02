@@ -33,11 +33,18 @@ export { prepareController, Controller };
  * IMPORTANT in one time in the DOM "useController" can subscribed not more than one time for one controller
  * if you need get some useful thing of controller outside of component subscriber use hook helpers
  */
-export const useController = (controller: Controller) => [
-  useReducer(controller),
-  useActions(controller),
-  useSubscribe(controller),
-] as const;
+// export const useController = (controller: Controller) => [
+//   useReducer(controller),
+//   useActions(controller),
+//   useSubscribe(controller),
+// ] as const;
+export function useController<Actions, Initial> (controller: Controller<Actions, Initial>) {
+  return [
+    useReducer(controller),
+    useActions(controller),
+    useSubscribe(controller),
+  ] as const;
+}
 
 /**
  * HOOK helper "useControllerActions"
