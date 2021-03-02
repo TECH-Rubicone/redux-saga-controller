@@ -5,8 +5,9 @@ import { ActionCreator } from 'redux';
 import { useDispatch } from 'react-redux';
 
 // local dependencies
-import { CtrlAction, CtrlPayload } from './reducer';
-import { ControllerAnnotation, CtrlActionCreators } from './prepare';
+import { forceCast } from './_';
+import { Controller } from './prepare';
+import { CtrlActionCreators, CtrlPayload, CtrlAction } from './types';
 
 type InUseActions<I = ActionCreator<CtrlAction>> = {
   [ctrl: string]: I;
@@ -16,15 +17,15 @@ type InUseActions<I = ActionCreator<CtrlAction>> = {
 }
 
 // HOOK
-export const useActions = <I extends string>(controller: ControllerAnnotation) => {
+export const useActions = <Actions, Initial>(controller: Controller<Actions, Initial>) => {
   const dispatch = useDispatch();
-  const list: CtrlActionCreators = controller.action;
+  const list = forceCast<CtrlActionCreators & Actions>(controller.action);
   return useMemo(() => {
     const cache = {} as InUseActions;
     for (const name in list) {
       if (list.hasOwnProperty(name)) {
         const action = list[name];
-        cache[name as I] = (payload?: CtrlPayload) => {
+        cache[name] = (payload?: CtrlPayload) => {
           if (typeof payload !== 'object') {
             payload = {};
           }

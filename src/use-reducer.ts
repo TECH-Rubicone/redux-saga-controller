@@ -4,13 +4,13 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 // local dependencies
+import { Controller } from './prepare';
 import { selectActualCSD } from './reducer';
-import { ControllerAnnotation } from './prepare';
 
 // HOOK
-export const useReducer = <I>(controller: ControllerAnnotation<I>): I => {
+export const useReducer = <Actions, Initial>(controller: Controller<Actions, Initial>): Initial => {
   const name = controller.name;
-  const initial = controller.getInitial();
-  const actual = useSelector(selectActualCSD(name));
+  const initial: Initial = controller.getInitial();
+  const actual: Initial = useSelector(selectActualCSD<Initial>(name));
   return useMemo(() => Object.assign({}, initial, actual), [initial, actual]);
 };

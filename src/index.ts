@@ -1,4 +1,7 @@
-
+import { useActions } from './use-actions';
+import { useReducer } from './use-reducer';
+import { useSubscribe } from './use-subscribe';
+import { prepareController, Controller } from './prepare';
 /**
  * Controller require connection to react-redux and redux-saga
  * please make sure you connected to react-redux and setup saga subscriber
@@ -8,15 +11,21 @@
  * import { sagas as controllerSagas } from 'redux-saga-controller';
  *
  */
+export * from './types';
 export { sagas } from './saga';
-export { reducer, ControllerState } from './reducer';
+export { reducer } from './reducer';
 
-import { Controller } from './controller';
-import { prepare, ControllerAnnotation } from './prepare';
-
-import { useActions } from './use-actions';
-import { useReducer } from './use-reducer';
-import { useSubscribe } from './use-subscribe';
+/**
+ * Controller require connection to react-redux and redux-saga
+ * please make sure you connected to react-redux
+ * @example
+ * import { reducer as controller } from './services/controller.service';
+ *
+ * and setup saga subscriber
+ * import { sagas as controllerSagas } from './services/controller.service';
+ *
+ */
+export { prepareController, Controller };
 
 /**
  * HOOK "useController"
@@ -24,7 +33,7 @@ import { useSubscribe } from './use-subscribe';
  * IMPORTANT in one time in the DOM "useController" can subscribed not more than one time for one controller
  * if you need get some useful thing of controller outside of component subscriber use hook helpers
  */
-export const useController = (controller: ControllerAnnotation) => [
+export const useController = (controller: Controller) => [
   useReducer(controller),
   useActions(controller),
   useSubscribe(controller),
@@ -48,11 +57,3 @@ export const useControllerData = useReducer;
  */
 export const useControllerSubscribe = useSubscribe;
 
-/**
- * "prepareController"
- * TODO types for controller options
- */
-export const prepareController = (options:any) => new Controller(options);
-
-export { Controller };
-export default Controller;

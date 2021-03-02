@@ -4,23 +4,8 @@ import { Task } from 'redux-saga';
 
 // local dependencies
 import { hash, forceCast } from './_';
-import { pinClearCSD, pinUpdateCSD, createAction, CtrlActionCreator } from './reducer';
-
-type Subscriber = () => IterableIterator<unknown>;
-
-export type InitialState<I = unknown> = Record<string, I>;
-
-export interface CtrlActionCreators {
-  clearCtrl: CtrlActionCreator;
-  updateCtrl: CtrlActionCreator;
-  [key: string]: CtrlActionCreator;
-}
-export interface CtrlOptions<I = unknown> {
-  types: string[];
-  prefix: string;
-  subscriber: Subscriber;
-  initial: InitialState<I>;
-}
+import { pinClearCSD, pinUpdateCSD, createAction } from './reducer';
+import { CtrlActionCreators, CtrlOptions, InitialState, Subscriber } from './types';
 
 /**
  * generate annotation for controller using minimal input data
@@ -37,7 +22,10 @@ export interface CtrlOptions<I = unknown> {
   }
  }}
  */
-export const prepare = ({ prefix, subscriber, initial, types }: CtrlOptions): ControllerAnnotation => {
+export function prepareController<
+  Actions = CtrlActionCreators,
+  Initial = InitialState,
+  > ({ prefix, subscriber, initial, types }: CtrlOptions) {
   const name = `${prefix}-${hash()}`;
 
   const action: CtrlActionCreators = {
@@ -50,20 +38,23 @@ export const prepare = ({ prefix, subscriber, initial, types }: CtrlOptions): Co
     action[type] = createAction(type.toUpperCase());
   }
 
-  return new ControllerAnnotation(
+  return new Controller(
     name,
-    action,
-    initial,
+    forceCast<CtrlActionCreators & Actions>(action),
+    forceCast<Initial>(initial),
     subscriber,
   );
-};
+}
 
-export class ControllerAnnotation<Initial = InitialState> {
+export class Controller<
+  Actions = CtrlActionCreators,
+  Initial = InitialState,
+  > {
   private channel?:Task;
 
   constructor (
     public name: string,
-    public action: CtrlActionCreators,
+    public action: Actions,
     private initial: Initial,
     private subscriber: Subscriber,
   ) {
@@ -96,24 +87,17 @@ export class ControllerAnnotation<Initial = InitialState> {
   }
 }
 
-export const castToCtrl = (data: unknown):ControllerAnnotation => {
-  if (!(data instanceof ControllerAnnotation)) {
-    throw new Error('Incorrect Controller annotation');
-  }
-  return data;
-};
-
 // TODO REMOVE
-interface TestInitial extends InitialState {
-  best: boolean;
-}
-const initial: TestInitial = { best: true };
-const x = prepare({
-  initial,
-  prefix: 'a',
-  subscriber: function * (): Generator { yield 1; },
-  types: ['qwe'],
-});
-
-x.action.qwe();
-x.action.qwe.TYPE;
+// interface TestInitial extends InitialState {
+//   best: boolean;
+// }
+// const initial: TestInitial = { best: true };
+// const x: ControllerAnnotation = prepareController({
+//   initial,
+//   prefix: 'a',
+//   subscriber: function * (): Generator { yield 1; },
+//   types: ['qwe'],
+// });
+//
+// x.action.qwe();
+// x.action.qwe.TYPE;

@@ -3,12 +3,13 @@
 import { fork, takeEvery, cancel, put } from 'redux-saga/effects';
 
 // local dependencies
+import { forceCast } from './_';
+import { Controller } from './prepare';
 import { SAGA_PREFIX } from './constant';
-import { ControllerAnnotation, castToCtrl } from './prepare';
 import { updateCSDMetaAction, createAction, CtrlPayload, CtrlActionCreator, CtrlAction } from './reducer';
 
 function * subscribeSaga ({ payload }: CtrlAction<SagaPayload>) {
-  const controller = castToCtrl(payload.controller);
+  const controller = forceCast<Controller>(payload.controller);
   const name: string = controller.name;
   const channel = yield fork(controller.getSubscriber);
   controller.setChannel(channel);
@@ -17,7 +18,7 @@ function * subscribeSaga ({ payload }: CtrlAction<SagaPayload>) {
 }
 
 function * unsubscribeSaga ({ payload }: CtrlAction<SagaPayload>) {
-  const controller = castToCtrl(payload.controller);
+  const controller = forceCast<Controller>(payload.controller);
   const name: string = controller.name;
   const channel = controller.getChannel();
   // NOTE store mark in to redux to provide correct watching of changes
@@ -31,7 +32,7 @@ function * unsubscribeSaga ({ payload }: CtrlAction<SagaPayload>) {
 
 interface SagaPayload extends CtrlPayload {
   payload: {
-    controller: ControllerAnnotation
+    controller: Controller
   }
 }
 export const subscribeAction: CtrlActionCreator<SagaPayload> = createAction(`${SAGA_PREFIX}/SUBSCRIBE`);

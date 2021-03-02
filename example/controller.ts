@@ -3,20 +3,24 @@
 import { takeEvery, put, select } from 'redux-saga/effects';
 
 // local dependencies
-import { Controller, ControllerState } from '../src'; // Use line below
-// import { Controller, ControllerState } from 'redux-saga-controller';
+import { prepareController, InitialState, CtrlActionCreators, CtrlActionCreator, Controller } from '../src'; // Use line below
 
 // NOTE IMPORTANT!
 // You should add interface only of you will use select effect from redux-saga
 // In all cases except select effect you don't need it
 // It because redux-saga effect select return any time in all cases
-interface IInitial {
+interface IInitial extends InitialState {
   initialized: boolean;
   disabled: boolean;
   data: {
     name: string;
     age: number;
   }
+}
+
+interface IActions extends CtrlActionCreators {
+  INITIALIZE: CtrlActionCreator;
+  GET_SELF: CtrlActionCreator;
 }
 
 // NOTE Initial data for your redux state
@@ -30,15 +34,16 @@ const initial: IInitial = {
 };
 
 // NOTE Create Controller
-export const controller = new Controller({
-  DEBUG: true, // Enable DEBUG Mode
+export const controller: Controller<IActions, IInitial> = prepareController({
   initial, // Setup initial data for redux state
   prefix: 'root', // Controller name
   types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
   subscriber: function * () {
-    yield takeEvery(controller.TYPE.INITIALIZE, initializeSaga);
+    yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
   }
 });
+
+controller.action.GET_SELF;
 
 export default controller;
 
@@ -62,7 +67,7 @@ function * initializeSaga ({ type, payload } : { type: string, payload: any }) {
   const isControllerConnected: boolean = yield select(controller.selectorConnected);
   console.log(isControllerConnected); // true | false
   // NOTE All data from controller
-  const state: ControllerState<IInitial> = yield select(controller.selector);
+  const state: IInitial = yield select(controller.selector);
   console.log(state.connected); // true | false
   console.log(state.actual.data.name); // John
   console.log(state.initial.data.name); // John
