@@ -2,9 +2,8 @@
 // outsource dependencies
 
 // local dependencies
-import { forceCast } from './_';
 import { REDUCER_PATH, REDUCER_PREFIX } from './constant';
-import { GlobalState, CSDState, CSDPayload, CtrlAction, CtrlActionCreator } from './types';
+import { GlobalState, CSDState, CSDPayload, CtrlAction, CtrlActionCreator, forceCast } from './types';
 
 export function createAction<P> (type: string): CtrlActionCreator<P> {
   const ac = (payload: P): CtrlAction<P> => ({ type, payload });
@@ -20,7 +19,6 @@ export const updateCSDAction: CtrlActionCreator<CSDPayload> = createAction(`${RE
 export const createCSDAction: CtrlActionCreator<CSDPayload> = createAction(`${REDUCER_PREFIX}/CREATE`);
 export const updateCSDMetaAction: CtrlActionCreator<CSDPayload> = createAction(`${REDUCER_PREFIX}/META`);
 
-// NOTE bloody hak
 export const pinClearCSD = (name: string): CtrlActionCreator =>
   forceCast<CtrlActionCreator>(() => clearCSDAction({ name }));
 export const pinUpdateCSD = (name: string): CtrlActionCreator =>

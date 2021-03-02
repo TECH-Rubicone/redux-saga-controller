@@ -9,13 +9,13 @@ import { REDUCER_PATH } from './constant';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function forceCast<T> (any: any): T { return any; }
 
+export type Subscriber = () => IterableIterator<unknown>;
+
+export type InitialState<I = unknown> = Record<string, I>;
+
 export interface Meta<I> {
   connected: boolean;
   initial: I;
-}
-// TODO any - is is solvable ?
-export interface ControllerState<I = any> {
-  [key: string]: I
 }
 export type CSDState<I = any> = {
   [ctrl: string]: I;
@@ -44,10 +44,6 @@ export interface CtrlActionCreator<P = CtrlPayload> extends ActionCreator<CtrlAc
   toString(): string;
   TYPE: string;
 }
-
-export type Subscriber = () => IterableIterator<unknown>;
-
-export type InitialState<I = unknown> = Record<string, I>;
 
 export interface CtrlActionCreators<I = CtrlActionCreator> {
   clearCtrl: I;
