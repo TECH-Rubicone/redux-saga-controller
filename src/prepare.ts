@@ -3,9 +3,14 @@
 import { Task } from 'redux-saga';
 
 // local dependencies
-import { hash, forceCast } from './_';
-import { pinClearCSD, pinUpdateCSD, createAction } from './reducer';
-import { CtrlActionCreators, CtrlOptions, InitialState, Subscriber } from './types';
+import { forceCast } from './_';
+import { pinClearCSD, pinUpdateCSD, createAction, selectActualCSD } from './reducer';
+import { CtrlActionCreators, CtrlOptions, InitialState, Subscriber, CtrlActionCreator } from './types';
+
+let counter = 0;
+const hash = (): string => String(`XXX${++counter}`)
+  // eslint-disable-next-line no-bitwise
+  .replace('X', () => (Math.random() * 32 | 0).toString(32));
 
 /**
  * generate annotation for controller using minimal input data
@@ -23,25 +28,16 @@ import { CtrlActionCreators, CtrlOptions, InitialState, Subscriber } from './typ
  }}
  */
 export function prepareController<
+  Types extends string,
   Actions = CtrlActionCreators,
   Initial = InitialState,
-  > ({ prefix, subscriber, initial, types }: CtrlOptions) {
+  > ({ prefix, subscriber, initial, types }: CtrlOptions<Types, Initial>) {
   const name = `${prefix}-${hash()}`;
-
-  const action: CtrlActionCreators = {
-    updateCtrl: pinUpdateCSD(name),
-    clearCtrl: pinClearCSD(name),
-  };
-  // NOTE prepare createTypes and actions
-  for (const type of types) {
-    // NOTE Generate Actions
-    action[type] = createAction(type.toUpperCase());
-  }
 
   return new Controller(
     name,
-    forceCast<CtrlActionCreators & Actions>(action),
-    forceCast<Initial>(initial),
+    createCtrlActions<Actions, Types>(types, name),
+    initial,
     subscriber,
   );
 }
@@ -52,18 +48,15 @@ export class Controller<
   > {
   private channel?:Task;
 
+  selector;
+
   constructor (
     public name: string,
     public action: Actions,
     private initial: Initial,
     private subscriber: Subscriber,
   ) {
-    // for (const type of types) {
-    //   // NOTE Generate Acton types
-    //   this.TYPE[type] = `${this.name}/${type}`;
-    //   // NOTE Generate Acton creators
-    //   this.action[type] = <T>(payload?: T) => ({ type: this.TYPE[type], payload });
-    // }
+    this.selector = selectActualCSD<Initial>(this.name);
   }
 
   public getInitial () { return Object.assign({}, this.initial); }
@@ -87,17 +80,14 @@ export class Controller<
   }
 }
 
-// TODO REMOVE
-// interface TestInitial extends InitialState {
-//   best: boolean;
-// }
-// const initial: TestInitial = { best: true };
-// const x: ControllerAnnotation = prepareController({
-//   initial,
-//   prefix: 'a',
-//   subscriber: function * (): Generator { yield 1; },
-//   types: ['qwe'],
-// });
-//
-// x.action.qwe();
-// x.action.qwe.TYPE;
+function createCtrlActions <Actions, Types extends string> (types: Array<Types>, name: string): Actions {
+  const ACTS = {} as Record<Types, CtrlActionCreator>;
+  for (const type of types) {
+    ACTS[type] = createAction(`${name}/${type.toUpperCase()}`);
+  }
+  return forceCast<Actions>({
+    ...ACTS,
+    updateCtrl: pinUpdateCSD(name),
+    clearCtrl: pinClearCSD(name),
+  });
+}

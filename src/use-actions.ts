@@ -19,7 +19,7 @@ type InUseActions<I = ActionCreator<CtrlAction>> = {
 // HOOK
 export const useActions = <Actions, Initial>(controller: Controller<Actions, Initial>) => {
   const dispatch = useDispatch();
-  const list = forceCast<CtrlActionCreators & Actions>(controller.action);
+  const list = forceCast<Actions>(controller.action);
   return useMemo(() => {
     const cache = {} as InUseActions;
     for (const name in list) {

@@ -1,47 +1,10 @@
 
 // outsource dependencies
-import { Action, ActionCreator } from 'redux';
 
 // local dependencies
 import { forceCast } from './_';
 import { REDUCER_PATH, REDUCER_PREFIX } from './constant';
-
-export interface Meta<I> {
-  connected: boolean;
-  initial: I;
-}
-// TODO any - is is solvable ?
-type CSDState<I = any> = {
-  [ctrl: string]: I;
-} & {
-  META: {
-    [ctrl: string]: Meta<I>;
-  };
-}
-type GlobalState = {
-  [ctrl: string]: unknown;
-} & {
-  [REDUCER_PATH]: CSDState;
-}
-// TODO any - is is solvable ?
-export interface ControllerState<I = any> {
-  [key: string]: I
-}
-export interface CSDPayload {
-  name: string;
-  data?: Record<string, unknown>;
-  initial?: Record<string, unknown>;
-}
-export interface CtrlPayload {
-  [key: string]: unknown;
-}
-export interface CtrlAction<P = CtrlPayload> extends Action {
-  payload: P;
-}
-export interface CtrlActionCreator<P = CtrlPayload> extends ActionCreator<CtrlAction<P>> {
-  toString(): string;
-  TYPE: string;
-}
+import { GlobalState, CSDState, CSDPayload, CtrlAction, CtrlActionCreator } from './types';
 
 export function createAction<P> (type: string): CtrlActionCreator<P> {
   const ac = (payload: P): CtrlAction<P> => ({ type, payload });

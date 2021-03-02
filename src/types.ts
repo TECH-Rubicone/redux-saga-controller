@@ -1,11 +1,22 @@
-import { REDUCER_PATH } from './constant';
+
+// outsource dependencies
 import { Action, ActionCreator } from 'redux';
+
+// local dependencies
+import { REDUCER_PATH } from './constant';
+
+// NOTE lets fuck TS using bloody hack :)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function forceCast<T> (any: any): T { return any; }
 
 export interface Meta<I> {
   connected: boolean;
   initial: I;
 }
 // TODO any - is is solvable ?
+export interface ControllerState<I = any> {
+  [key: string]: I
+}
 export type CSDState<I = any> = {
   [ctrl: string]: I;
 } & {
@@ -17,10 +28,6 @@ export type GlobalState = {
   [ctrl: string]: unknown;
 } & {
   [REDUCER_PATH]: CSDState;
-}
-// TODO any - is is solvable ?
-export interface ControllerState<I = any> {
-  [key: string]: I
 }
 export interface CSDPayload {
   name: string;
@@ -45,10 +52,11 @@ export type InitialState<I = unknown> = Record<string, I>;
 export interface CtrlActionCreators<I = CtrlActionCreator> {
   clearCtrl: I;
   updateCtrl: I;
+  [key: string]: I
 }
-export interface CtrlOptions<I = unknown> {
-  types: string[];
+export interface CtrlOptions<Types, Initial = InitialState> {
   prefix: string;
+  initial: Initial;
+  types: Array<Types>;
   subscriber: Subscriber;
-  initial: InitialState<I>;
 }

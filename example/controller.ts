@@ -3,13 +3,13 @@
 import { takeEvery, put, select } from 'redux-saga/effects';
 
 // local dependencies
-import { prepareController, InitialState, CtrlActionCreators, CtrlActionCreator, Controller } from '../src'; // Use line below
+import { prepareController, CtrlActionCreators, CtrlActionCreator, Controller } from '../src'; // Use line below
 
 // NOTE IMPORTANT!
 // You should add interface only of you will use select effect from redux-saga
 // In all cases except select effect you don't need it
 // It because redux-saga effect select return any time in all cases
-interface IInitial extends InitialState {
+interface IInitial {
   initialized: boolean;
   disabled: boolean;
   data: {
@@ -43,7 +43,7 @@ export const controller: Controller<IActions, IInitial> = prepareController({
   }
 });
 
-controller.action.GET_SELF;
+controller.selector({})
 
 export default controller;
 
@@ -58,19 +58,8 @@ function * initializeSaga ({ type, payload } : { type: string, payload: any }) {
   ////////////////////////////
 
   // NOTE Actual data - data with which selector works
-  const actualState: IInitial = yield select(controller.selectorActual);
-  console.log(actualState.data.name); // John
-  // NOTE Initial data - initial data which you setup
-  const initialState: IInitial = yield select(controller.selectorInitial);
-  console.log(initialState.data.name); // John
-  // NOTE isControllerConnected
-  const isControllerConnected: boolean = yield select(controller.selectorConnected);
-  console.log(isControllerConnected); // true | false
-  // NOTE All data from controller
-  const state: IInitial = yield select(controller.selector);
-  console.log(state.connected); // true | false
-  console.log(state.actual.data.name); // John
-  console.log(state.initial.data.name); // John
+  const { initialized, data }: IInitial = yield select(controller.selector);
+  console.log(data.name); // John
 
   //////////////////////////
   // NOTE How use actions //
