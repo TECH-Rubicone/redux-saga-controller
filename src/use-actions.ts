@@ -1,26 +1,37 @@
 
 // outsource dependencies
 import { useMemo } from 'react';
+import { ActionCreator } from 'redux';
 import { useDispatch } from 'react-redux';
 
 // local dependencies
-import { Controller } from './index';
-import { DefaultActions } from './controller';
+import { CtrlAction, CtrlPayload } from './reducer';
+import { ControllerAnnotation, CtrlActionCreators } from './prepare';
+
+type InUseActions<I = ActionCreator<CtrlAction>> = {
+  [ctrl: string]: I;
+} & {
+  clearCtrl: ActionCreator<CtrlAction>;
+  updateCtrl: ActionCreator<CtrlAction>;
+}
 
 // HOOK
-export const useActions = <T extends string, I>(controller: Controller<T, I>) => {
+export const useActions = <I extends string>(controller: ControllerAnnotation) => {
   const dispatch = useDispatch();
-  const actionCreators = controller.action;
+  const list: CtrlActionCreators = controller.action;
   return useMemo(() => {
-    const cache = {} as Record<T | DefaultActions, (payload?: unknown) => void>;
-    for (const name in actionCreators) {
-      if (actionCreators.hasOwnProperty(name)) {
-        const action = actionCreators[name as T | DefaultActions];
-        cache[name as T | DefaultActions] = (payload?: unknown): void => {
-          dispatch(action(payload));
+    const cache = {} as InUseActions;
+    for (const name in list) {
+      if (list.hasOwnProperty(name)) {
+        const action = list[name];
+        cache[name as I] = (payload?: CtrlPayload) => {
+          if (typeof payload !== 'object') {
+            payload = {};
+          }
+          return dispatch(action(payload));
         };
       }
     }
     return cache;
-  }, [actionCreators, dispatch]);
+  }, [list, dispatch]);
 };

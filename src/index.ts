@@ -12,6 +12,7 @@ export { sagas } from './saga';
 export { reducer, ControllerState } from './reducer';
 
 import { Controller } from './controller';
+import { prepare, ControllerAnnotation } from './prepare';
 
 import { useActions } from './use-actions';
 import { useReducer } from './use-reducer';
@@ -23,7 +24,7 @@ import { useSubscribe } from './use-subscribe';
  * IMPORTANT in one time in the DOM "useController" can subscribed not more than one time for one controller
  * if you need get some useful thing of controller outside of component subscriber use hook helpers
  */
-export const useController = <T extends string, I>(controller: Controller<T, I>) => [
+export const useController = (controller: ControllerAnnotation) => [
   useReducer(controller),
   useActions(controller),
   useSubscribe(controller),
