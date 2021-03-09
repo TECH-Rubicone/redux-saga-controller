@@ -49,7 +49,7 @@ export interface CtrlActionCreator<P = CtrlPayload> extends ActionCreator<CtrlAc
 export interface CtrlActionCreators<I = CtrlActionCreator> {
   clearCtrl: I;
   updateCtrl: I;
-  [key: string]: I
+  [key: string]: I;
 }
 export interface CtrlOptions<Type, Initial = InitialState> {
   prefix: string;

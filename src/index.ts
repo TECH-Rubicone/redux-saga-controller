@@ -1,7 +1,7 @@
 import { useActions } from './use-actions';
 import { useReducer } from './use-reducer';
 import { useSubscribe } from './use-subscribe';
-import { prepareController, Controller } from './prepare';
+import { Controller } from './prepare';
 /**
  * Controller require connection to react-redux and redux-saga
  * please make sure you connected to react-redux and setup saga subscriber
@@ -25,7 +25,7 @@ export { reducer } from './reducer';
  * import { sagas as controllerSagas } from './services/controller.service';
  *
  */
-export { prepareController, Controller };
+export { Controller };
 
 /**
  * HOOK "useController"
@@ -38,12 +38,12 @@ export { prepareController, Controller };
 //   useActions(controller),
 //   useSubscribe(controller),
 // ] as const;
-export function useController<Actions, Initial> (controller: Controller<Actions, Initial>) {
-  return [
-    useReducer(controller),
-    useActions(controller),
-    useSubscribe(controller),
-  ] as const;
+export function useController<Type extends string, Initial> (controller: Controller<Type, Initial>) {
+  // return [
+  //   useReducer(controller),
+  //   useActions(controller),
+  //   useSubscribe(controller),
+  // ] as const;
 }
 
 /**

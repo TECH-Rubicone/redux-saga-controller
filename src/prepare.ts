@@ -1,17 +1,12 @@
 
 // outsource dependencies
+import { AnyAction, ActionCreator } from 'redux';
 import { Task } from 'redux-saga';
 
 // local dependencies
-import { typeCase, actionCase } from './name';
-import { forceCast } from './constant';
-import { pinClearCSD, pinUpdateCSD, createAction, selectActualCSD } from './reducer';
-import { CtrlActionCreators, CtrlOptions, InitialState, Subscriber, CtrlActionCreator, CtrlSystemActionTypes } from './type.spec';
-
-let counter = 0;
-const hash = (): string => String(`XXX${++counter}`)
-  // eslint-disable-next-line no-bitwise
-  .replace('X', () => (Math.random() * 32 | 0).toString(32));
+import { forceCast, createAction, typeCase, hash } from './constant';
+import { pinClearCSD, pinUpdateCSD, selectActualCSD } from './reducer';
+import { CtrlActionCreator, CtrlActionCreators } from './type.spec';
 
 /**
  * generate annotation for controller using minimal input data
@@ -28,19 +23,19 @@ const hash = (): string => String(`XXX${++counter}`)
   }
  }}
  */
-export function prepareController<Initial, Type extends string> ({ prefix, subscriber, initial, types }: {
-    prefix: string,
-    initial: Initial,
-    types: Array<Type>,
-    subscriber: Subscriber,
-  }): Controller<Type, Initial> {
-  return new Controller({
-    prefix: `@${prefix}-${hash()}`,
-    initial,
-    types,
-    subscriber,
-  });
-}
+// export function prepareController<Initial, Type extends string> ({ prefix, subscriber, initial, types }: {
+//     prefix: string,
+//     initial: Initial,
+//     types: Array<Type>,
+//     subscriber: Subscriber,
+//   }): Controller<Type, Initial> {
+//   return new Controller({
+//     prefix: `@${prefix}-${hash()}`,
+//     initial,
+//     types,
+//     subscriber,
+//   });
+// }
 // !!! not good :(
 // export function prepareController<Initial> ({ prefix, subscriber, initial, types }: {
 //     prefix: string,
@@ -55,11 +50,17 @@ export function prepareController<Initial, Type extends string> ({ prefix, subsc
 //     subscriber,
 //   );
 // }
+type Subscriber = () => IterableIterator<unknown>;
+type CtrlSystemActionTypes = 'updateCtrl' | 'clearCtrl';
 
 export class Controller<Type extends string, Initial> {
-  private channel?:Task;
+  // ```````````````````````````````````````````````````````````````````````````````````
+  //  'controller' implicitly has type 'any' because it does not have a type annotation
+  //  and is referenced directly or indirectly in its own initializer.
+  // ````````````````````````````````````````````````````````````````````````````````````
+  private readonly subscriber;
 
-  private readonly subscriber: Subscriber;
+  private channel?: Task;
 
   private readonly initial = {} as Initial;
 
@@ -70,38 +71,33 @@ export class Controller<Type extends string, Initial> {
   name: string;
 
   constructor ({ prefix, initial, types, subscriber }: {
-    prefix: string,
+    prefix?: string,
     initial: Initial,
     types: Array<Type>,
-    subscriber: Subscriber,
+    subscriber: unknown, // *^
   }) {
     // NOTE
-    const name = `@${prefix}-${hash()}` as const;
+    const name = typeof prefix === 'string' ? `@${prefix}-${hash()}` : `@${hash()}`;
     this.name = name;
     // NOTE subscriber
     this.subscriber = subscriber;
     // NOTE initial
     this.initial = initial;
-    // NOTE custom actions
-    for (const type of types) {
-      // if (typeof type === 'string') {
-      this.action[type] = createAction(`${name}/${type.toUpperCase()}`);
-      // }
-    }
-    // NOTE base ctrl actions
-
-    // export const CLEAR_ACTION_NAME = 'clearCtrl';
-    // export const UPDATE_ACTION_NAME = 'updateCtrl';
-    this.action['clearCtrl' as Type] = pinClearCSD(name);
-    this.action['updateCtrl' as Type] = pinUpdateCSD(name);
     // NOTE base selector
     this.selector = selectActualCSD<Initial>(name);
+    // NOTE base ctrl actions
+    this.action.clearCtrl = pinClearCSD(name);
+    this.action.updateCtrl = pinUpdateCSD(name);
+    // NOTE generic actions
+    for (const type of types) {
+      // const actName = actionCase(type);
+      this.action[type] = createAction(`${name}/${typeCase(type)}`);
+    }
   }
 
-  // public getInitial (): Initial { return Object.assign({}, this.initial); }
-  public getInitial (): Initial { return this.initial; }
+  public getInitial (): Initial { return Object.assign({}, this.initial); }
 
-  public getSubscriber (): Subscriber { return this.subscriber; }
+  public getSubscriber (): Subscriber { return forceCast<Subscriber>(this.subscriber); }
 
   public hasChannel (): boolean { return Boolean(this.channel); }
 

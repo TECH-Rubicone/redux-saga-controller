@@ -12,14 +12,14 @@ export const Example1 = memo(() => {
   // NOTE Prefer way
   const [
     { data, disabled, initialized },
-    { INITIALIZE, CLEAR_CTRL, GET_SELF },
+    { INITIALIZE, clearCtrl, GET_SELF },
     isControllerConnected
   ] = useController(controller);
 
   useEffect(() => {
     INITIALIZE();
-    return CLEAR_CTRL;
-  }, [INITIALIZE, CLEAR_CTRL]);
+    return clearCtrl;
+  }, [INITIALIZE, clearCtrl]);
 
   if (!initialized || !isControllerConnected) { return null; }
   return <div>
