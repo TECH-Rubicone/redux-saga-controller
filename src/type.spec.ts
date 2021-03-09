@@ -12,7 +12,7 @@ export type Subscriber = () => IterableIterator<unknown>;
 // export type InitialState<I = unknown> = Record<string, I>;
 export interface InitialState<I = any>{
   [key: string]: I
-};
+}
 
 export interface Meta<I> {
   connected: boolean;

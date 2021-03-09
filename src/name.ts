@@ -74,6 +74,6 @@ const ctrl = createActions({
   types: ['a', 'b'],
 });
 
-ctrl.action.b
-ctrl.action.qwe
+ctrl.action.b;
+ctrl.action.qwe;
 

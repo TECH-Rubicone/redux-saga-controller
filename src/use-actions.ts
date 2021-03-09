@@ -1,37 +1,26 @@
 
 // outsource dependencies
 import { useMemo } from 'react';
-import { ActionCreator } from 'redux';
 import { useDispatch } from 'react-redux';
 
 // local dependencies
-import { Controller } from './prepare';
-import { CtrlActionCreators, CtrlPayload, CtrlAction, forceCast } from './type.spec';
-
-type InUseActions<I = ActionCreator<CtrlAction>> = {
-  [ctrl: string]: I;
-} & {
-  clearCtrl: ActionCreator<CtrlAction>;
-  updateCtrl: ActionCreator<CtrlAction>;
-}
+import { Controller } from './index';
+import { CtrlSystemActionTypes } from './type.spec';
 
 // HOOK
-export const useActions = <Actions, Initial>(controller: Controller<Actions, Initial>) => {
+export const useActions = <T extends string, I>(controller: Controller<T, I>) => {
   const dispatch = useDispatch();
-  const list = controller.action;
+  const actionCreators = controller.action;
   return useMemo(() => {
-    const cache = {} as InUseActions;
-    for (const name in list) {
-      // if (list.hasOwnProperty(name)) {
-        const action = list[name];
-        cache[name] = (payload?: CtrlPayload) => {
-          if (typeof payload !== 'object') {
-            payload = {};
-          }
-          return dispatch(action(payload));
+    const cache = {} as Record<T | CtrlSystemActionTypes, (payload?: unknown) => void>;
+    for (const name in actionCreators) {
+      if (actionCreators.hasOwnProperty(name)) {
+        const action = actionCreators[name as T | CtrlSystemActionTypes];
+        cache[name as T | CtrlSystemActionTypes] = (payload?: unknown): void => {
+          dispatch(action(payload));
         };
-      // }
+      }
     }
     return cache;
-  }, [list, dispatch]);
+  }, [actionCreators, dispatch]);
 };

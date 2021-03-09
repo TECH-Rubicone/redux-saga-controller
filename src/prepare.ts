@@ -28,11 +28,6 @@ const hash = (): string => String(`XXX${++counter}`)
   }
  }}
  */
-type ActionName = string;
-// type CtrlActionCreator<Type> = {
-//   [Property in keyof Type]: boolean;
-// };
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 export function prepareController<Initial, Type extends string> ({ prefix, subscriber, initial, types }: {
     prefix: string,
     initial: Initial,
@@ -68,12 +63,11 @@ export class Controller<Type extends string, Initial> {
 
   private readonly initial = {} as Initial;
 
-  action = {} as Record<ActionName | CtrlSystemActionTypes, CtrlActionCreator>;
+  action = {} as Record<Type | CtrlSystemActionTypes, CtrlActionCreator>;
 
   selector;
 
   name: string;
-
 
   constructor ({ prefix, initial, types, subscriber }: {
     prefix: string,
@@ -91,7 +85,7 @@ export class Controller<Type extends string, Initial> {
     // NOTE custom actions
     for (const type of types) {
       // if (typeof type === 'string') {
-        this.action[type] = createAction(`${name}/${type.toUpperCase()}`);
+      this.action[type] = createAction(`${name}/${type.toUpperCase()}`);
       // }
     }
     // NOTE base ctrl actions

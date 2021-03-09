@@ -58,8 +58,6 @@ const controller = new Controller(
     }
   }
 );
-controller.getInitial().disabled
-controller.action
 
 export default controller;
 
