@@ -29,35 +29,37 @@ const initial: IInitial = {
 };
 
 // NOTE Create Controller
-export const controller: Controller<IInitial, 'INITIALIZE' | 'GET_SELF'> = prepareController({
-  initial, // Setup initial data for redux state
-  prefix: 'root', // Controller name
-  types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
-  subscriber: function * () {
-    yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
+// export const controller: Controller<IInitial, 'INITIALIZE' | 'GET_SELF'> = prepareController({
+//   initial, // Setup initial data for redux state
+//   prefix: 'root', // Controller name
+//   types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
+//   subscriber: function * () {
+//     yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
+//   }
+// });
+//
+// controller.action.updateCtrl();
+// controller.action.updateCtrl.TYPE;
+// controller.action.clearCtrl;
+// // controller.getInitial();
+// controller.getInitial().disabled;
+// controller.action.INITIALIZE
+// controller.selector
+// controller.action
+
+
+const controller = new Controller(
+  {
+    initial, // Setup initial data for redux state
+    prefix: 'root', // Controller name
+    types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
+    subscriber: function * () {
+      yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
+    }
   }
-});
-
-controller.action.updateCtrl();
-controller.action.updateCtrl.TYPE;
-controller.action.clearCtrl;
-// controller.getInitial();
-controller.getInitial().disabled;
-controller.action.INITIALIZE
-controller.selector
-controller.action
-
-
-const cc = new Controller(
-  'root', // Controller name
-  initial, // Setup initial data for redux state
-  ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
-  function * () {
-  yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
-}
 );
-cc.getInitial().disabled
-cc.action.INI
+controller.getInitial().disabled
+controller.action
 
 export default controller;
 

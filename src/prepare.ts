@@ -39,12 +39,12 @@ export function prepareController<Initial, Type extends string> ({ prefix, subsc
     types: Array<Type>,
     subscriber: Subscriber,
   }): Controller<Type, Initial> {
-  return new Controller(
-    `@${prefix}-${hash()}`,
+  return new Controller({
+    prefix: `@${prefix}-${hash()}`,
     initial,
     types,
     subscriber,
-  );
+  });
 }
 // !!! not good :(
 // export function prepareController<Initial> ({ prefix, subscriber, initial, types }: {
@@ -64,30 +64,44 @@ export function prepareController<Initial, Type extends string> ({ prefix, subsc
 export class Controller<Type extends string, Initial> {
   private channel?:Task;
 
+  private readonly subscriber: Subscriber;
+
+  private readonly initial = {} as Initial;
+
   action = {} as Record<ActionName | CtrlSystemActionTypes, CtrlActionCreator>;
 
   selector;
 
-  constructor (
-    public name: string,
-    private initial: Initial,
-    public types: Array<Type>,
-    private subscriber: Subscriber,
-  ) {
+  name: string;
+
+
+  constructor ({ prefix, initial, types, subscriber }: {
+    prefix: string,
+    initial: Initial,
+    types: Array<Type>,
+    subscriber: Subscriber,
+  }) {
+    // NOTE
+    const name = `@${prefix}-${hash()}` as const;
+    this.name = name;
+    // NOTE subscriber
+    this.subscriber = subscriber;
+    // NOTE initial
+    this.initial = initial;
     // NOTE custom actions
     for (const type of types) {
       // if (typeof type === 'string') {
-        this.action[type] = createAction(`${this.name}/${type.toUpperCase()}`);
+        this.action[type] = createAction(`${name}/${type.toUpperCase()}`);
       // }
     }
     // NOTE base ctrl actions
 
     // export const CLEAR_ACTION_NAME = 'clearCtrl';
     // export const UPDATE_ACTION_NAME = 'updateCtrl';
-    this.action['clearCtrl' as Type] = pinClearCSD(this.name);
-    this.action['updateCtrl' as Type] = pinUpdateCSD(this.name);
+    this.action['clearCtrl' as Type] = pinClearCSD(name);
+    this.action['updateCtrl' as Type] = pinUpdateCSD(name);
     // NOTE base selector
-    this.selector = selectActualCSD<Initial>(this.name);
+    this.selector = selectActualCSD<Initial>(name);
   }
 
   // public getInitial (): Initial { return Object.assign({}, this.initial); }
