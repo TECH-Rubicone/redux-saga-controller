@@ -3,24 +3,19 @@
 import { takeEvery, put, select } from 'redux-saga/effects';
 
 // local dependencies
-import { prepareController, CtrlActionCreators, CtrlActionCreator, Controller } from '../src'; // Use line below
+import { prepareController, Controller, InitialState, CtrlAction } from '../src'; // Use line below
 
 // NOTE IMPORTANT!
 // You should add interface only of you will use select effect from redux-saga
 // In all cases except select effect you don't need it
 // It because redux-saga effect select return any time in all cases
-interface IInitial {
+interface IInitial extends InitialState {
   initialized: boolean;
   disabled: boolean;
   data: {
     name: string;
     age: number;
   }
-}
-
-interface IActions extends CtrlActionCreators {
-  INITIALIZE: CtrlActionCreator;
-  GET_SELF: CtrlActionCreator;
 }
 
 // NOTE Initial data for your redux state
@@ -34,7 +29,7 @@ const initial: IInitial = {
 };
 
 // NOTE Create Controller
-export const controller: Controller<IActions, IInitial> = prepareController({
+export const controller: Controller<IInitial, 'INITIALIZE' | 'GET_SELF'> = prepareController({
   initial, // Setup initial data for redux state
   prefix: 'root', // Controller name
   types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
@@ -43,7 +38,26 @@ export const controller: Controller<IActions, IInitial> = prepareController({
   }
 });
 
-controller.selector({})
+controller.action.updateCtrl();
+controller.action.updateCtrl.TYPE;
+controller.action.clearCtrl;
+// controller.getInitial();
+controller.getInitial().disabled;
+controller.action.INITIALIZE
+controller.selector
+controller.action
+
+
+const cc = new Controller(
+  'root', // Controller name
+  initial, // Setup initial data for redux state
+  ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
+  function * () {
+  yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
+}
+);
+cc.getInitial().disabled
+cc.action.INI
 
 export default controller;
 
@@ -66,10 +80,10 @@ function * initializeSaga ({ type, payload } : { type: string, payload: any }) {
   //////////////////////////
 
   // NOTE clearCtrl will setup actual to {}
-  yield put(controller.action.CLEAR_CTRL());
+  yield put(controller.action.clearCtrl());
   // NOTE will dispach an action getSelf
   // getSelf is equal to yield put({ type: controller.TYPE.getSelf })
   yield put(controller.action.GET_SELF());
   // NOTE it is partial update actual data object
-  yield put(controller.action.UPDATE_CTRL({ initialized: true }));
+  yield put(controller.action.updateCtrl({ initialized: true }));
 }

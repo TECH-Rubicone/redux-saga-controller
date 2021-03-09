@@ -11,7 +11,7 @@ import { prepareController, Controller } from './prepare';
  * import { sagas as controllerSagas } from 'redux-saga-controller';
  *
  */
-export * from './types';
+export * from './type.spec';
 export { sagas } from './saga';
 export { reducer } from './reducer';
 

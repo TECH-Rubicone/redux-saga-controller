@@ -3,9 +3,10 @@
 import { Task } from 'redux-saga';
 
 // local dependencies
-import { forceCast } from './_';
+import { typeCase, actionCase } from './name';
+import { forceCast } from './constant';
 import { pinClearCSD, pinUpdateCSD, createAction, selectActualCSD } from './reducer';
-import { CtrlActionCreators, CtrlOptions, InitialState, Subscriber, CtrlActionCreator } from './types';
+import { CtrlActionCreators, CtrlOptions, InitialState, Subscriber, CtrlActionCreator, CtrlSystemActionTypes } from './type.spec';
 
 let counter = 0;
 const hash = (): string => String(`XXX${++counter}`)
@@ -27,43 +28,74 @@ const hash = (): string => String(`XXX${++counter}`)
   }
  }}
  */
-export function prepareController<
-  Types extends string,
-  Actions = CtrlActionCreators,
-  Initial = InitialState,
-  > ({ prefix, subscriber, initial, types }: CtrlOptions<Types, Initial>) {
-  const name = `${prefix}-${hash()}`;
-
+type ActionName = string;
+// type CtrlActionCreator<Type> = {
+//   [Property in keyof Type]: boolean;
+// };
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+export function prepareController<Initial, Type extends string> ({ prefix, subscriber, initial, types }: {
+    prefix: string,
+    initial: Initial,
+    types: Array<Type>,
+    subscriber: Subscriber,
+  }): Controller<Type, Initial> {
   return new Controller(
-    name,
-    createCtrlActions<Actions, Types>(types, name),
+    `@${prefix}-${hash()}`,
     initial,
+    types,
     subscriber,
   );
 }
+// !!! not good :(
+// export function prepareController<Initial> ({ prefix, subscriber, initial, types }: {
+//     prefix: string,
+//     initial: Initial,
+//     types: ActionName[],
+//     subscriber: Subscriber,
+//   }): Controller<Initial> {
+//   return new Controller(
+//     `${prefix}-${hash()}`,
+//     initial,
+//     types,
+//     subscriber,
+//   );
+// }
 
-export class Controller<
-  Actions = CtrlActionCreators,
-  Initial = InitialState,
-  > {
+export class Controller<Type extends string, Initial> {
   private channel?:Task;
+
+  action = {} as Record<ActionName | CtrlSystemActionTypes, CtrlActionCreator>;
 
   selector;
 
   constructor (
     public name: string,
-    public action: Actions,
     private initial: Initial,
+    public types: Array<Type>,
     private subscriber: Subscriber,
   ) {
+    // NOTE custom actions
+    for (const type of types) {
+      // if (typeof type === 'string') {
+        this.action[type] = createAction(`${this.name}/${type.toUpperCase()}`);
+      // }
+    }
+    // NOTE base ctrl actions
+
+    // export const CLEAR_ACTION_NAME = 'clearCtrl';
+    // export const UPDATE_ACTION_NAME = 'updateCtrl';
+    this.action['clearCtrl' as Type] = pinClearCSD(this.name);
+    this.action['updateCtrl' as Type] = pinUpdateCSD(this.name);
+    // NOTE base selector
     this.selector = selectActualCSD<Initial>(this.name);
   }
 
-  public getInitial () { return Object.assign({}, this.initial); }
+  // public getInitial (): Initial { return Object.assign({}, this.initial); }
+  public getInitial (): Initial { return this.initial; }
 
-  public getSubscriber () { return this.subscriber; }
+  public getSubscriber (): Subscriber { return this.subscriber; }
 
-  public hasChannel () { return Boolean(this.channel); }
+  public hasChannel (): boolean { return Boolean(this.channel); }
 
   public getChannel (): Task { return forceCast<Task>(this.channel); }
 
@@ -78,16 +110,4 @@ export class Controller<
     }
     this.channel = channel;
   }
-}
-
-function createCtrlActions <Actions, Types extends string> (types: Array<Types>, name: string): Actions {
-  const ACTS = {} as Record<Types, CtrlActionCreator>;
-  for (const type of types) {
-    ACTS[type] = createAction(`${name}/${type.toUpperCase()}`);
-  }
-  return forceCast<Actions>({
-    ...ACTS,
-    updateCtrl: pinUpdateCSD(name),
-    clearCtrl: pinClearCSD(name),
-  });
 }

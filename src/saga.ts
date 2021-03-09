@@ -6,7 +6,7 @@ import { fork, takeEvery, cancel, put } from 'redux-saga/effects';
 import { Controller } from './prepare';
 import { SAGA_PREFIX } from './constant';
 import { updateCSDMetaAction, createAction } from './reducer';
-import { CtrlPayload, CtrlActionCreator, CtrlAction, forceCast } from './types';
+import { CtrlPayload, CtrlActionCreator, CtrlAction, forceCast } from './type.spec';
 
 function * subscribeSaga ({ payload }: CtrlAction<SagaPayload>) {
   const controller = forceCast<Controller>(payload.controller);

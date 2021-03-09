@@ -2,8 +2,8 @@
 // outsource dependencies
 
 // local dependencies
-import { REDUCER_PATH, REDUCER_PREFIX } from './constant';
-import { GlobalState, CSDState, CSDPayload, CtrlAction, CtrlActionCreator, forceCast } from './types';
+import { REDUCER_PATH, REDUCER_PREFIX, forceCast } from './constant';
+import { GlobalState, CSDState, CSDPayload, CtrlAction, CtrlActionCreator } from './type.spec';
 
 export function createAction<P> (type: string): CtrlActionCreator<P> {
   const ac = (payload: P): CtrlAction<P> => ({ type, payload });

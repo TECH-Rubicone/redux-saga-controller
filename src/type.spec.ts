@@ -5,20 +5,21 @@ import { Action, ActionCreator } from 'redux';
 // local dependencies
 import { REDUCER_PATH } from './constant';
 
-// NOTE lets fuck TS using bloody hack :)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function forceCast<T> (any: any): T { return any; }
+export type CtrlSystemActionTypes = 'updateCtrl' | 'clearCtrl';
 
 export type Subscriber = () => IterableIterator<unknown>;
 
-export type InitialState<I = unknown> = Record<string, I>;
+// export type InitialState<I = unknown> = Record<string, I>;
+export interface InitialState<I = any>{
+  [key: string]: I
+};
 
 export interface Meta<I> {
   connected: boolean;
   initial: I;
 }
 export type CSDState<I = any> = {
-  [ctrl: string]: I;
+  [reducer: string]: I;
 } & {
   META: {
     [ctrl: string]: Meta<I>;
@@ -50,9 +51,9 @@ export interface CtrlActionCreators<I = CtrlActionCreator> {
   updateCtrl: I;
   [key: string]: I
 }
-export interface CtrlOptions<Types, Initial = InitialState> {
+export interface CtrlOptions<Type, Initial = InitialState> {
   prefix: string;
+  types: Array<Type>;
   initial: Initial;
-  types: Array<Types>;
   subscriber: Subscriber;
 }
