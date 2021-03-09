@@ -4,9 +4,8 @@ import { AnyAction, ActionCreator } from 'redux';
 import { Task } from 'redux-saga';
 
 // local dependencies
-import { forceCast, createAction, typeCase, hash } from './constant';
+import { forceCast, createAction, typeCase, hash, Subscriber, CtrlSystemActionTypes, CtrlActionCreator } from './constant';
 import { pinClearCSD, pinUpdateCSD, selectActualCSD } from './reducer';
-import { CtrlActionCreator, CtrlActionCreators } from './type.spec';
 
 /**
  * generate annotation for controller using minimal input data
@@ -36,22 +35,21 @@ import { CtrlActionCreator, CtrlActionCreators } from './type.spec';
 //     subscriber,
 //   });
 // }
-// !!! not good :(
-// export function prepareController<Initial> ({ prefix, subscriber, initial, types }: {
-//     prefix: string,
-//     initial: Initial,
-//     types: ActionName[],
-//     subscriber: Subscriber,
-//   }): Controller<Initial> {
-//   return new Controller(
-//     `${prefix}-${hash()}`,
-//     initial,
-//     types,
-//     subscriber,
-//   );
-// }
-type Subscriber = () => IterableIterator<unknown>;
-type CtrlSystemActionTypes = 'updateCtrl' | 'clearCtrl';
+// !!! not good enough :(
+export function prepareController<Type extends string, Initial> ({ prefix, subscriber, initial, types }: {
+    prefix: string,
+    types: Type[],
+    initial: Initial,
+    subscriber: unknown, // *^ ...implicitly...
+  }): Controller<Type, Initial> {
+  return new Controller({
+    // name: `${prefix}-${hash()}`,
+    prefix,
+    initial,
+    types,
+    subscriber,
+  });
+}
 
 export class Controller<Type extends string, Initial> {
   // ```````````````````````````````````````````````````````````````````````````````````
@@ -74,7 +72,7 @@ export class Controller<Type extends string, Initial> {
     prefix?: string,
     initial: Initial,
     types: Array<Type>,
-    subscriber: unknown, // *^
+    subscriber: unknown, // *^ ...implicitly...
   }) {
     // NOTE
     const name = typeof prefix === 'string' ? `@${prefix}-${hash()}` : `@${hash()}`;

@@ -3,7 +3,7 @@
 import { takeEvery, put, select } from 'redux-saga/effects';
 
 // local dependencies
-import { Controller } from '../src'; // Use line below
+import { Controller, prepareController } from '../src'; // Use line below
 
 import { Ctrl } from '../src/controller';
 
@@ -38,14 +38,16 @@ const initial: IInitial = {
 };
 
 // NOTE Create Controller
-// export const controller: Controller<IInitial, 'INITIALIZE' | 'GET_SELF'> = prepareController({
-//   initial, // Setup initial data for redux state
-//   prefix: 'root', // Controller name
-//   types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
-//   subscriber: function * () {
-//     yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
-//   }
-// });
+export const controller = prepareController({
+  initial, // Setup initial data for redux state
+  prefix: 'root', // Controller name
+  types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
+  subscriber: function * () {
+    yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
+  }
+});
+controller.getInitial().initialized;
+controller.action.GET_SELF;
 //
 // controller.action.updateCtrl();
 // controller.action.updateCtrl.TYPE;
@@ -57,29 +59,31 @@ const initial: IInitial = {
 // controller.action
 
 
-export const controller = new Controller({
+export const ctrlNew = new Controller({
   initial, // Setup initial data for redux state
   prefix: 'root', // Controller name
   types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
   subscriber: function * subscriber () {
-    yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
+    yield takeEvery(ctrlNew.action.INITIALIZE.TYPE, initializeSaga);
   },
 });
-controller.action.GET_SELF
-controller.getInitial()
+ctrlNew.getInitial().initialized;
+ctrlNew.action.GET_SELF;
+ctrlNew.getInitial();
 
 
-const c = new Ctrl(
+const ctrlOld = new Ctrl(
   {
     initial, // Setup initial data for redux state
     prefix: 'root', // Controller name
     types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
     subscriber: function * () {
-      yield takeEvery(c.action.INITIALIZE, initializeSaga);
+      yield takeEvery(ctrlOld.action.INITIALIZE, initializeSaga);
     }
   }
 );
-c.action.INITIALIZE
+ctrlOld.initial.initialized;
+ctrlOld.action.INITIALIZE;
 
 
 export default 1;
