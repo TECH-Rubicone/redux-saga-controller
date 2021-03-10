@@ -3,7 +3,7 @@
 import { takeEvery, put, select } from 'redux-saga/effects';
 
 // local dependencies
-import { Controller, prepareController, CtrlActionCreators, CtrlActionCreator, CtrlPayload } from '../src'; // Use line below
+import { prepareController, Controller, CtrlActionCreators, CtrlActionCreator, CtrlPayload } from '../src'; // Use line below
 
 import { Ctrl } from '../src/controller';
 
@@ -20,14 +20,19 @@ interface IInitial {
   }
 }
 
-// NOTE IMPORTANT!
-interface InitializePayload extends CtrlPayload {
-  boo: number;
+// NOTE action payloads
+interface InitializePayload {
+  foo: number;
+}
+interface MostCommonActionPayload {
+  id: number | string;
+  name?: string;
 }
 // You should add interface for actions its only one way to define payload annotation
 interface IActions extends CtrlActionCreators<IInitial> {
-  INITIALIZE: CtrlActionCreator<InitializePayload>;
-  getSelf: CtrlActionCreator<Partial<IInitial>>;
+  INITIALIZE: CtrlActionCreator<InitializePayload>; // invalid action become to "initialize" actionCase("INITIALIZE")
+  getSelf: CtrlActionCreator<Partial<IInitial>>; // "GET_SELF" actionCase("getSelf")
+  someAction: CtrlActionCreator<MostCommonActionPayload>; // "someAction" actionCase("someAction")
 }
 
 // NOTE Initial data for your redux state
@@ -44,43 +49,17 @@ const initial: IInitial = {
 export const controller: Controller<IInitial, IActions> = prepareController({
   initial, // Setup initial data for redux state
   prefix: 'root', // Controller name
-  types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
+  types: ['INITIALIZE', 'GET_SELF', 'someAction'], // actionCase => ['initialize', 'getSelf']
   subscriber: function * () {
     yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
   }
 });
 controller.initial.initialized;
-controller.action.getSelf({ initialized: true, boo: 2 });
-controller.action.INITIALIZE({ boo: 1 });
-controller.action.updateCtrl({ disabled: false, initialized: 'hey strings not allowed *)' });
-// controller.action.GET_SELF();
-// controller.action.updateCtrl({ a: 1 });
-// controller.action
-
-//
-// controller.action.updateCtrl();
-// controller.action.updateCtrl.TYPE;
-// controller.action.clearCtrl;
-// // controller.getInitial();
-// controller.getInitial().disabled;
-// controller.action.INITIALIZE
-// controller.selector
-// controller.action
-
-
-// export const ctrlNew = new Controller({
-//   initial, // Setup initial data for redux state
-//   name: 'root', // Controller name
-//   types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
-//   subscriber: function * subscriber () {
-//     yield takeEvery(ctrlNew.action.INITIALIZE.TYPE, initializeSaga);
-//   },
-// });
-// ctrlNew.getInitial().initialized;
-// ctrlNew.action.GET_SELF;
-// ctrlNew.getInitial();
-// ctrlNew.action.updateCtrl({ a: 1 });
-// ctrlNew.action
+controller.action.getSelf({ initialized: true, foo: 2 }); // invalid property "foo"
+controller.action.INITIALIZE({ foo: 1 });
+controller.action.updateCtrl({ disabled: false, initialized: 'hey strings not allowed here ;)' });
+controller.action.clearCtrl({});
+controller.action.someAction({ id: 2 });
 
 const ctrlOld = new Ctrl(
   {

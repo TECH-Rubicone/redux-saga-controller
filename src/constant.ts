@@ -73,7 +73,7 @@ export function createAction<Payload> (type: string): CtrlActionCreator<Payload>
   const ac: CtrlActionCreator<Payload> = (payload: Payload): CtrlAction<Payload> => ({ type, payload });
   ac.toString = () => type;
   ac.TYPE = type;
-  return forceCast(ac);
+  return ac;
 }
 /**************************************
  * lets fuck TS using bloody hack :)
@@ -83,6 +83,10 @@ export function forceCast<T> (any: any): T { return any; }
 /**************************************
  *              TYPING
  **************************************/
+// type Options<T extends Record<string, unknown>> = { [K in keyof T]:T[K]; }
+// function Options<T extends Record<string, unknown>>(value:T): Options<T> {
+//   return Object.assign({}, value);
+// }
 export type CtrlSystemActionTypes = 'updateCtrl' | 'clearCtrl';
 
 export type Subscriber = () => IterableIterator<unknown>;
@@ -101,7 +105,7 @@ export interface CtrlPayload {
 }
 
 export interface CtrlActionCreators<Payload = CtrlActionCreator> {
-  clearCtrl: CtrlActionCreator<undefined>;
+  clearCtrl: CtrlActionCreator<Record<string, unknown>>;
   updateCtrl: CtrlActionCreator<Payload>;
   [key: string]: unknown;
 }

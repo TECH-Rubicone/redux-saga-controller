@@ -35,10 +35,6 @@ export function prepareController<Initial, Actions> ({ prefix, subscriber, initi
     types,
   });
 }
-// type Options<T extends Record<string, unknown>> = { [K in keyof T]:T[K]; }
-// function Options<T extends Record<string, unknown>>(value:T): Options<T> {
-//   return Object.assign({}, value);
-// }
 
 export class Controller<Initial, Actions> {
   // ```````````````````````````````````````````````````````````````````````````````````

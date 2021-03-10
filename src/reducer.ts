@@ -12,8 +12,8 @@ export const updateCSDAction: CtrlActionCreator<CSDPayload> = createAction(`${RE
 export const createCSDAction: CtrlActionCreator<CSDPayload> = createAction(`${REDUCER_PREFIX}/CREATE`);
 export const updateCSDMetaAction: CtrlActionCreator<CSDPayload> = createAction(`${REDUCER_PREFIX}/META`);
 
-export const pinClearCSD = (name: string): CtrlActionCreator<undefined> =>
-  forceCast<CtrlActionCreator<undefined>>(() => clearCSDAction({ name }));
+export const pinClearCSD = (name: string): CtrlActionCreator<Record<string, unknown>> =>
+  forceCast<CtrlActionCreator<Record<string, unknown>>>(() => clearCSDAction({ name }));
 export const pinUpdateCSD = <Payload>(name: string): CtrlActionCreator<Payload> =>
   forceCast<CtrlActionCreator<Payload>>((data: Partial<Payload>) => updateCSDAction({ name, data }));
 
