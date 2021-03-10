@@ -12,19 +12,21 @@ export const Example1 = memo(() => {
   // NOTE Prefer way
   const [
     { data, disabled, initialized },
-    { INITIALIZE, clearCtrl, GET_SELF },
+    { INITIALIZE, clearCtrl, getSelf, updateCtrl },
     isControllerConnected
   ] = useController(controller);
 
+  updateCtrl({ disabled: true, foo: 'invalid - "foo" absent on IInitial ;)' })
+
   useEffect(() => {
-    INITIALIZE();
-    return clearCtrl;
+    INITIALIZE({ foo: 'invalid - not a number ;)' });
+    return () => { clearCtrl({}); };
   }, [INITIALIZE, clearCtrl]);
 
   if (!initialized || !isControllerConnected) { return null; }
   return <div>
     <h1>Hello {data.name}! Your age is {data.age}</h1>
-    <button disabled={disabled} onClick={() => GET_SELF()}>Get Details</button>
+    <button disabled={disabled} onClick={() => getSelf({ initialized: 'invalid - not a boolean ;)' })}>Get Details</button>
   </div>;
 });
 

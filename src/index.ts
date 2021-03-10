@@ -42,7 +42,7 @@ export function useController<Initial, Actions> (controller: Controller<Initial,
   return [
     useReducer(controller),
     useActions(controller),
-  //   useSubscribe(controller),
+    useSubscribe(controller),
   ] as const;
 }
 

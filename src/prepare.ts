@@ -4,7 +4,7 @@ import { Task } from 'redux-saga';
 
 // local dependencies
 import { pinClearCSD, pinUpdateCSD, selectActualCSD } from './reducer';
-import { forceCast, createAction, typeCase, actionCase, hash, Subscriber, CtrlSystemActionTypes, CtrlActionCreator, CtrlActionCreators } from './constant';
+import { SECRET, forceCast, createAction, typeCase, actionCase, hash, Subscriber, CtrlActionCreators } from './constant';
 
 /**
  * generate annotation for controller using minimal input data
@@ -93,7 +93,12 @@ export class Controller<Initial, Actions> {
 
   public hasChannel (): boolean { return Boolean(this.channel); }
 
-  public getChannel (): Task { return forceCast<Task>(this.channel); }
+  public getChannel (secret: symbol): Task {
+    if (secret !== SECRET) {
+      throw new Error(`Unavailable access to private channel of ${this.name} detected !`);
+    }
+    return forceCast<Task>(this.channel);
+  }
 
   public setChannel (channel?: Task): void {
     if (channel && this.hasChannel()) {

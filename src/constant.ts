@@ -10,7 +10,7 @@ export const SAGA_PREFIX = '@CSD-action/';
 export const REDUCER_PREFIX = '@CSD-store';
 
 // NOTE to provide ability to know who call the method :)
-export const SECRET = Symbol('key');
+export const SECRET = Symbol('secret key ;)');
 
 /**************************************
  * 100% unique hash
@@ -108,7 +108,7 @@ export interface CtrlPayload {
 
 export interface CtrlActionCreators<Payload = CtrlActionCreator> {
   clearCtrl: CtrlActionCreator<Record<string, unknown>>;
-  updateCtrl: CtrlActionCreator<Payload>;
+  updateCtrl: CtrlActionCreator<Partial<Payload>>;
   [key: string]: unknown;
 }
 
@@ -130,10 +130,11 @@ export type GlobalState = {
 } & {
   [REDUCER_PATH]: CSDState;
 }
-export interface CSDPayload {
+export interface CSDPayload<Initial = unknown> {
   name: string;
   data?: Record<string, unknown>;
-  initial?: Record<string, unknown>;
+  initial?: Initial;
+  connected?: boolean;
 }
 
 export interface CtrlOptions<Type, Initial = InitialState> {

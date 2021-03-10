@@ -3,9 +3,7 @@
 import { takeEvery, put, select } from 'redux-saga/effects';
 
 // local dependencies
-import { prepareController, Controller, CtrlActionCreators, CtrlActionCreator, CtrlPayload } from '../src'; // Use line below
-
-import { Ctrl } from '../src/controller';
+import { prepareController, Controller, CtrlActionCreators, CtrlActionCreator } from '../src'; // Use line below
 
 // NOTE IMPORTANT!
 // You should add interface only of you will use select effect from redux-saga
@@ -19,7 +17,6 @@ interface IInitial {
     age: number;
   }
 }
-
 // NOTE action payloads
 interface InitializePayload {
   foo: number;
@@ -34,70 +31,40 @@ interface IActions extends CtrlActionCreators<IInitial> {
   getSelf: CtrlActionCreator<Partial<IInitial>>; // "GET_SELF" actionCase("getSelf")
   someAction: CtrlActionCreator<MostCommonActionPayload>; // "someAction" actionCase("someAction")
 }
-
-// NOTE Initial data for your redux state
-const initial: IInitial = {
-  initialized: false,
-  disabled: false,
-  data: {
-    name: 'John',
-    age: 30,
-  }
-};
-
 // NOTE Create Controller
 export const controller: Controller<IInitial, IActions> = prepareController({
-  initial, // Setup initial data for redux state
+  initial: {
+    initialized: false,
+    disabled: false,
+    data: {
+      name: 'John',
+      age: 30,
+    }
+  }, // Setup initial data for redux state
   prefix: 'root', // Controller name
   types: ['INITIALIZE', 'GET_SELF', 'someAction'], // actionCase => ['initialize', 'getSelf']
   subscriber: function * () {
     yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
   }
 });
-controller.initial.initialized;
-controller.action.getSelf({ initialized: true, foo: 2 }); // invalid property "foo"
-controller.action.INITIALIZE({ foo: 1 });
-controller.action.updateCtrl({ disabled: false, initialized: 'hey strings not allowed here ;)' });
-controller.action.clearCtrl({});
-controller.action.someAction({ id: 2 });
-
-const ctrlOld = new Ctrl(
-  {
-    initial, // Setup initial data for redux state
-    prefix: 'root', // Controller name
-    types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
-    subscriber: function * () {
-      yield takeEvery(ctrlOld.action.INITIALIZE, initializeSaga);
-    }
-  }
-);
-ctrlOld.initial.initialized;
-ctrlOld.action.INITIALIZE;
-ctrlOld.action.UPDATE_CTRL({ a: 1 });
 
 // NOTE Example of usage redux sagas
-function * initializeSaga ({ type, payload } : { type: string, payload: any }) {
+function * initializeSaga ({ type, payload } : { type: string, payload: InitializePayload }) {
+  /******************************************
+   *        How to use selector
+   ******************************************/
+  const { initialized, data: { name } }: IInitial = yield select(controller.selector);
   console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
     , '\n payload:', payload
+    , '\n foo:', payload.foo
+    , '\n initialized:', initialized
+    , '\n name:', name
   );
-
-  ////////////////////////////
-  // NOTE How use selectors //
-  ////////////////////////////
-
-  // NOTE Actual data - data with which selector works
-  const { initialized, data }: IInitial = yield select(ctrlOld.selector);
-  console.log(data.name); // John
-
-  //////////////////////////
-  // NOTE How use actions //
-  //////////////////////////
-
-  // NOTE clearCtrl will setup actual to {}
-  yield put(ctrlOld.action.CLEAR_CTRL());
-  // NOTE will dispach an action getSelf
-  // getSelf is equal to yield put({ type: controller.TYPE.getSelf })
-  yield put(ctrlOld.action.GET_SELF());
-  // NOTE it is partial update actual data object
-  yield put(ctrlOld.action.UPDATE_CTRL({ initialized: true }));
+  /******************************************
+   *        How use actions
+   ******************************************/
+  // NOTE reset entire controller reducer data to initial
+  yield put(controller.action.clearCtrl({}));
+  // NOTE update any property of entire controller reducer
+  yield put(controller.action.updateCtrl({ initialized: true }));
 }
