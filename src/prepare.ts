@@ -1,11 +1,10 @@
 
 // outsource dependencies
-import { AnyAction, ActionCreator } from 'redux';
 import { Task } from 'redux-saga';
 
 // local dependencies
-import { forceCast, createAction, typeCase, hash, Subscriber, CtrlSystemActionTypes, CtrlActionCreator } from './constant';
 import { pinClearCSD, pinUpdateCSD, selectActualCSD } from './reducer';
+import { forceCast, createAction, typeCase, actionCase, hash, Subscriber, CtrlSystemActionTypes, CtrlActionCreator, CtrlActionCreators } from './constant';
 
 /**
  * generate annotation for controller using minimal input data
@@ -22,80 +21,79 @@ import { pinClearCSD, pinUpdateCSD, selectActualCSD } from './reducer';
   }
  }}
  */
-// export function prepareController<Initial, Type extends string> ({ prefix, subscriber, initial, types }: {
-//     prefix: string,
-//     initial: Initial,
-//     types: Array<Type>,
-//     subscriber: Subscriber,
-//   }): Controller<Type, Initial> {
-//   return new Controller({
-//     prefix: `@${prefix}-${hash()}`,
-//     initial,
-//     types,
-//     subscriber,
-//   });
-// }
-// !!! not good enough :(
-export function prepareController<Type extends string, Initial> ({ prefix, subscriber, initial, types }: {
+// NOTE simple wrapper which provide types to constructor - not good enough :(
+export function prepareController<Initial, Actions> ({ prefix, subscriber, initial, types }: {
     prefix: string,
-    types: Type[],
+    types: string[],
     initial: Initial,
     subscriber: unknown, // *^ ...implicitly...
-  }): Controller<Type, Initial> {
+  }): Controller<Initial, Actions> {
   return new Controller({
-    // name: `${prefix}-${hash()}`,
-    prefix,
+    name: `${prefix}-${hash()}`,
+    subscriber,
     initial,
     types,
-    subscriber,
   });
 }
+// type Options<T extends Record<string, unknown>> = { [K in keyof T]:T[K]; }
+// function Options<T extends Record<string, unknown>>(value:T): Options<T> {
+//   return Object.assign({}, value);
+// }
 
-export class Controller<Type extends string, Initial> {
+export class Controller<Initial, Actions> {
   // ```````````````````````````````````````````````````````````````````````````````````
   //  'controller' implicitly has type 'any' because it does not have a type annotation
   //  and is referenced directly or indirectly in its own initializer.
   // ````````````````````````````````````````````````````````````````````````````````````
-  private readonly subscriber;
+  private readonly sagaSubscriber;
+
+  private readonly types: string[];
 
   private channel?: Task;
 
-  private readonly initial = {} as Initial;
+  public readonly reducerInitial = {} as Initial;
 
-  action = {} as Record<Type | CtrlSystemActionTypes, CtrlActionCreator>;
+  public name: string;
 
-  selector;
+  public selector;
 
-  name: string;
-
-  constructor ({ prefix, initial, types, subscriber }: {
-    prefix?: string,
+  constructor ({ name, initial, types, subscriber }: {
+    name: string,
     initial: Initial,
-    types: Array<Type>,
+    types: string[],
     subscriber: unknown, // *^ ...implicitly...
   }) {
-    // NOTE
-    const name = typeof prefix === 'string' ? `@${prefix}-${hash()}` : `@${hash()}`;
     this.name = name;
-    // NOTE subscriber
-    this.subscriber = subscriber;
-    // NOTE initial
-    this.initial = initial;
+    this.types = types;
+    this.sagaSubscriber = subscriber;
+    this.reducerInitial = initial;
     // NOTE base selector
     this.selector = selectActualCSD<Initial>(name);
-    // NOTE base ctrl actions
-    this.action.clearCtrl = pinClearCSD(name);
-    this.action.updateCtrl = pinUpdateCSD(name);
-    // NOTE generic actions
-    for (const type of types) {
-      // const actName = actionCase(type);
-      this.action[type] = createAction(`${name}/${typeCase(type)}`);
-    }
   }
 
-  public getInitial (): Initial { return Object.assign({}, this.initial); }
+  public get action (): Actions {
+    const action: CtrlActionCreators = {
+      clearCtrl: pinClearCSD(this.name),
+      updateCtrl: pinUpdateCSD(this.name),
+    };
+    // NOTE generate actions
+    for (const type of this.types) {
+      // this
+      const actName = actionCase(type);
+      action[actName] = createAction(`@${this.name}/${typeCase(type)}`);
+      // or this
+      action[type] = createAction(`@${this.name}/${typeCase(type)}`);
+    }
+    return forceCast<Actions>(action);
+  }
 
-  public getSubscriber (): Subscriber { return forceCast<Subscriber>(this.subscriber); }
+  public get subscriber (): Subscriber {
+    return forceCast<Subscriber>(this.sagaSubscriber);
+  }
+
+  public get initial (): Initial {
+    return Object.assign({}, this.reducerInitial);
+  }
 
   public hasChannel (): boolean { return Boolean(this.channel); }
 

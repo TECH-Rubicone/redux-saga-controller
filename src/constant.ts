@@ -1,6 +1,6 @@
 
 // outsource dependencies
-import { Action, ActionCreator } from 'redux';
+import { Action } from 'redux';
 
 // local dependencies
 
@@ -69,11 +69,11 @@ function replace (input: string, regExp: RegExp | RegExp[], value: string) {
 /**************************************
  *             ACTIONS ;)
  **************************************/
-export function createAction<P> (type: string): CtrlActionCreator<P> {
-  const ac = (payload: P): CtrlAction<P> => ({ type, payload });
+export function createAction<Payload> (type: string): CtrlActionCreator<Payload> {
+  const ac: CtrlActionCreator<Payload> = (payload: Payload): CtrlAction<Payload> => ({ type, payload });
   ac.toString = () => type;
   ac.TYPE = type;
-  return ac;
+  return forceCast(ac);
 }
 /**************************************
  * lets fuck TS using bloody hack :)
@@ -87,10 +87,12 @@ export type CtrlSystemActionTypes = 'updateCtrl' | 'clearCtrl';
 
 export type Subscriber = () => IterableIterator<unknown>;
 
-export interface CtrlAction<P = CtrlPayload> extends Action {
-  payload: P;
+export interface CtrlAction<Payload = CtrlPayload> extends Action {
+  payload: Payload;
+  type: string;
 }
-export interface CtrlActionCreator<P = CtrlPayload> extends ActionCreator<CtrlAction<P>> {
+export interface ActionCreator<Payload, Action> { (payload: Payload): Action }
+export interface CtrlActionCreator<Payload = CtrlPayload> extends ActionCreator<Payload, CtrlAction<Payload>> {
   toString(): string;
   TYPE: string;
 }
@@ -98,10 +100,10 @@ export interface CtrlPayload {
   [key: string]: unknown;
 }
 
-export interface CtrlActionCreators<I = CtrlActionCreator> {
-  clearCtrl: I;
-  updateCtrl: I;
-  [key: string]: I;
+export interface CtrlActionCreators<Payload = CtrlActionCreator> {
+  clearCtrl: CtrlActionCreator<undefined>;
+  updateCtrl: CtrlActionCreator<Payload>;
+  [key: string]: unknown;
 }
 
 export type InitialState<I = unknown> = Record<string, I>;

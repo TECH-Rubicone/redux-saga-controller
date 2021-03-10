@@ -3,7 +3,7 @@
 import { takeEvery, put, select } from 'redux-saga/effects';
 
 // local dependencies
-import { Controller, prepareController } from '../src'; // Use line below
+import { Controller, prepareController, CtrlActionCreators, CtrlActionCreator, CtrlPayload } from '../src'; // Use line below
 
 import { Ctrl } from '../src/controller';
 
@@ -21,10 +21,13 @@ interface IInitial {
 }
 
 // NOTE IMPORTANT!
+interface InitializePayload extends CtrlPayload {
+  boo: number;
+}
 // You should add interface for actions its only one way to define payload annotation
-interface Actions {
-  INITIALIZE: (payload: Partial<IInitial>) => undefined;
-  getSelf: (payload: Partial<IInitial>) => undefined;
+interface IActions extends CtrlActionCreators<IInitial> {
+  INITIALIZE: CtrlActionCreator<InitializePayload>;
+  getSelf: CtrlActionCreator<Partial<IInitial>>;
 }
 
 // NOTE Initial data for your redux state
@@ -38,7 +41,7 @@ const initial: IInitial = {
 };
 
 // NOTE Create Controller
-export const controller = prepareController({
+export const controller: Controller<IInitial, IActions> = prepareController({
   initial, // Setup initial data for redux state
   prefix: 'root', // Controller name
   types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
@@ -46,8 +49,14 @@ export const controller = prepareController({
     yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
   }
 });
-controller.getInitial().initialized;
-controller.action.GET_SELF;
+controller.initial.initialized;
+controller.action.getSelf({ initialized: true, boo: 2 });
+controller.action.INITIALIZE({ boo: 1 });
+controller.action.updateCtrl({ disabled: false, initialized: 'hey strings not allowed *)' });
+// controller.action.GET_SELF();
+// controller.action.updateCtrl({ a: 1 });
+// controller.action
+
 //
 // controller.action.updateCtrl();
 // controller.action.updateCtrl.TYPE;
@@ -59,18 +68,19 @@ controller.action.GET_SELF;
 // controller.action
 
 
-export const ctrlNew = new Controller({
-  initial, // Setup initial data for redux state
-  prefix: 'root', // Controller name
-  types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
-  subscriber: function * subscriber () {
-    yield takeEvery(ctrlNew.action.INITIALIZE.TYPE, initializeSaga);
-  },
-});
-ctrlNew.getInitial().initialized;
-ctrlNew.action.GET_SELF;
-ctrlNew.getInitial();
-
+// export const ctrlNew = new Controller({
+//   initial, // Setup initial data for redux state
+//   name: 'root', // Controller name
+//   types: ['INITIALIZE', 'GET_SELF'], // Types for which action creators will be generated
+//   subscriber: function * subscriber () {
+//     yield takeEvery(ctrlNew.action.INITIALIZE.TYPE, initializeSaga);
+//   },
+// });
+// ctrlNew.getInitial().initialized;
+// ctrlNew.action.GET_SELF;
+// ctrlNew.getInitial();
+// ctrlNew.action.updateCtrl({ a: 1 });
+// ctrlNew.action
 
 const ctrlOld = new Ctrl(
   {
@@ -84,6 +94,7 @@ const ctrlOld = new Ctrl(
 );
 ctrlOld.initial.initialized;
 ctrlOld.action.INITIALIZE;
+ctrlOld.action.UPDATE_CTRL({ a: 1 });
 
 
 export default 1;
@@ -100,7 +111,7 @@ function * initializeSaga ({ type, payload } : { type: string, payload: any }) {
   ////////////////////////////
 
   // NOTE Actual data - data with which selector works
-  const { initialized, data }: IInitial = yield select(controller.selector);
+  const { initialized, data }: IInitial = yield select(ctrlOld.selector);
   console.log(data.name); // John
 
   //////////////////////////
@@ -108,10 +119,10 @@ function * initializeSaga ({ type, payload } : { type: string, payload: any }) {
   //////////////////////////
 
   // NOTE clearCtrl will setup actual to {}
-  yield put(controller.action.clearCtrl());
+  yield put(ctrlOld.action.CLEAR_CTRL());
   // NOTE will dispach an action getSelf
   // getSelf is equal to yield put({ type: controller.TYPE.getSelf })
-  yield put(controller.action.GET_SELF());
+  yield put(ctrlOld.action.GET_SELF());
   // NOTE it is partial update actual data object
-  yield put(controller.action.updateCtrl({ initialized: true }));
+  yield put(ctrlOld.action.UPDATE_CTRL({ initialized: true }));
 }
