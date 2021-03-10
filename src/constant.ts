@@ -137,9 +137,14 @@ export interface CSDPayload<Initial = unknown> {
   connected?: boolean;
 }
 
-export interface CtrlOptions<Type, Initial = InitialState> {
+export interface CtrlOptions<Initial = InitialState> {
   prefix: string;
-  types: Array<Type>;
+  types: string[];
   initial: Initial;
-  subscriber: Subscriber;
+  /*************************************************************************************
+   * 'controller' implicitly has type 'any' because it does not have a type annotation
+   * and is referenced directly or indirectly in its own initializer.
+   ************************************************************************************/
+  // subscriber: Subscriber;
+  subscriber: unknown;
 }

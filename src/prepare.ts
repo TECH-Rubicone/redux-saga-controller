@@ -4,7 +4,7 @@ import { Task } from 'redux-saga';
 
 // local dependencies
 import { pinClearCSD, pinUpdateCSD, selectActualCSD } from './reducer';
-import { SECRET, forceCast, createAction, typeCase, actionCase, hash, Subscriber, CtrlActionCreators } from './constant';
+import { SECRET, forceCast, createAction, typeCase, actionCase, hash, Subscriber, CtrlActionCreators, CtrlOptions } from './constant';
 
 /**
  * generate annotation for controller using minimal input data
@@ -37,10 +37,10 @@ export function prepareController<Initial, Actions> ({ prefix, subscriber, initi
 }
 
 export class Controller<Initial, Actions> {
-  // ```````````````````````````````````````````````````````````````````````````````````
-  //  'controller' implicitly has type 'any' because it does not have a type annotation
-  //  and is referenced directly or indirectly in its own initializer.
-  // ````````````````````````````````````````````````````````````````````````````````````
+  /*************************************************************************************
+   * 'controller' implicitly has type 'any' because it does not have a type annotation
+   * and is referenced directly or indirectly in its own initializer.
+   ************************************************************************************/
   private readonly sagaSubscriber;
 
   private readonly types: string[];
