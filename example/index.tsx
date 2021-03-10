@@ -32,14 +32,14 @@ export const Example2 = memo(() => {
   // NOTE Prefer way because it will be use initial value if actual value doesn't exist
   const { data, disabled, initialized } = useControllerData(controller);
   // NOTE Actions are already wrapped with dispatch
-  const { INITIALIZE, CLEAR_CTRL, GET_SELF } = useControllerActions(controller);
+  const { INITIALIZE, CLEAR_CTRL, GET_SELF, clearCtrl } = useControllerActions(controller);
   // NOTE isControllerConnected
   const isControllerConnected = useControllerSubscribe(controller);
 
   useEffect(() => {
-    INITIALIZE();
-    return CLEAR_CTRL;
-  }, [INITIALIZE, CLEAR_CTRL]);
+    INITIALIZE({ foo: 2 });
+    return () => { clearCtrl({}); };
+  }, [INITIALIZE, clearCtrl]);
 
   if (!initialized || !isControllerConnected) { return null; }
   return <div>

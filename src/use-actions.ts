@@ -8,7 +8,7 @@ import { Controller } from './index';
 import { forceCast, getKeys } from './constant';
 
 // HOOK
-export const useActions = <Initial, Actions>(controller: Controller<Initial, Actions>) => {
+export const useActions = <Initial, Actions>(controller: Controller<Initial, Actions>): Actions => {
   const dispatch = useDispatch();
   const actions: Actions = controller.action;
   return useMemo(() => {
@@ -17,10 +17,10 @@ export const useActions = <Initial, Actions>(controller: Controller<Initial, Act
       const action = actions[name];
       wrappedActions[name] = forceCast<Actions[keyof Actions]>(<Payload>(payload: Payload) => {
         if (typeof action === 'function') {
-          action(payload);
+          dispatch(action(payload));
         }
       });
     });
-    return wrappedActions;
+    return forceCast<Actions>(wrappedActions);
   }, [actions, dispatch]);
 };

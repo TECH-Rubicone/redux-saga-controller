@@ -40,7 +40,7 @@ export { Controller, prepareController };
 // ] as const;
 export function useController<Type extends string, Initial> (controller: Controller<Type, Initial>) {
   return [
-  //   useReducer(controller),
+    useReducer(controller),
     useActions(controller),
   //   useSubscribe(controller),
   ] as const;
