@@ -22,12 +22,12 @@ import { SECRET, forceCast, createAction, typeCase, actionCase, hash, Subscriber
  }}
  */
 // NOTE simple wrapper which provide types to constructor - not good enough :(
-export function prepareController<Initial, Actions> ({ prefix, subscriber, initial, types }: {
-    prefix: string,
-    types: string[],
-    initial: Initial,
-    subscriber: unknown, // *^ ...implicitly...
-  }): Controller<Initial, Actions> {
+export function prepareController<Initial, Actions> ({
+  types,
+  prefix,
+  initial,
+  subscriber,
+}: CtrlOptions<Initial>): Controller<Initial, Actions> {
   return new Controller({
     name: `${prefix}-${hash()}`,
     subscriber,

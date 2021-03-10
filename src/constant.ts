@@ -5,11 +5,9 @@ import { Action } from 'redux';
 // local dependencies
 
 export const REDUCER_PATH = 'controller';
-
 export const SAGA_PREFIX = '@CSD-action/';
 export const REDUCER_PREFIX = '@CSD-store';
-
-// NOTE to provide ability to know who call the method :)
+// NOTE to provide ability to know who call the method ;)
 export const SECRET = Symbol('secret key ;)');
 
 /**************************************
@@ -49,25 +47,19 @@ function transform (value: string, { sep, format }: {
   result = replace(result, /[^A-Z0-9]+/gi, '\0');
   let start = 0;
   let end = result.length;
-  while (result.charAt(start) === '\0') {
-    start++;
-  }
-  while (result.charAt(end - 1) === '\0') {
-    end--;
-  }
+  while (result.charAt(start) === '\0') { start++; }
+  while (result.charAt(end - 1) === '\0') { end--; }
   return result.slice(start, end).split('\0').map(format).join(sep);
 }
 /**
  * Replace `re` in the input string with the replacement value.
  */
 function replace (input: string, regExp: RegExp | RegExp[], value: string) {
-  if (regExp instanceof RegExp) {
-    return input.replace(regExp, value);
-  }
+  if (regExp instanceof RegExp) { return input.replace(regExp, value); }
   return regExp.reduce((input, regExp) => input.replace(regExp, value), input);
 }
 /**************************************
- *             ACTIONS ;)
+ *             ACTIONS
  **************************************/
 export function createAction<Payload> (type: string): CtrlActionCreator<Payload> {
   const ac: CtrlActionCreator<Payload> = (payload: Payload): CtrlAction<Payload> => ({ type, payload });
@@ -75,23 +67,21 @@ export function createAction<Payload> (type: string): CtrlActionCreator<Payload>
   ac.TYPE = type;
   return ac;
 }
+
 /**************************************
- * lets fuck TS using bloody hack :)
+ * lets fuck TS using bloody hacks :)
  **************************************/
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function forceCast<T> (any: any): T { return any; }
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getKeys = <T extends {}>(o: T): Array<keyof T> => <Array<keyof T>>Object.keys(o);
+
 /**************************************
  *              TYPING
  **************************************/
-// type Options<T extends Record<string, unknown>> = { [K in keyof T]:T[K]; }
-// function Options<T extends Record<string, unknown>>(value:T): Options<T> {
-//   return Object.assign({}, value);
-// }
-export type CtrlSystemActionTypes = 'updateCtrl' | 'clearCtrl';
-
+export type CtrlPayload = Record<string, unknown>;
 export type Subscriber = () => IterableIterator<unknown>;
+export type InitialState<I = unknown> = Record<string, I>;
 
 export interface CtrlAction<Payload = CtrlPayload> extends Action {
   payload: Payload;
@@ -102,39 +92,24 @@ export interface CtrlActionCreator<Payload = CtrlPayload> extends ActionCreator<
   toString(): string;
   TYPE: string;
 }
-export interface CtrlPayload {
-  [key: string]: unknown;
-}
-
 export interface CtrlActionCreators<Payload = CtrlActionCreator> {
   clearCtrl: CtrlActionCreator<Record<string, unknown>>;
   updateCtrl: CtrlActionCreator<Partial<Payload>>;
   [key: string]: unknown;
 }
 
-export type InitialState<I = unknown> = Record<string, I>;
-
 export interface Meta<I> {
   connected: boolean;
   initial: I;
 }
-export type CSDState<I = any> = {
-  [reducer: string]: unknown;
-} & {
-  META: {
-    [ctrl: string]: Meta<I>;
-  };
-}
-export type GlobalState = {
-  [ctrl: string]: unknown;
-} & {
-  [REDUCER_PATH]: CSDState;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type CSDState<I = any> = { [ctrl: string]: unknown; } & { META: { [ctrl: string]: Meta<I>; }; }
+export type GlobalState = { [reducer: string]: unknown; } & { [REDUCER_PATH]: CSDState; }
 export interface CSDPayload<Initial = unknown> {
   name: string;
-  data?: Record<string, unknown>;
   initial?: Initial;
   connected?: boolean;
+  data?: Record<string, unknown>;
 }
 
 export interface CtrlOptions<Initial = InitialState> {
