@@ -38,7 +38,7 @@ export { Controller, prepareController };
 //   useActions(controller),
 //   useSubscribe(controller),
 // ] as const;
-export function useController<Type extends string, Initial> (controller: Controller<Type, Initial>) {
+export function useController<Initial, Actions> (controller: Controller<Initial, Actions>) {
   return [
     useReducer(controller),
     useActions(controller),

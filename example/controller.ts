@@ -75,10 +75,6 @@ ctrlOld.initial.initialized;
 ctrlOld.action.INITIALIZE;
 ctrlOld.action.UPDATE_CTRL({ a: 1 });
 
-
-export default 1;
-
-
 // NOTE Example of usage redux sagas
 function * initializeSaga ({ type, payload } : { type: string, payload: any }) {
   console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'

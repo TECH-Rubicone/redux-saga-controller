@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 // local dependencies
-import { Controller } from './index';
+import { Controller } from './prepare';
 import { selectActualCSD } from './reducer';
 
 // HOOK
