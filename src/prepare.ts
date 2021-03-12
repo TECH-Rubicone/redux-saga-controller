@@ -6,21 +6,6 @@ import { Task } from 'redux-saga';
 import { pinClearCSD, pinUpdateCSD, selectActualCSD } from './reducer';
 import { SECRET, forceCast, createAction, typeCase, actionCase, hash, Subscriber, CtrlActionCreators, CtrlOptions } from './constant';
 
-/**
- * generate annotation for controller using minimal input data
- * @param options
- * @returns {{
-  subscriber: *,
-  selector: (function(*=): *),
-  initial: {},
-  name: string,
-  action: {
-    updateCtrl: (function(*=): {payload: *, name: *, type: string}),
-    clearCtrl: (function(): {name: *, type: string})
- *: (function(): {name: *, type: string})
-  }
- }}
- */
 // NOTE simple wrapper which provide types to constructor - not good enough :(
 export function prepareController<Initial, Actions> ({
   types,
@@ -36,6 +21,21 @@ export function prepareController<Initial, Actions> ({
   });
 }
 
+/**
+ * generate annotation for controller using minimal input data
+ * @param options
+ * @returns {{
+    subscriber: *,
+    selector: (function(*=): *),
+    initial: {},
+    name: string,
+    action: {
+      updateCtrl: (function(*=): {payload: *, name: *, type: string}),
+      clearCtrl: (function(): {name: *, type: string})
+    *: (function(): {name: *, type: string})
+    }
+  }}
+ */
 export class Controller<Initial, Actions> {
   /*************************************************************************************
    * 'controller' implicitly has type 'any' because it does not have a type annotation
