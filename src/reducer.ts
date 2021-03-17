@@ -34,11 +34,13 @@ const initialStateSCD = {
 export const reducer = (state: CSDState = initialStateSCD, action: CtrlAction<CSDPayload>) => {
   // NOTE "name" it's required unique identifier for dynamic reducers
   const { type, payload } = action;
-  // NOTE Data from the payload
-  const name = payload.name;
-  const data = payload.data || {};
-  const initial = payload.initial || {};
-  // NOTE Data from the store
+  // NOTE using safe reducer
+  const name = payload?.name || '';
+  if (!name) { return state; }
+
+  const data = payload?.data || {};
+  const initial = payload?.initial || {};
+  // NOTE use prev data from the store
   const current = state?.[name] || {};
   const currentMeta = state.META?.[name] || {};
   const currentInitial = state.META?.[name]?.initial || {};

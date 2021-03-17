@@ -4,7 +4,7 @@ import React from 'react';
 
 // local dependencies
 import * as CTRL from '../src';
-const { sagas, reducer, Controller, useController, useControllerActions, useControllerData, useControllerSubscribe } = CTRL;
+const { sagas, reducer, prepareController, useController, useControllerActions, useControllerData, useControllerSubscribe } = CTRL;
 
 describe('Controller interface', () => {
 
@@ -22,8 +22,8 @@ describe('Controller interface', () => {
     );
   });
 
-  it('should exist "Controller"', () => {
-    expect(Controller).toBeInstanceOf(Function);
+  it('should exist "prepareController"', () => {
+    expect(prepareController).toBeInstanceOf(Function);
   });
 
   it('should exist "sagas"', () => {

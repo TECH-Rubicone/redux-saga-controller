@@ -106,7 +106,7 @@ export interface Meta<I> {
 export type CSDState<I = any> = { [ctrl: string]: unknown; } & { META: { [ctrl: string]: Meta<I>; }; }
 export type GlobalState = { [reducer: string]: unknown; } & { [REDUCER_PATH]: CSDState; }
 export interface CSDPayload<Initial = unknown> {
-  name: string;
+  name?: string;
   initial?: Initial;
   connected?: boolean;
   data?: Record<string, unknown>;
