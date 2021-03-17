@@ -7,7 +7,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 
 // local dependencies
-import { reducer as controller, sagas as ctrlSagas, Controller } from '../src';
+import { reducer as controller, sagas as ctrlSagas, prepareController, CtrlOptions } from '../src';
 
 // NOTE prevent node errors within tests
 process.on('unhandledRejection', () => null);
@@ -55,7 +55,7 @@ const testTypes = ['TEST_ACTION_1', 'testAction2', 'test_ACTION3'];
 const formattedActionNames = ['testAction1', 'testAction2', 'testAction3'];
 const testInitial = { test: true };
 function * testSubscriber () { /* NOTE do nothing */ }
-const createTestCtrl = (options = {}) => new Controller({
+const createTestCtrl = (options: Partial<CtrlOptions>) => prepareController({
   types: testTypes,
   prefix: testPrefix,
   initial: testInitial,

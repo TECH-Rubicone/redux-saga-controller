@@ -27,9 +27,9 @@ interface MostCommonActionPayload {
 }
 // You should add interface for actions its only one way to define payload annotation
 interface IActions extends CtrlActionCreators<IInitial> {
-  INITIALIZE: CtrlActionCreator<InitializePayload>; // invalid action become to "initialize" actionCase("INITIALIZE")
-  getSelf: CtrlActionCreator<Partial<IInitial>>; // "GET_SELF" actionCase("getSelf")
-  someAction: CtrlActionCreator<MostCommonActionPayload>; // "someAction" actionCase("someAction")
+  INITIALIZE: CtrlActionCreator<InitializePayload>; // invalid action become to "initialize" <== actionCase("INITIALIZE")
+  getSelf: CtrlActionCreator<Partial<IInitial>>; // "getSelf" <= actionCase("GET_SELF")
+  someAction: CtrlActionCreator<MostCommonActionPayload>; // "someAction" <== actionCase("someAction")
 }
 // NOTE Create Controller
 export const controller: Controller<IInitial, IActions> = prepareController({
