@@ -10,6 +10,14 @@ export const REDUCER_PREFIX = '@CSD-store';
 // NOTE to provide ability to know who call the method ;)
 export const SECRET = Symbol('secret key ;)');
 
+export const isTypes = (list: unknown): boolean => Array.isArray(list) && list.length > 0
+  && Boolean(list.reduce((acc: boolean, i: unknown) => i && typeof i === 'string' && acc, true));
+export const isInitial = (initial: unknown): boolean => Object.prototype.toString.call(initial) === '[object Object]';
+// FIXME on production build the generator will compile to "function"
+export const isSubscriber = (subscriber: unknown): boolean => typeof subscriber === 'function';
+// FIXME it's mean the validation is "isSubscriber" should be simplified too
+// export const isSubscriber = (subscriber: unknown): boolean => typeof subscriber === 'function'
+//   && subscriber.constructor && subscriber.constructor.name === 'GeneratorFunction';
 /**************************************
  * 100% unique hash
  **************************************/
@@ -25,10 +33,7 @@ export const actionCase = (value: string): string => transform(value, {
   format: (value: string, index: number): string => {
     const first = value.charAt(0);
     const others = value.substr(1).toLowerCase();
-    if (index > 0 && first >= '0' && first <= '9') {
-      return `_${first}${others}`;
-    }
-    return `${first.toUpperCase()}${others}`;
+    return `${index > 0 ? first.toUpperCase() : first.toLowerCase()}${others}`;
   },
   sep: '',
 });
@@ -113,13 +118,13 @@ export interface CSDPayload<Initial = unknown> {
 }
 
 export interface CtrlOptions<Initial = InitialState> {
-  prefix: string;
-  types: string[];
-  initial: Initial;
+  prefix?: string;
+  types?: string[];
+  initial?: Initial;
   /*************************************************************************************
    * 'controller' implicitly has type 'any' because it does not have a type annotation
    * and is referenced directly or indirectly in its own initializer.
    ************************************************************************************/
   // subscriber: Subscriber;
-  subscriber: unknown;
+  subscriber?: unknown;
 }

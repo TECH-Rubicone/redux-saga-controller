@@ -26,10 +26,7 @@ export const reducers: Reducer<ApplicationState> = combineReducers<ApplicationSt
   anyOtherReducer: () => ({}),
 });
 // NOTE Create store outside of root to be able dispatch actions from anywhere!
-const store = createStore(
-  reducers,
-  middleware
-);
+const store = createStore(reducers, middleware);
 
 // NOTE simple initialize only "controller" sagas
 // saga.run(controllerSagas);

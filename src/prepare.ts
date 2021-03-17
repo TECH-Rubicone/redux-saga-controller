@@ -4,7 +4,7 @@ import { Task } from 'redux-saga';
 
 // local dependencies
 import { pinClearCSD, pinUpdateCSD, selectActualCSD } from './reducer';
-import { SECRET, forceCast, createAction, typeCase, actionCase, hash, Subscriber, CtrlActionCreators, CtrlOptions } from './constant';
+import { SECRET, forceCast, createAction, typeCase, actionCase, hash, Subscriber, CtrlActionCreators, CtrlOptions, isTypes, isInitial, isSubscriber } from './constant';
 
 // NOTE simple wrapper which provide types to constructor - not good enough :(
 export function prepareController<Initial, Actions> ({
@@ -13,8 +13,17 @@ export function prepareController<Initial, Actions> ({
   initial,
   subscriber,
 }: CtrlOptions<Initial>): Controller<Initial, Actions> {
+  if (!types || !isTypes(types)) {
+    throw new Error('"types" is required');
+  }
+  if (!initial || !isInitial(initial)) {
+    throw new Error('"initial" is required');
+  }
+  if (!subscriber || !isSubscriber(subscriber)) {
+    throw new Error('"subscriber" is required');
+  }
   return new Controller({
-    name: `${prefix}-${hash()}`,
+    name: `${prefix || hash()}-${hash()}`,
     subscriber,
     initial,
     types,
@@ -49,6 +58,8 @@ export class Controller<Initial, Actions> {
 
   public readonly reducerInitial = {} as Initial;
 
+  public action: Actions;
+
   public name: string;
 
   public selector;
@@ -65,9 +76,11 @@ export class Controller<Initial, Actions> {
     this.reducerInitial = initial;
     // NOTE base selector
     this.selector = selectActualCSD<Initial>(name);
+    // NOTE create actions
+    this.action = this.createActions();
   }
 
-  public get action (): Actions {
+  private createActions (): Actions {
     const action: CtrlActionCreators = {
       clearCtrl: pinClearCSD(this.name),
       updateCtrl: pinUpdateCSD(this.name),
