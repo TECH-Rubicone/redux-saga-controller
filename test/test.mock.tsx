@@ -28,6 +28,7 @@ export const renderHookWithRedux = (hook: any) => renderHook(hook, { wrapper: Re
 export const testPrefix = 'test';
 export const testTypes = ['TEST_ACTION_1', 'testAction2', 'test_ACTION3'];
 export const formattedActionNames = ['testAction1', 'testAction2', 'testAction3'];
+export const formattedTypeNames = ['TEST_ACTION_1', 'TEST_ACTION2', 'TEST_ACTION3'];
 export const testInitial = { test: true };
 export function * testSubscriber () { /* NOTE do nothing */ }
 export const createTestCtrl = (options = {}) => prepareController({
