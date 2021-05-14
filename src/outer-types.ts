@@ -1,11 +1,14 @@
 
+// local dependencies
 import { Action } from './actions';
 
+export { Action };
+export { State } from './reducer';
+export { Subscriber } from './saga';
+export { Controller } from './prepare';
 /**************************************
  *              TYPING
  **************************************/
-
-export { Action };
 
 export interface ActionCreator<Payload> {
   (payload?: Payload): Action<Payload>

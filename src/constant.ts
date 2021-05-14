@@ -1,7 +1,4 @@
 
-// NOTE private things on public object
-export const SECRET = Symbol('¯\\_(ツ)_/¯');
-
 export const isPlainObject = (value: unknown): boolean => Object.prototype.toString.call(value) === '[object Object]';
 
 // FIXME on production build the generator will compile to "function"
@@ -24,3 +21,19 @@ export const hash = (): string => String(`XXX${++counter}`)
 export function forceCast<T> (any: any): T { return any; }
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getKeys = <T extends {}>(o: T): Array<keyof T> => <Array<keyof T>>Object.keys(o);
+
+/**************************************
+ *          CONSTANTS
+ **************************************/
+// NOTE private things on public object
+export const SECRET = Symbol('¯\\_(ツ)_/¯');
+
+export const PATH = {
+  META: `@meta-${hash()}` as 'value',
+  REDUCER: `@controller-${hash()}` as 'value',
+};
+
+export const PREFIX = {
+  SAGA: `@CSD-action-${hash()}/` as 'value',
+  REDUCER: `@CSD-store-${hash()}/` as 'value',
+};

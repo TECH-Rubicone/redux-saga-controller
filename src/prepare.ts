@@ -14,7 +14,7 @@ type PrivateData<Initial> = {
   initial: Initial;
   subscriber: Subscriber;  // *^ ...implicitly call...  Subscriber,
 };
-export type Controller<Actions, Initial> = {
+export type Controller<Actions = any, Initial = any> = {
   id: string,
   action: Actions,
   select: Selector<Initial>,
@@ -22,7 +22,7 @@ export type Controller<Actions, Initial> = {
 }
 
 export function prepareController<Actions, Initial> (
-  actions: Partial<unknown>,
+  actions: any,
   subscriber: Subscriber, // *^ ...implicitly...,
   initial: Initial,
   prefix = ''

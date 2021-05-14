@@ -9,27 +9,30 @@ import createController, { Controller, ActionCreators, ActionCreator } from '../
 // You should add interface only of you will use select effect from redux-saga
 // In all cases except select effect you don't need it
 // It because redux-saga effect select return any time in all cases
+type UserData = {
+  name: string;
+  age: number;
+  [key: string]: unknown
+}
 interface IInitial {
   initialized: boolean;
   disabled: boolean;
-  data: {
-    name: string;
-    age: number;
-  }
+  data: UserData
 }
 // NOTE action payloads
 interface InitializePayload {
   foo: number;
 }
-interface MostCommonActionPayload {
+interface SomePayload {
   id: number | string;
   name?: string;
 }
+type GetSelfPayload = { id: string| number };
 // You should add interface for actions its only one way to define payload annotation
 interface IActions extends ActionCreators<IInitial> {
-  INITIALIZE: ActionCreator<InitializePayload>; // invalid action become to "initialize" <== actionCase("INITIALIZE")
-  getSelf: ActionCreator<Partial<IInitial>>; // "getSelf" <= actionCase("GET_SELF")
-  someAction: ActionCreator<MostCommonActionPayload>; // "someAction" <== actionCase("someAction")
+  INITIALIZE: ActionCreator<InitializePayload>;
+  someAction: ActionCreator<SomePayload>;
+  getSelf: ActionCreator<GetSelfPayload>;
 }
 
 export const controller:Controller<IActions, IInitial> = createController(
@@ -46,27 +49,11 @@ export const controller:Controller<IActions, IInitial> = createController(
     initialized: false,
     disabled: false,
     data: {
-      name: 'John',
-      age: 30,
+      name: '',
+      age: 0,
     }
   }
 );
-// NOTE Create Controller
-// export const controller: Controller<IInitial, IActions> = prepareController({
-//   initial: {
-//     initialized: false,
-//     disabled: false,
-//     data: {
-//       name: 'John',
-//       age: 30,
-//     }
-//   }, // Setup initial data for redux state
-//   prefix: 'root', // Controller name
-//   types: ['INITIALIZE', 'GET_SELF', 'someAction'], // actionCase => ['initialize', 'getSelf']
-//   subscriber: function * () {
-//     yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
-//   }
-// });
 
 // NOTE Example of usage redux sagas
 function * initializeSaga ({ type, payload } : { type: string, payload: InitializePayload }) {
@@ -85,10 +72,14 @@ function * initializeSaga ({ type, payload } : { type: string, payload: Initiali
   yield put(controller.action.updateCtrl({ initialized: true }));
 }
 
-function * getSelfSaga ({ type, payload } : { type: string, payload: InitializePayload }) {
+function * getSelfSaga ({ type, payload } : { type: string, payload: GetSelfPayload }) {
+  const userData: UserData = { name: 'Bilbo', age: 130, id: payload.id };
   console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
     , '\n let assume its request ;):', payload
+    , '\n userData:', userData
   );
+  // NOTE Type '{ q: number; }' is missing the following properties from type 'UserData': name, age
+  // yield put(controller.action.updateCtrl({ data: { q: 1 } }));
   // NOTE update any property of entire controller reducer
-  yield put(controller.action.updateCtrl({ initialized: true }));
+  yield put(controller.action.updateCtrl({ data: userData }));
 }

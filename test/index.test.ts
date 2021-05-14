@@ -1,6 +1,5 @@
 
 // outsource dependencies
-import React from 'react';
 
 // local dependencies
 import * as CTRL from '../src';

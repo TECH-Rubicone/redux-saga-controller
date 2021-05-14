@@ -15,7 +15,6 @@ export const Example1 = memo(() => {
     isControllerConnected
   ] = useController(controller);
 
-  // updateCtrl({ disabled: true, foo: 'invalid - "foo" absent on IInitial ;)' });
   updateCtrl({ disabled: true });
   const handleToggleDisabled = useCallback(
     () => updateCtrl({ disabled: !disabled }),
@@ -26,7 +25,6 @@ export const Example1 = memo(() => {
     [updateCtrl, disabled]
   );
   useEffect(() => {
-    // INITIALIZE({ foo: 'invalid - not a number ;)' });
     INITIALIZE({ foo: 2 });
     return () => { clearCtrl(); };
   }, [INITIALIZE, clearCtrl]);
@@ -35,11 +33,6 @@ export const Example1 = memo(() => {
   return <div>
     <h1>Hello {data.name}! Your age is {data.age}</h1>
     <button onClick={handleToggleDisabled}> toggle disabled </button>
-    {/*<button */}
-    {/*  disabled={disabled} */}
-    {/*  onClick={() => getSelf({ initialized: 'invalid - not a boolean ;)' })}>*/}
-    {/*  Get Details*/}
-    {/*</button>*/}
     <button disabled={disabled} onClick={handleGetSef}> Get Details </button>
   </div>;
 });

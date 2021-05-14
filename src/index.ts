@@ -1,7 +1,11 @@
+
 import { useActions } from './use-actions';
 import { useReducer } from './use-reducer';
 import { useSubscribe } from './use-subscribe';
 import { Controller, prepareController } from './prepare';
+
+// NOTE required for examples
+export * from './outer-types';
 /**
  * Controller require connection to react-redux and redux-saga
  * please make sure you connected to react-redux and setup saga subscriber
@@ -11,9 +15,8 @@ import { Controller, prepareController } from './prepare';
  * import { sagas as controllerSagas } from 'redux-saga-controller';
  *
  */
-export * from './outer-types';
 export { sagas } from './saga';
-export { reducer } from './reducer';
+export { reducer, path } from './reducer';
 
 /**
  * Controller require connection to react-redux and redux-saga
@@ -25,7 +28,7 @@ export { reducer } from './reducer';
  * import { sagas as controllerSagas } from './services/controller.service';
  *
  */
-export { Controller, prepareController };
+export { prepareController };
 export default prepareController;
 
 /**

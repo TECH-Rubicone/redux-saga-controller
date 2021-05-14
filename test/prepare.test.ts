@@ -2,81 +2,82 @@
 // outsource dependencies
 
 // local dependencies
-import { prepareController } from '../src';
-import { testPrefix as prefix, testTypes as types, testInitial as initial, formattedActionNames, formattedTypeNames, testSubscriber as subscriber } from './test.mock';
+import { SECRET } from '../src/constant';
+import { prepareController} from '../src';
 
 // configure
-const options = { prefix, types, initial, subscriber };
+const prefix = 'test';
+const initial = { test: true };
+function * subscriber () { /* NOTE do nothing */ }
+const actionsInfo = {
+  test: 't',
+  test0: 't',
+  test1: 't1',
+  test2: 't2',
+  test3: 't3',
+};
+const asFnShape = {
+  clearCtrl: expect.any(Function),
+  updateCtrl: expect.any(Function)
+};
+// @ts-ignore
+Object.keys(actionsInfo).map(prop => asFnShape[prop as const] = expect.any(Function));
+const asObjShape = {};
+// @ts-ignore
+Object.keys(actionsInfo).map(prop => asObjShape[prop as const] = expect.objectContaining({
+  TYPE: expect.stringContaining(prop),
+  toString: expect.any(Function),
+}));
+const schemaShape = {
+  select: expect.any(Function),
+  id: expect.stringContaining(prefix),
+  action: expect.objectContaining(asObjShape),
+  [SECRET]: expect.objectContaining({
+    initial,
+    subscriber,
+  }),
+};
 
 describe('Controller preparing', () => {
 
   it('should check "CtrlOptions"', () => {
-    expect(() => prepareController(options)).not.toThrow();
-    expect(() => prepareController({ ...options, subscriber: void(0) })).toThrow();
-    expect(() => prepareController({ ...options, initial: void(0) })).toThrow();
-    expect(() => prepareController({ ...options, types: void(0) })).toThrow();
-    expect(() => prepareController({ ...options, types: [] })).toThrow();
+    expect(() => prepareController(actionsInfo, subscriber, initial, prefix)).not.toThrow();
+    expect(() => prepareController(actionsInfo, subscriber, initial)).not.toThrow();
+    expect(() => prepareController(actionsInfo, subscriber, initial)).not.toThrow();
   });
 
-  it('should follow controller name rules', () => {
-    const ctrl1 = prepareController(options);
-    expect(ctrl1.name).toContain(prefix);
-    expect(ctrl1.name).not.toEqual(prefix);
-    const ctrl2 = prepareController({ ...options, prefix: void(0) });
-    expect(ctrl2.name).not.toContain(prefix);
-    expect(typeof ctrl2.name === 'string').toBeTruthy();
-
+  it('unique controller "id" rules', () => {
+    const ctrl1 = prepareController(actionsInfo, subscriber, initial, prefix);
+    expect(ctrl1.id).toContain(prefix);
+    expect(ctrl1.id).not.toEqual(prefix);
+    const ctrl2 = prepareController(actionsInfo, subscriber, initial);
+    expect(ctrl2.id).not.toContain(prefix);
+    expect(typeof ctrl2.id === 'string').toBeTruthy();
+    expect(ctrl1.id).not.toEqual(ctrl2.id);
   });
 
-  it('should follow format action creators names', () => {
-    const testCtrl = prepareController(options);
+  it('should generate action creators', () => {
+    const testCtrl = prepareController(actionsInfo, subscriber, initial);
     expect(testCtrl).toEqual(
       expect.objectContaining({
-        action: expect.objectContaining({
-          clearCtrl: expect.any(Function),
-          updateCtrl: expect.any(Function),
-          [formattedActionNames[0]]: expect.any(Function),
-          [formattedActionNames[1]]: expect.any(Function),
-          [formattedActionNames[2]]: expect.any(Function),
-        }),
+        action: expect.objectContaining(asFnShape),
       })
     );
   });
 
-  it('should follow format action creators info', () => {
-    const testCtrl = prepareController(options);
+  it('action creators "type"', () => {
+    const testCtrl = prepareController(actionsInfo, subscriber, initial);
     expect(testCtrl).toEqual(
       expect.objectContaining({
-        action: expect.objectContaining({
-          [formattedActionNames[0]]: expect.objectContaining({
-            TYPE: `@${testCtrl.name}/${formattedTypeNames[0]}`,
-            toString: expect.any(Function),
-          }),
-          [formattedActionNames[1]]: expect.objectContaining({
-            TYPE: `@${testCtrl.name}/${formattedTypeNames[1]}`,
-            toString: expect.any(Function),
-          }),
-          [formattedActionNames[2]]: expect.objectContaining({
-            TYPE: `@${testCtrl.name}/${formattedTypeNames[2]}`,
-            toString: expect.any(Function),
-          }),
-        }),
+        action: expect.objectContaining(asObjShape),
       })
     );
   });
 
-  it('should care "defaults"', () => {
-    expect(prepareController(options)).toEqual(
-      expect.objectContaining({
-        subscriber: subscriber,
-        name: expect.any(String),
-        initial: expect.any(Object),
-        selector: expect.any(Function),
-        action: expect.objectContaining({
-          clearCtrl: expect.any(Function),
-          updateCtrl: expect.any(Function)
-        }),
-      })
+  it('should match schema', () => {
+    const testCtrl = prepareController(actionsInfo, subscriber, initial, prefix);
+    expect(testCtrl).toEqual(
+      expect.objectContaining(schemaShape)
     );
   });
 
