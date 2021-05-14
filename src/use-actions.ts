@@ -8,7 +8,7 @@ import { Controller } from './prepare';
 import { forceCast, getKeys } from './constant';
 
 // HOOK
-export const useActions = <Initial, Actions>(controller: Controller<Initial, Actions>): Actions => {
+export const useActions = <Actions, Initial>(controller: Controller<Actions, Initial>): Actions => {
   const dispatch = useDispatch();
   const actions: Actions = controller.action;
   return useMemo(() => {

@@ -5,12 +5,8 @@
 import { prepareController } from '../src';
 import { testPrefix as prefix, testTypes as types, testInitial as initial, formattedActionNames, formattedTypeNames, testSubscriber as subscriber } from './test.mock';
 
-const options = {
-  prefix,
-  types,
-  initial,
-  subscriber,
-};
+// configure
+const options = { prefix, types, initial, subscriber };
 
 describe('Controller preparing', () => {
 

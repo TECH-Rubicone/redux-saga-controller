@@ -3,125 +3,61 @@
 import { Task } from 'redux-saga';
 
 // local dependencies
-import { pinClearCSD, pinUpdateCSD, selectActualCSD } from './reducer';
-import { SECRET, forceCast, createAction, typeCase, actionCase, hash, Subscriber, CtrlActionCreators, CtrlOptions, isTypes, isInitial, isSubscriber } from './constant';
+import { Subscriber } from './saga';
+import { Selector, createSelectorActualCSD } from './reducer';
+import { createClearCtrl, createUpdateCtrl, createAction } from './actions';
+import { SECRET, forceCast, hash, isSubscriber, isPlainObject } from './constant';
 
-// NOTE simple wrapper which provide types to constructor - not good enough :(
-export function prepareController<Initial, Actions> ({
-  types,
-  prefix,
-  initial,
-  subscriber,
-}: CtrlOptions<Initial>): Controller<Initial, Actions> {
-  if (!types || !isTypes(types)) {
-    throw new Error('"types" is required');
-  }
-  if (!initial || !isInitial(initial)) {
-    throw new Error('"initial" is required');
-  }
-  if (!subscriber || !isSubscriber(subscriber)) {
-    throw new Error('"subscriber" is required');
-  }
-  return new Controller({
-    name: `${prefix || hash()}-${hash()}`,
-    subscriber,
-    initial,
-    types,
-  });
+
+type PrivateData<Initial> = {
+  channel?: Task;
+  initial: Initial;
+  subscriber: Subscriber;  // *^ ...implicitly call...  Subscriber,
+};
+export type Controller<Actions, Initial> = {
+  id: string,
+  action: Actions,
+  select: Selector<Initial>,
+  [SECRET]: PrivateData<Initial>
 }
 
-/**
- * generate annotation for controller using minimal input data
- * @param options
- * @returns {{
-    subscriber: *,
-    selector: (function(*=): *),
-    initial: {},
-    name: string,
-    action: {
-      updateCtrl: (function(*=): {payload: *, name: *, type: string}),
-      clearCtrl: (function(): {name: *, type: string})
-    *: (function(): {name: *, type: string})
+export function prepareController<Actions, Initial> (
+  actions: Partial<unknown>,
+  subscriber: Subscriber, // *^ ...implicitly...,
+  initial: Initial,
+  prefix = ''
+): Controller<Actions, Initial> {
+
+  if (!actions || !isPlainObject(actions)) {
+    throw new Error('"Actions" is required and should be a plain object (first argument)');
+  }
+  if (!subscriber || !isSubscriber(subscriber)) {
+    throw new Error('"Subscriber" is required and should be a saga generator (second argument)');
+  }
+  if (!initial || !isPlainObject(initial)) {
+    throw new Error('"Initial" is required and should be a plain object (third argument)');
+  }
+  const id = `${prefix ? `${prefix}-` : ''}${hash()}`;
+
+  /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
+  const action: Partial<any> = {};
+  // NOTE use same names as in annotation to provide auto suggestions for pure js also
+  for (const name in actions) {
+    // NOTE provide ability to setup readable action names within redux devtools
+    action[name] = createAction(`@${id}/${name}`);
+  }
+  // NOTE setup system action
+  action.clearCtrl = createClearCtrl<Initial>(id, initial);
+  action.updateCtrl = createUpdateCtrl(id);
+
+  return {
+    id,
+    // NOTE fuck typescript to allow setup action interface outside even if it will be wrong ;)
+    action: forceCast<Actions>(action),
+    select: createSelectorActualCSD(id, initial),
+    [SECRET]: {
+      initial,
+      subscriber,
     }
-  }}
- */
-export class Controller<Initial, Actions> {
-  /*************************************************************************************
-   * 'controller' implicitly has type 'any' because it does not have a type annotation
-   * and is referenced directly or indirectly in its own initializer.
-   ************************************************************************************/
-  private readonly sagaSubscriber;
-
-  private readonly types: string[];
-
-  private channel?: Task;
-
-  public readonly reducerInitial = {} as Initial;
-
-  public action: Actions;
-
-  public name: string;
-
-  public selector;
-
-  constructor ({ name, initial, types, subscriber }: {
-    name: string,
-    initial: Initial,
-    types: string[],
-    subscriber: unknown, // *^ ...implicitly...
-  }) {
-    this.name = name;
-    this.types = types;
-    this.sagaSubscriber = subscriber;
-    this.reducerInitial = initial;
-    // NOTE base selector
-    this.selector = selectActualCSD<Initial>(name);
-    // NOTE create actions
-    this.action = this.createActions();
-  }
-
-  private createActions (): Actions {
-    const action: CtrlActionCreators = {
-      clearCtrl: pinClearCSD(this.name),
-      updateCtrl: pinUpdateCSD(this.name),
-    };
-    // NOTE generate actions
-    for (const type of this.types) {
-      // this
-      const actName = actionCase(type);
-      action[actName] = createAction(`@${this.name}/${typeCase(type)}`);
-      // or this
-      action[type] = createAction(`@${this.name}/${typeCase(type)}`);
-    }
-    return forceCast<Actions>(action);
-  }
-
-  public get subscriber (): Subscriber {
-    return forceCast<Subscriber>(this.sagaSubscriber);
-  }
-
-  public get initial (): Initial {
-    return Object.assign({}, this.reducerInitial);
-  }
-
-  public hasChannel (): boolean { return Boolean(this.channel); }
-
-  public getChannel (secret: symbol): Task {
-    if (secret !== SECRET) {
-      throw new Error(`Unavailable access to private channel of ${this.name} detected !`);
-    }
-    return forceCast<Task>(this.channel);
-  }
-
-  public setChannel (channel?: Task): void {
-    if (channel && this.hasChannel()) {
-      throw new Error(`Duplicate controller subscription detected for "${this.name}"`);
-      // console.error(
-      //   `%c DUPLICATION FOR CONTROLLER: ${this.name} `, 'color: #FF6766; font-weight: bolder; font-size: 18px;'
-      //   , '\n Please make sure you use only one instance of Controller within DOM in same time'
-      //   , '\n controller:', this
-      // );
-    }
-    this.channel = channel;
-  }
+  };
 }

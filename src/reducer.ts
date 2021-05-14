@@ -1,76 +1,66 @@
 
 // outsource dependencies
-// import { Action, ActionCreator } from 'redux';
+
 
 // local dependencies
-import { REDUCER_PATH, REDUCER_PREFIX, forceCast, createAction, CtrlAction, CtrlActionCreator, CSDPayload, GlobalState, CSDState } from './constant';
+import { forceCast, hash, isPlainObject } from './constant';
+import { Action, createCSDAction, removeCSDAction, clearCSDAction, updateCSDAction, updateCSDMetaAction } from './actions';
 
-// ACTIONS
-export const clearCSDAction: CtrlActionCreator<CSDPayload> = createAction(`${REDUCER_PREFIX}/CLEAR`);
-export const removeCSDAction: CtrlActionCreator<CSDPayload> = createAction(`${REDUCER_PREFIX}/REMOVE`);
-export const updateCSDAction: CtrlActionCreator<CSDPayload> = createAction(`${REDUCER_PREFIX}/UPDATE`);
-export const createCSDAction: CtrlActionCreator<CSDPayload> = createAction(`${REDUCER_PREFIX}/CREATE`);
-export const updateCSDMetaAction: CtrlActionCreator<CSDPayload> = createAction(`${REDUCER_PREFIX}/META`);
 
-export const pinClearCSD = (name: string): CtrlActionCreator<Record<string, unknown>> =>
-  forceCast<CtrlActionCreator<Record<string, unknown>>>(() => clearCSDAction({ name }));
-export const pinUpdateCSD = <Payload>(name: string): CtrlActionCreator<Payload> =>
-  forceCast<CtrlActionCreator<Payload>>((data: Partial<Payload>) => updateCSDAction({ name, data }));
+const PATH = {
+  META: `@meta-${hash()}` as 'value',
+  REDUCER: `@controller-${hash()}` as 'value',
+};
+
+type CtrlMeta = { connected?: boolean; };
+type Meta = { [ctrl: string]: CtrlMeta; };
+export type Selector<Initial> = { (state: GlobalState): Initial };
+interface CSDPayload { id: string; data: Record<string, unknown>; }
+type CSDState = { [ctrl: string]: unknown; } & { [PATH.META]: Meta; }
+type GlobalState = { [reducer: string]: unknown; } & { [PATH.REDUCER]: CSDState; }
 
 // SELECTOR
-const select = <I>(state: GlobalState): CSDState<I> => state[REDUCER_PATH];
-export const selectMeta = <I> (state: GlobalState) => select<I>(state).META;
-export const selectIsConnectedCSD = <I> (name: string) => (state: GlobalState) =>
-  (selectMeta<I>(state)?.[name]?.connected) || false;
-// export const selectInitialCSD = <I> (name: string) => (state: GlobalState) =>
-//   (selectMeta<I>(state)?.[name]?.initial) || forceCast<I>({});
-export const selectActualCSD = <I> (name: string) => (state: GlobalState) => select<I>(state)?.[name];
+const select = (state: GlobalState): CSDState => state[PATH.REDUCER] || {};
+const selectMeta = (state: GlobalState): Meta => select(state)[PATH.META] || {};
+export const createSelectorIsConnected = (id: string) => (
+  state: GlobalState
+): boolean => Boolean(selectMeta(state)?.[id]?.connected);
+export function createSelectorActualCSD<Initial> (id: string, initial: Initial) {
+  return (state: GlobalState): Initial => Object.assign({}, initial, select(state)?.[id]);
+}
 
-// REDUCER
-const initialStateSCD = {
-  META: {}
-};
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const reducer = (state: CSDState = initialStateSCD, action: CtrlAction<CSDPayload>) => {
-  // NOTE "name" it's required unique identifier for dynamic reducers
+export const reducer = (state: CSDState = { [PATH.META]: {} }, action: Action<CSDPayload>) => {
+  // NOTE "id" it's required unique identifier for dynamic reducers
   const { type, payload } = action;
   // NOTE using safe reducer
-  const name = payload?.name || '';
-  if (!name) { return state; }
+  const id = payload.id;
+  const data = payload.data || {}; // !!!!! incorrect
+  const currentMeta = state[PATH.META];
+  // NOTE fuck typescript
+  let actual = forceCast<Partial<unknown>>(state[id]);
+  !isPlainObject(actual) && (actual = {});
 
-  const data = payload?.data || {};
-  const initial = payload?.initial || {};
-  // NOTE use prev data from the store
-  const current = state?.[name] || {};
-  const currentMeta = state.META?.[name] || {};
-  const currentInitial = state.META?.[name]?.initial || {};
+  console.log('reducer', state);
+  console.log('action', action);
+  console.log('actual', actual);
+  console.log('currentMeta', currentMeta);
 
   switch (type) {
     default: return state;
     case removeCSDAction.TYPE:
-      // NOTE remove dynamic reducer
-      return { ...state, [name]: null, META: { ...state.META, [name]: { ...currentMeta, initial: null } } };
+      // NOTE remove dynamic reducer and it meta information
+      return { ...state, [id]: null, [PATH.META]: { ...currentMeta, [id]: null } };
     case clearCSDAction.TYPE:
-      // NOTE bring dynamic reducer state to initial values
-      return { ...state, [name]: { ...currentInitial } };
+      // NOTE bring dynamic reducer initial state
+      return { ...state, [id]: { ...data } };
     case createCSDAction.TYPE:
-      if (typeof initial !== 'object') { return state; }
-      // NOTE initialize new dynamic reducer
-      return { ...state, [name]: { ...initial }, META: { ...state.META, [name]: { ...currentMeta, initial } } };
+      // NOTE create dynamic reducer with initial state and empty meta information
+      return { ...state, [id]: { ...data }, [PATH.META]: { ...currentMeta, [id]: {} } };
     case updateCSDAction.TYPE:
-      let currentViewData = {};
-      // NOTE type safe
-      if (typeof currentInitial === 'object') {
-        currentViewData = { ...currentInitial };
-      }
-      // NOTE type safe
-      if (typeof current === 'object') {
-        currentViewData = { ...current };
-      }
       // NOTE most used action for dynamic reducers
-      return { ...state, [name]: { ...currentViewData, ...data } };
+      return { ...state, [id]: { ...actual, ...data } };
     case updateCSDMetaAction.TYPE:
       // NOTE internal controller information
-      return { ...state, META: { ...state.META, [name]: { ...currentMeta, ...data } } };
+      return { ...state, [PATH.META]: { ...currentMeta, [id]: { ...currentMeta, ...data } } };
   }
 };

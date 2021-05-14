@@ -11,5 +11,6 @@ export default controller => {
   const name = controller.name;
   const initial = controller.initial;
   const actual = useSelector(selectCSD(name));
+  // NOTE deep cloning possible, but it will break down RX methodology
   return useMemo(() => ({ ...initial, ...actual }), [initial, actual]);
 };

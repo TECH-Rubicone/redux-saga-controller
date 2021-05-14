@@ -11,7 +11,7 @@ import { Controller, prepareController } from './prepare';
  * import { sagas as controllerSagas } from 'redux-saga-controller';
  *
  */
-export * from './constant';
+export * from './outer-types';
 export { sagas } from './saga';
 export { reducer } from './reducer';
 
@@ -26,6 +26,7 @@ export { reducer } from './reducer';
  *
  */
 export { Controller, prepareController };
+export default prepareController;
 
 /**
  * HOOK "useController"
@@ -38,7 +39,7 @@ export { Controller, prepareController };
 //   useActions(controller),
 //   useSubscribe(controller),
 // ] as const;
-export function useController<Initial, Actions> (controller: Controller<Initial, Actions>) {
+export function useController<Actions, Initial> (controller: Controller<Actions, Initial>) {
   return [
     useReducer(controller),
     useActions(controller),

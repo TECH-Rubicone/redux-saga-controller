@@ -5,33 +5,36 @@ import { fork, takeEvery, cancel, put } from 'redux-saga/effects';
 
 // local dependencies
 import { Controller } from './prepare';
-import { updateCSDMetaAction } from './reducer';
-import { SECRET, SAGA_PREFIX, createAction, forceCast } from './constant';
+import { SECRET, forceCast } from './constant';
+import { updateCSDMetaAction, subscribeAction, unsubscribeAction } from './actions';
 
-function * subscribeSaga<Initial, Actions> ({ payload: controller }: { payload: Controller<Initial, Actions> }) {
-  const name = controller.name;
-  const channel: Task = yield fork(controller.subscriber);
-  controller.setChannel(channel);
-  // NOTE store mark in to redux to provide correct watching of changes
-  yield put(updateCSDMetaAction({ name, connected: true }));
-}
-
-function * unsubscribeSaga<Initial, Actions> ({ payload: controller }: { payload: Controller<Initial, Actions> }) {
-  const name = controller.name;
-  // NOTE store mark in to redux to provide correct watching of changes
-  yield put(updateCSDMetaAction({ name, connected: false }));
-  // NOTE important thing to prevent cancelation of subscriber channel
-  if (controller.hasChannel()) {
-    yield cancel(controller.getChannel(SECRET));
+function * subscribeSaga<Actions, Initial> ({ payload: controller }: { payload: Controller<Actions, Initial> }) {
+  const id = controller.id;
+  const subscriber = controller[SECRET].subscriber;
+  if (controller[SECRET].channel) {
+    throw new Error(`Duplicate controller subscription detected for "${id}"`);
   }
-  controller.setChannel();
+  controller[SECRET].channel = yield fork(subscriber);
+  // NOTE store mark in to redux to provide correct watching of changes
+  yield put(updateCSDMetaAction({ id, data: { connected: true } }));
 }
+
+function * unsubscribeSaga<Actions, Initial> ({ payload: controller }: { payload: Controller<Actions, Initial> }) {
+  const id = controller.id;
+  // NOTE store mark in to redux to provide correct watching of changes
+  yield put(updateCSDMetaAction({ id, data: { connected: false } }));
+  // NOTE important thing to prevent cancelation of subscribers channel
+  const channel = forceCast<Task>(controller[SECRET].channel);
+  if (channel) {
+    yield cancel(channel);
+  }
+  delete controller[SECRET].channel;
+}
+
+export type Subscriber = () => IterableIterator<unknown>;
 // NOTE fix saga types overload fatal error
 type SagaWatcher = (any: unknown) => unknown;
-type SagaPayload = Controller<unknown, unknown>;
-export const subscribeAction = createAction<SagaPayload>(`${SAGA_PREFIX}/SUBSCRIBE`);
-export const unsubscribeAction = createAction<SagaPayload>(`${SAGA_PREFIX}/UNSUBSCRIBE`);
 export function * sagas () {
-  yield takeEvery<string>(subscribeAction.TYPE, forceCast<SagaWatcher>(subscribeSaga));
+  yield takeEvery(subscribeAction.TYPE, forceCast<SagaWatcher>(subscribeSaga));
   yield takeEvery(unsubscribeAction.TYPE, forceCast<SagaWatcher>(unsubscribeSaga));
 }
