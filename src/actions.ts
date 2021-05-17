@@ -55,6 +55,8 @@ export const createCSDAction: CtrlActionCreator<{ id: string, data: any }> = cre
 /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
 export const updateCSDMetaAction: CtrlActionCreator<{ id: string, data: any }> = createAction(`${PREFIX.REDUCER}META`);
 
-export const subscribeAction = createAction(`${PREFIX.SAGA}SUBSCRIBE`);
+/* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
+export const subscribeAction: CtrlActionCreator<any> = createAction(`${PREFIX.SAGA}SUBSCRIBE`);
 
-export const unsubscribeAction = createAction(`${PREFIX.SAGA}UNSUBSCRIBE`);
+/* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
+export const unsubscribeAction: CtrlActionCreator<any> = createAction(`${PREFIX.SAGA}UNSUBSCRIBE`);

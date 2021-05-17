@@ -11,11 +11,11 @@ import { createCSDAction, removeCSDAction, updateCSDAction, clearCSDAction, upda
 // configure
 const prefix = 'test';
 const initial = { test: true };
-function * Subscriber () { /* NOTE do nothing */ }
+function * subscriber () { /* NOTE do nothing */ }
 const actionsInfo = { test: 'jest-test-reducer-action' };
 const ctrl: Controller = prepareController(
   actionsInfo,
-  Subscriber,
+  subscriber,
   initial,
   prefix
 );

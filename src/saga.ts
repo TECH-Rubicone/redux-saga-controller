@@ -5,21 +5,25 @@ import { fork, takeEvery, cancel, put } from 'redux-saga/effects';
 
 // local dependencies
 import { Controller } from './prepare';
-import { SECRET, forceCast } from './constant';
+import { ERROR, SECRET, forceCast } from './constant';
 import { updateCSDMetaAction, subscribeAction, unsubscribeAction } from './actions';
 
-function * subscribeSaga<Actions, Initial> ({ payload: controller }: { payload: Controller<Actions, Initial> }) {
+export function * subscribeSaga<Actions, Initial> ({
+  payload: controller
+}: { payload: Controller<Actions, Initial> }) {
   const id = controller.id;
   const subscriber = controller[SECRET].subscriber;
   if (controller[SECRET].channel) {
-    throw new Error(`Duplicate controller subscription detected for "${id}"`);
+    throw new Error(ERROR.SAGA_SUBSCRIBE_DUPLICATION(id));
   }
   controller[SECRET].channel = yield fork(subscriber);
   // NOTE store mark in to redux to provide correct watching of changes
   yield put(updateCSDMetaAction({ id, data: { connected: true } }));
 }
 
-function * unsubscribeSaga<Actions, Initial> ({ payload: controller }: { payload: Controller<Actions, Initial> }) {
+export function * unsubscribeSaga<Actions, Initial> ({
+  payload: controller
+}: { payload: Controller<Actions, Initial> }) {
   const id = controller.id;
   // NOTE store mark in to redux to provide correct watching of changes
   yield put(updateCSDMetaAction({ id, data: { connected: false } }));

@@ -37,3 +37,12 @@ export const PREFIX = {
   SAGA: `@CSD-action-${hash()}/` as 'value',
   REDUCER: `@CSD-store-${hash()}/` as 'value',
 };
+/**************************************
+ *          ERRORS
+ **************************************/
+export const ERROR = {
+  PREPARE_ACTIONS_REQUIRED: () => '"Actions" is required and should be a plain object (first argument)',
+  PREPARE_INITIAL_REQUIRED: () => '"Initial" is required and should be a plain object (third argument)',
+  PREPARE_SUBSCRIBER_REQUIRED: () => '"Subscriber" is required and should be a saga generator (second argument)',
+  SAGA_SUBSCRIBE_DUPLICATION: (id:string) => `Duplicate controller subscription detected for "${id}"`,
+};

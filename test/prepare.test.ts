@@ -2,13 +2,16 @@
 // outsource dependencies
 
 // local dependencies
-import { SECRET } from '../src/constant';
-import { prepareController} from '../src';
+import { Subscriber } from '../src/saga';
+import { prepareController } from '../src';
+import { ERROR, SECRET, forceCast } from '../src/constant';
 
 // configure
 const prefix = 'test';
+type Initial = { test: boolean };
 const initial = { test: true };
 function * subscriber () { /* NOTE do nothing */ }
+type Actions = { test: string };
 const actionsInfo = {
   test: 't',
   test0: 't',
@@ -41,9 +44,14 @@ const schemaShape = {
 describe('Controller preparing', () => {
 
   it('should check "CtrlOptions"', () => {
+    const notSubscriber = forceCast<Subscriber>(undefined);
+    const notInitial = forceCast<Initial>(undefined);
+    const notActions = forceCast<Actions>(undefined);
     expect(() => prepareController(actionsInfo, subscriber, initial, prefix)).not.toThrow();
     expect(() => prepareController(actionsInfo, subscriber, initial)).not.toThrow();
-    expect(() => prepareController(actionsInfo, subscriber, initial)).not.toThrow();
+    expect(() => prepareController(actionsInfo, subscriber, notInitial)).toThrow(new Error(ERROR.PREPARE_INITIAL_REQUIRED()));
+    expect(() => prepareController(actionsInfo, notSubscriber, notInitial)).toThrow(new Error(ERROR.PREPARE_SUBSCRIBER_REQUIRED()));
+    expect(() => prepareController(notActions, notSubscriber, notInitial)).toThrow(new Error(ERROR.PREPARE_ACTIONS_REQUIRED()));
   });
 
   it('unique controller "id" rules', () => {

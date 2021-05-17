@@ -6,22 +6,23 @@ import { Task } from 'redux-saga';
 import { Subscriber } from './saga';
 import { Selector, createSelectorActualCSD } from './reducer';
 import { createClearCtrl, createUpdateCtrl, createAction } from './actions';
-import { SECRET, forceCast, hash, isSubscriber, isPlainObject } from './constant';
-
+import { ERROR, SECRET, forceCast, hash, isSubscriber, isPlainObject } from './constant';
 
 type PrivateData<Initial> = {
   channel?: Task;
   initial: Initial;
   subscriber: Subscriber;  // *^ ...implicitly call...  Subscriber,
 };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Controller<Actions = any, Initial = any> = {
   id: string,
   action: Actions,
   select: Selector<Initial>,
   [SECRET]: PrivateData<Initial>
 }
-
 export function prepareController<Actions, Initial> (
+  // TODO how to implement type to say they useful ? typescript sucks ¯\_(ツ)_/¯
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   actions: any,
   subscriber: Subscriber, // *^ ...implicitly...,
   initial: Initial,
@@ -29,13 +30,13 @@ export function prepareController<Actions, Initial> (
 ): Controller<Actions, Initial> {
 
   if (!actions || !isPlainObject(actions)) {
-    throw new Error('"Actions" is required and should be a plain object (first argument)');
+    throw new Error(ERROR.PREPARE_ACTIONS_REQUIRED());
   }
   if (!subscriber || !isSubscriber(subscriber)) {
-    throw new Error('"Subscriber" is required and should be a saga generator (second argument)');
+    throw new Error(ERROR.PREPARE_SUBSCRIBER_REQUIRED());
   }
   if (!initial || !isPlainObject(initial)) {
-    throw new Error('"Initial" is required and should be a plain object (third argument)');
+    throw new Error(ERROR.PREPARE_INITIAL_REQUIRED());
   }
   const id = `${prefix ? `${prefix}-` : ''}${hash()}`;
 
