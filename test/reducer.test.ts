@@ -22,6 +22,10 @@ const ctrl: Controller = prepareController(
 const store = new TestStore(reducer, path);
 
 describe('Controller reducer @CSD-store', () => {
+  it('should exist', () => {
+    expect(reducer).toBeInstanceOf(Function);
+  });
+
   describe('@CSD-store', () => {
     it('Should care "isConnected"', () => {
       const select = createSelectorIsConnected(ctrl.id);

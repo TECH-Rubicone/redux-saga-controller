@@ -28,7 +28,8 @@ Object.keys(actionsInfo).map(prop => asFnShape[prop as const] = expect.any(Funct
 const asObjShape = {};
 // @ts-ignore
 Object.keys(actionsInfo).map(prop => asObjShape[prop as const] = expect.objectContaining({
-  TYPE: expect.stringContaining(prop),
+// @ts-ignore
+  TYPE: expect.stringContaining(actionsInfo[prop]),
   toString: expect.any(Function),
 }));
 const schemaShape = {

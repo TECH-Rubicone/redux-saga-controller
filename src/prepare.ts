@@ -45,7 +45,7 @@ export function prepareController<Actions, Initial> (
   // NOTE use same names as in annotation to provide auto suggestions for pure js also
   for (const name in actions) {
     // NOTE provide ability to setup readable action names within redux devtools
-    action[name] = createAction(`@${id}/${name}`);
+    action[name] = createAction(`@${id}/${actions[name]}`);
   }
   // NOTE setup system action
   action.clearCtrl = createClearCtrl<Initial>(id, initial);

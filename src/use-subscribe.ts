@@ -10,7 +10,7 @@ import { createSelectorIsConnected } from './reducer';
 import { removeCSDAction, createCSDAction, subscribeAction, unsubscribeAction } from './actions';
 
 // private HOOK
-const useReducerSubscribe = <Actions, Initial>(controller: Controller<Actions, Initial>) : null => {
+export const useReducerSubscribe = <Actions, Initial>(controller: Controller<Actions, Initial>) : null => {
   const id = controller.id;
   const initial: Initial = controller[SECRET].initial;
   const dispatch = useDispatch();

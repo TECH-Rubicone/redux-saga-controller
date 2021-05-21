@@ -12,15 +12,36 @@ export const useActions = <Actions, Initial>(controller: Controller<Actions, Ini
   const dispatch = useDispatch();
   const actions: Actions = controller.action;
   return useMemo(() => {
-    const wrappedActions = {} as Record<keyof Actions, Actions[keyof Actions]>;
-    getKeys(actions).map((name) => {
-      const action = actions[name];
-      wrappedActions[name] = forceCast<Actions[keyof Actions]>(<Payload>(payload: Payload) => {
-        if (typeof action === 'function') {
-          dispatch(action(payload));
-        }
-      });
-    });
+    const wrappedActions = {};
+    for (const name in actions) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      wrappedActions[name] = payload => dispatch(actions[name](payload));
+    }
+    // const wrappedActions = {} as Record<keyof Actions, Actions[keyof Actions]>;
+    // const wrappedActions = {} as Record<keyof Actions, Actions[keyof Actions]>;
+    // getKeys(actions).map((name) => {
+    //   const action = actions[name];
+    //   wrappedActions[name] = forceCast<Actions[keyof Actions]>(<Payload>(payload: Payload) => {
+    //     if (typeof action === 'function') {
+    //       dispatch(action(payload));
+    //     }
+    //   });
+    // });
     return forceCast<Actions>(wrappedActions);
   }, [actions, dispatch]);
+  // const dispatch = useDispatch();
+  // const actions: Actions = controller.action;
+  // return useMemo(() => {
+  //   const wrappedActions = {} as Record<keyof Actions, Actions[keyof Actions]>;
+  //   getKeys(actions).map((name) => {
+  //     const action = actions[name];
+  //     wrappedActions[name] = forceCast<Actions[keyof Actions]>(<Payload>(payload: Payload) => {
+  //       if (typeof action === 'function') {
+  //         dispatch(action(payload));
+  //       }
+  //     });
+  //   });
+  //   return forceCast<Actions>(wrappedActions);
+  // }, [actions, dispatch]);
 };
