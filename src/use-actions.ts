@@ -4,8 +4,8 @@ import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
 // local dependencies
+import { forceCast } from './constant';
 import { Controller } from './prepare';
-import { forceCast, getKeys } from './constant';
 
 // HOOK
 export const useActions = <Actions, Initial>(controller: Controller<Actions, Initial>): Actions => {

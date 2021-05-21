@@ -19,8 +19,6 @@ export const hash = (): string => String(`XXX${++counter}`)
  **************************************/
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function forceCast<T> (any: any): T { return any; }
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const getKeys = <T extends {}>(o: T): Array<keyof T> => <Array<keyof T>>Object.keys(o);
 
 /**************************************
  *          CONSTANTS
