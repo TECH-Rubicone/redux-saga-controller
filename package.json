@@ -16,18 +16,16 @@
   ],
   "scripts": {
     "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
-    "editorconfig:checker": "editorconfig-checker --exclude '.git|node_modules|dist|lib|es|types'",
-    "test": "echo \"Info: no test specified\"",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "build": "rollup -c",
     "start": "rollup -c -w",
-    "clean": "rimraf lib dist es types coverage",
-    "check:types": "npm run install:peers && tsc --noEmit",
+    "lint:fix": "eslint src --fix",
     "install:peers": "install-peers -f",
-    "check:code": "npm run editorconfig:checker && npm run check:types && npm run lint && npm test",
-    "prepublishOnly": "npm run clean && npm run check:code && npm run build"
+    "clean": "rimraf lib dist es types coverage",
+    "build": "npm run install:peers && rollup -c",
+    "test": "jest --collectCoverage --passWithNoTests",
+    "check:types": "npm run install:peers && tsc --noEmit",
+    "prepublishOnly": "npm run clean && npm run check:code && npm run build",
+    "editorconfig:checker": "editorconfig-checker --exclude '.git|node_modules|dist|lib|es|types'",
+    "check:code": "npm run editorconfig:checker && npm run check:types && npm run lint && npm test"
   },
   "repository": {
     "type": "git",
@@ -49,12 +47,18 @@
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-react": "^7.12.7",
+    "@redux-saga/testing-utils": "^1.1.3",
     "@rollup/plugin-babel": "^5.2.1",
     "@rollup/plugin-node-resolve": "^10.0.0",
+    "@testing-library/react-hooks": "^3.4.2",
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.7",
+    "@types/react-redux": "^7.1.11",
     "@typescript-eslint/eslint-plugin": "^4.8.0",
     "@typescript-eslint/parser": "^4.8.0",
+    "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.1",
     "editorconfig-checker": "^3.3.0",
     "eslint": "^7.13.0",
@@ -63,13 +67,20 @@
     "install-peers-cli": "^2.2.0",
     "jest": "^26.6.3",
     "node-sass": "^5.0.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2",
+    "react-test-renderer": "^17.0.1",
+    "redux": "^4.0.5",
+    "redux-saga": "^1.1.3",
+    "redux-saga-test-plan": "^4.0.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.33.3",
     "rollup-plugin-typescript2": "^0.29.0",
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.11",
     "ts-node": "^9.0.0",
-    "typescript": "^4.1.2"
+    "typescript": "^4.2.2"
   },
   "dependencies": {
     "@babel/runtime": "^7.12.5"
@@ -89,9 +100,43 @@
       "optional": true
     }
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run test"
+    }
+  },
   "jest": {
-    "testRegex": "(/test/.*\\.spec\\.[tj]s)$",
-    "coverageProvider": "v8"
+    "verbose": true,
+    "coverageProvider": "v8",
+    "setupFiles": [
+      "./test/jest-setup.ts"
+    ],
+    "testMatch": [
+      "**/test/(*.)+(spec|test).ts?(x)"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "test",
+      "src"
+    ],
+    "testURL": "http://localhost/",
+    "testEnvironmentOptions": {
+      "resources": "usable"
+    },
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "./src/**/*.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "types",
+      "test",
+      "lib",
+      "es"
+    ]
   },
   "sideEffects": false
 }

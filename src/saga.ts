@@ -1,57 +1,44 @@
 
 // outsource dependencies
-import { Action } from 'redux';
+import { Task } from 'redux-saga';
 import { fork, takeEvery, cancel, put } from 'redux-saga/effects';
 
 // local dependencies
-import { Controller } from './controller';
-import { updateCSDMetaAction } from './reducer';
+import { Controller } from './prepare';
+import { ERROR, SECRET, forceCast } from './constant';
+import { updateCSDMetaAction, subscribeAction, unsubscribeAction } from './actions';
 
-interface ControllerAction<T extends string, I> extends Action{
-  type: string;
-  payload: {
-    controller: Controller<T, I>
+export function * subscribeSaga<Actions, Initial> ({
+  payload: controller
+}: { payload: Controller<Actions, Initial> }) {
+  const id = controller.id;
+  const subscriber = controller[SECRET].subscriber;
+  if (controller[SECRET].channel) {
+    throw new Error(ERROR.SAGA_SUBSCRIBE_DUPLICATION(id));
   }
-}
-
-// NOTE specific saga action types to subscribe and unsubscribe controller by annotation
-const TYPE = (prefix => ({
-  SUBSCRIBE: `${prefix}SUBSCRIBE`,
-  UNSUBSCRIBE: `${prefix}UNSUBSCRIBE`,
-}))('@CSD-action/');
-
-export const subscribeAction = <T extends string, I>
-  (controller: Controller<T, I>) => ({ type: TYPE.SUBSCRIBE, payload: { controller } });
-
-function * subscribeSaga <T extends string, I>
-({ type, payload: { controller } } : ControllerAction<T, I>) {
-  if (controller.DEBUG) {
-    console.info(`%c ${type}: ${controller.name} `, 'color: #17a2b8; font-weight: bolder; font-size: 12px;'
-      , '\n controller:', controller
-    );
-  }
-  controller.channel = yield fork(controller.subscriber);
+  controller[SECRET].channel = yield fork(subscriber);
   // NOTE store mark in to redux to provide correct watching of changes
-  yield put(updateCSDMetaAction(controller.name, { connected: true }));
+  yield put(updateCSDMetaAction({ id, data: { connected: true } }));
 }
 
-export const unsubscribeAction = <T extends string, I>
-  (controller: Controller<T, I>) => ({ type: TYPE.UNSUBSCRIBE, payload: { controller } });
-
-function * unsubscribeSaga <T extends string, I>
-({ type, payload: { controller } } : ControllerAction<T, I>) {
-  if (controller.DEBUG) {
-    console.info(`%c ${type}: ${controller.name} `, 'color: #17a2b8; font-weight: bolder; font-size: 12px;'
-      , '\n controller:', controller
-    );
-  }
+export function * unsubscribeSaga<Actions, Initial> ({
+  payload: controller
+}: { payload: Controller<Actions, Initial> }) {
+  const id = controller.id;
   // NOTE store mark in to redux to provide correct watching of changes
-  yield put(updateCSDMetaAction(controller.name, { connected: false }));
-  yield cancel(controller.channel);
-  controller.channel = null;
+  yield put(updateCSDMetaAction({ id, data: { connected: false } }));
+  // NOTE important thing to prevent cancelation of subscribers channel
+  const channel = forceCast<Task>(controller[SECRET].channel);
+  if (channel) {
+    yield cancel(channel);
+  }
+  delete controller[SECRET].channel;
 }
 
+export type Subscriber = () => IterableIterator<unknown>;
+// NOTE fix saga types overload fatal error
+type SagaWatcher = (any: unknown) => unknown;
 export function * sagas () {
-  yield takeEvery(TYPE.SUBSCRIBE, subscribeSaga);
-  yield takeEvery(TYPE.UNSUBSCRIBE, unsubscribeSaga);
+  yield takeEvery(subscribeAction.TYPE, forceCast<SagaWatcher>(subscribeSaga));
+  yield takeEvery(unsubscribeAction.TYPE, forceCast<SagaWatcher>(unsubscribeSaga));
 }

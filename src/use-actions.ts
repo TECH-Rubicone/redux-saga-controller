@@ -4,23 +4,44 @@ import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
 // local dependencies
-import { Controller } from './index';
-import { DefaultActions } from './controller';
+import { forceCast } from './constant';
+import { Controller } from './prepare';
 
 // HOOK
-export const useActions = <T extends string, I>(controller: Controller<T, I>) => {
+export const useActions = <Actions, Initial>(controller: Controller<Actions, Initial>): Actions => {
   const dispatch = useDispatch();
-  const actionCreators = controller.action;
+  const actions: Actions = controller.action;
   return useMemo(() => {
-    const cache = {} as Record<T | DefaultActions, (payload?: unknown) => void>;
-    for (const name in actionCreators) {
-      if (actionCreators.hasOwnProperty(name)) {
-        const action = actionCreators[name as T | DefaultActions];
-        cache[name as T | DefaultActions] = (payload?: unknown): void => {
-          dispatch(action(payload));
-        };
-      }
+    const wrappedActions = {};
+    for (const name in actions) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      wrappedActions[name] = payload => dispatch(actions[name](payload));
     }
-    return cache;
-  }, [actionCreators, dispatch]);
+    // const wrappedActions = {} as Record<keyof Actions, Actions[keyof Actions]>;
+    // const wrappedActions = {} as Record<keyof Actions, Actions[keyof Actions]>;
+    // getKeys(actions).map((name) => {
+    //   const action = actions[name];
+    //   wrappedActions[name] = forceCast<Actions[keyof Actions]>(<Payload>(payload: Payload) => {
+    //     if (typeof action === 'function') {
+    //       dispatch(action(payload));
+    //     }
+    //   });
+    // });
+    return forceCast<Actions>(wrappedActions);
+  }, [actions, dispatch]);
+  // const dispatch = useDispatch();
+  // const actions: Actions = controller.action;
+  // return useMemo(() => {
+  //   const wrappedActions = {} as Record<keyof Actions, Actions[keyof Actions]>;
+  //   getKeys(actions).map((name) => {
+  //     const action = actions[name];
+  //     wrappedActions[name] = forceCast<Actions[keyof Actions]>(<Payload>(payload: Payload) => {
+  //       if (typeof action === 'function') {
+  //         dispatch(action(payload));
+  //       }
+  //     });
+  //   });
+  //   return forceCast<Actions>(wrappedActions);
+  // }, [actions, dispatch]);
 };

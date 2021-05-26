@@ -1,16 +1,15 @@
 
 // outsource dependencies
-import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 // local dependencies
-import { Controller } from './controller';
-import { selectActualCSD } from './reducer';
+import { SECRET } from './constant';
+import { Controller } from './prepare';
+import { createSelectorActualCSD } from './reducer';
 
 // HOOK
-export const useReducer = <T extends string, I>(controller: Controller<T, I>) : I => {
-  const name = controller.name;
-  const initial = controller.initial;
-  const actual = useSelector(selectActualCSD(name));
-  return useMemo(() => Object.assign({}, initial, actual), [initial, actual]);
+export const useReducer = <Actions, Initial>(controller: Controller<Actions, Initial>): Initial => {
+  const id = controller.id;
+  const initial: Initial = controller[SECRET].initial;
+  return useSelector(createSelectorActualCSD<Initial>(id, initial));
 };

@@ -1,4 +1,11 @@
 
+import { useActions } from './use-actions';
+import { useReducer } from './use-reducer';
+import { useSubscribe } from './use-subscribe';
+import { Controller, prepareController } from './prepare';
+
+// NOTE required for examples
+export * from './outer-types';
 /**
  * Controller require connection to react-redux and redux-saga
  * please make sure you connected to react-redux and setup saga subscriber
@@ -9,13 +16,20 @@
  *
  */
 export { sagas } from './saga';
-export { reducer, ControllerState } from './reducer';
+export { reducer, path } from './reducer';
 
-import { Controller } from './controller';
-
-import { useActions } from './use-actions';
-import { useReducer } from './use-reducer';
-import { useSubscribe } from './use-subscribe';
+/**
+ * Controller require connection to react-redux and redux-saga
+ * please make sure you connected to react-redux
+ * @example
+ * import { reducer as controller } from './services/controller.service';
+ *
+ * and setup saga subscriber
+ * import { sagas as controllerSagas } from './services/controller.service';
+ *
+ */
+export { prepareController };
+export default prepareController;
 
 /**
  * HOOK "useController"
@@ -23,11 +37,18 @@ import { useSubscribe } from './use-subscribe';
  * IMPORTANT in one time in the DOM "useController" can subscribed not more than one time for one controller
  * if you need get some useful thing of controller outside of component subscriber use hook helpers
  */
-export const useController = <T extends string, I>(controller: Controller<T, I>) => [
-  useReducer(controller),
-  useActions(controller),
-  useSubscribe(controller),
-] as const;
+// export const useController = (controller: Controller) => [
+//   useReducer(controller),
+//   useActions(controller),
+//   useSubscribe(controller),
+// ] as const;
+export function useController<Actions, Initial> (controller: Controller<Actions, Initial>) {
+  return [
+    useReducer(controller),
+    useActions(controller),
+    useSubscribe(controller),
+  ] as const;
+}
 
 /**
  * HOOK helper "useControllerActions"
@@ -47,5 +68,3 @@ export const useControllerData = useReducer;
  */
 export const useControllerSubscribe = useSubscribe;
 
-// check correctness of minimum required data and make some preparation
-export { Controller };

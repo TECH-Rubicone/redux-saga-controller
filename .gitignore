@@ -2,10 +2,10 @@
 node_modules
 
 # Ignore built files
-dist
 lib
 es
 types
+coverage
 
 # IDE - VSCode
 .vscode/*
@@ -20,5 +20,7 @@ types
 
 # IDE - WebStorm
 .idea
+
+.DS_Store
 
 *.local*

@@ -1,7 +1,6 @@
 
 // outsource dependencies
-import { useSelector } from 'react-redux';
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useCallback } from 'react';
 
 // local dependencies
 import { controller } from './controller';
@@ -12,19 +11,36 @@ export const Example1 = memo(() => {
   // NOTE Prefer way
   const [
     { data, disabled, initialized },
-    { INITIALIZE, CLEAR_CTRL, GET_SELF },
+    { INITIALIZE, clearCtrl, getSelf, updateCtrl },
     isControllerConnected
   ] = useController(controller);
 
+  // updateCtrl({ disabled: true, foo: 'invalid - "foo" absent on IInitial ;)' });
+  updateCtrl({ disabled: true });
+  const handleToggleDisabled = useCallback(
+    () => updateCtrl({ disabled: !disabled }),
+    [updateCtrl, disabled]
+  );
+  const handleGetSef = useCallback(
+    () => getSelf({ id: 2 }),
+    [updateCtrl, disabled]
+  );
   useEffect(() => {
-    INITIALIZE();
-    return CLEAR_CTRL;
-  }, [INITIALIZE, CLEAR_CTRL]);
+    // INITIALIZE({ foo: 'invalid - not a number ;)' });
+    INITIALIZE({ foo: 2 });
+    return () => { clearCtrl(); };
+  }, [INITIALIZE, clearCtrl]);
 
   if (!initialized || !isControllerConnected) { return null; }
   return <div>
     <h1>Hello {data.name}! Your age is {data.age}</h1>
-    <button disabled={disabled} onClick={() => GET_SELF()}>Get Details</button>
+    <button onClick={handleToggleDisabled}> toggle disabled </button>
+    {/*<button */}
+    {/*  disabled={disabled} */}
+    {/*  onClick={() => getSelf({ initialized: 'invalid - not a boolean ;)' })}>*/}
+    {/*  Get Details*/}
+    {/*</button>*/}
+    <button disabled={disabled} onClick={handleGetSef}> Get Details </button>
   </div>;
 });
 
@@ -32,19 +48,19 @@ export const Example2 = memo(() => {
   // NOTE Prefer way because it will be use initial value if actual value doesn't exist
   const { data, disabled, initialized } = useControllerData(controller);
   // NOTE Actions are already wrapped with dispatch
-  const { INITIALIZE, CLEAR_CTRL, GET_SELF } = useControllerActions(controller);
+  const { INITIALIZE, getSelf, clearCtrl } = useControllerActions(controller);
   // NOTE isControllerConnected
   const isControllerConnected = useControllerSubscribe(controller);
 
   useEffect(() => {
-    INITIALIZE();
-    return CLEAR_CTRL;
-  }, [INITIALIZE, CLEAR_CTRL]);
+    INITIALIZE({ foo: 2 });
+    return () => { clearCtrl(); };
+  }, [INITIALIZE, clearCtrl]);
 
   if (!initialized || !isControllerConnected) { return null; }
   return <div>
     <h1>Hello {data.name}! Your age is {data.age}</h1>
-    <button disabled={disabled} onClick={() => GET_SELF()}>Get Details</button>
+    <button disabled={disabled} onClick={() => getSelf()}>Get Details</button>
   </div>;
 });
 
@@ -58,8 +74,8 @@ export const Example3 = memo(() => {
 
   useEffect(() => {
     actions.INITIALIZE();
-    return actions.CLEAR_CTRL;
-  }, [actions.INITIALIZE, actions.CLEAR_CTRL]);
+    return () => { actions.clearCtrl(); };
+  }, [actions.INITIALIZE, actions.clearCtrl]);
 
   if (!store.initialized || !isControllerConnected) { return null; }
   return <div>
@@ -68,26 +84,3 @@ export const Example3 = memo(() => {
   </div>;
 });
 
-export const Example4 = memo(() => {
-  // NOTE useSelector ability to get data from selector
-  const data = useSelector(controller.selector);
-  console.log(data.actual.data.name); // John
-  console.log(data.initial.data.name); // John
-  console.log(data.connected); // true | false
-
-  const actualData = useSelector(controller.selectorActual);
-  console.log(actualData.data.name); // John
-
-  const initialData = useSelector(controller.selectorInitial);
-  console.log(initialData.data.name); // John
-
-  const isConnected = useSelector(controller.selectorConnected);
-  console.log(isConnected); // true | false
-
-  const allData = useSelector(controller.selector);
-  console.log(allData.actual.data.name); // John
-  console.log(allData.initial.data.name); // John
-  console.log(allData.connected); // true | false
-
-  return <h1>{isConnected ? actualData.data.name : initialData.data.name }</h1>;
-});
