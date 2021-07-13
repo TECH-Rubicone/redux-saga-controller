@@ -10,9 +10,9 @@ export const isSubscriber = (subscriber: unknown): boolean => typeof subscriber 
  * 100% unique hash
  **************************************/
 let counter = 0;
-export const hash = (): string => String(`XXX${++counter}`)
-  // eslint-disable-next-line no-bitwise
-  .replace('X', () => (Math.random() * 32 | 0).toString(32));
+// eslint-disable-next-line no-bitwise
+const rand = () => (Math.random() * 32 | 0).toString(32);
+export const hash = (): string => [rand(), rand(), rand(), ++counter].join('');
 
 /**************************************
  * lets fuck TS using bloody hacks :)
