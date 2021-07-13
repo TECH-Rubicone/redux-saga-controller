@@ -27,8 +27,8 @@ export function forceCast<T> (any: any): T { return any; }
 export const SECRET = Symbol('¯\\_(ツ)_/¯');
 
 export const PATH = {
-  META: `@meta-${hash()}` as 'value',
-  REDUCER: `@controller-${hash()}` as 'value',
+  META: '@meta' as 'value',
+  REDUCER: 'controller' as 'value',
 };
 
 export const PREFIX = {
