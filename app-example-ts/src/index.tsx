@@ -2,15 +2,14 @@
 // outsource dependencies
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect, useCallback} from 'react';
+import { useController } from 'redux-saga-controller';
 
 // local dependencies
 import './index.css';
 import store from './store';
 import logo from './logo.svg';
 import { controller } from './controller';
-import { useController } from 'redux-saga-controller';
-
 
 function App() {
   const [
@@ -33,12 +32,11 @@ function App() {
   </div>;
 }
 
-
 ReactDOM.render(
   <React.StrictMode>
-      <Provider store={store}>
-          <App />
-      </Provider>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

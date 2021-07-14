@@ -1,6 +1,6 @@
 # Application example for `redux-saga-controller`
 
-## TODO ES5 !!!
+## TODO TS !!!
 ## [CodeSandbox Demo](https://codesandbox.io/s/redux-saga-controller031-sjc5r)
 
 

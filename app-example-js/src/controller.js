@@ -29,12 +29,14 @@ function * initializeSaga ({ type, payload }) {
   yield put(controller.action.clearCtrl());
   const { initialized } = yield select(controller.select);
   console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
-    , '\n payload:', payload
       , '\n initialized:', initialized
+    , '\n payload:', payload
   );
   // NOTE emulate request
   yield delay(3e3);
   const data = {
+    age: 30,
+    name: '',
     the: 'initail',
     request: 'data',
   };
@@ -53,6 +55,7 @@ function * getSelfSaga ({ type, payload }) {
   // NOTE emulate request
   yield delay(3e3);
   const data = {
+    id: payload.id,
     name: 'John',
     age: 30,
   };

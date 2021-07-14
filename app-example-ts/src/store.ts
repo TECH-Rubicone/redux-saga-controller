@@ -2,26 +2,16 @@
 // outsource dependencies
 import { fork } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
-import { createStore, applyMiddleware, combineReducers, compose, Reducer } from 'redux';
-
-// NOTE controller
-// import { ... } from 'redux-saga-controller';
-import { reducer as controllerReducer, sagas as controllerSagas, path as controllerPath, State as ControllerState } from '../src'; // Use line below
-
-// local dependencies - whatever what you may need
-
-export interface ApplicationState {
-  [controllerPath]: ControllerState;
-  anyOtherReducer: any;
-}
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import { reducer as controllerReducer, sagas as controllerSagas, path } from 'redux-saga-controller';
 
 // NOTE Build the middleware to run our Saga
 const saga = createSagaMiddleware();
 export const middleware = compose(applyMiddleware(saga));
 
 // NOTE explain to ts what is it ;) to avoid type errors for --declaration
-export const reducers: Reducer<ApplicationState> = combineReducers({
-  [controllerPath]: controllerReducer,
+export const reducers = combineReducers({
+  [path]: controllerReducer,
   // NOTE whatever what you may need
   anyOtherReducer: () => ({}),
 });

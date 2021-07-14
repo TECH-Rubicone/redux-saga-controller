@@ -1,14 +1,18 @@
 
 // outsource dependencies
-import { takeEvery, put, select } from 'redux-saga/effects';
+import { Action } from 'redux';
+import { takeEvery, put, select, delay } from 'redux-saga/effects';
+import createController, { Controller, ActionCreators, ActionCreator } from 'redux-saga-controller';
 
-// local dependencies
-import createController, { Controller, ActionCreators, ActionCreator } from '../src'; // Use line below
+// NOTE action shortcut
+interface Act<Payload> extends Action {
+  payload: Payload
+}
 
 // NOTE IMPORTANT!
 // You should add interface only of you will use select effect from redux-saga
 // In all cases except select effect you don't need it
-// It because redux-saga effect select return any time in all cases
+// It because redux-saga effect select return "any" in all cases
 type UserData = {
   name: string;
   age: number;
@@ -17,69 +21,78 @@ type UserData = {
 interface IInitial {
   initialized: boolean;
   disabled: boolean;
-  data: UserData
+  data: UserData | null
 }
 // NOTE action payloads
 interface InitializePayload {
-  foo: number;
+  some: string;
 }
 interface SomePayload {
   id: number | string;
   name?: string;
 }
-type GetSelfPayload = { id: string| number };
+type GetSelfPayload = { id: string | number };
 // You should add interface for actions its only one way to define payload annotation
 interface IActions extends ActionCreators<IInitial> {
-  INITIALIZE: ActionCreator<InitializePayload>;
+  initialize: ActionCreator<InitializePayload>;
   someAction: ActionCreator<SomePayload>;
   getSelf: ActionCreator<GetSelfPayload>;
 }
 
 export const controller:Controller<IActions, IInitial> = createController(
   {
-    INITIALIZE: 'init',
+    initialize: 'init',
     getSelf: 'test',
     someAction: 'test',
   },
   function * () {
-    yield takeEvery(controller.action.INITIALIZE.TYPE, initializeSaga);
+    yield takeEvery(controller.action.initialize.TYPE, initializeSaga);
     yield takeEvery(controller.action.getSelf.TYPE, getSelfSaga);
   },
   {
     initialized: false,
-    disabled: false,
-    data: {
-      name: '',
-      age: 0,
-    }
-  }
+    disabled: true,
+    data: null
+  },
+  '¯\\_(ツ)_/¯'
 );
 
 // NOTE Example of usage redux sagas
-function * initializeSaga ({ type, payload } : { type: string, payload: InitializePayload }) {
+function * initializeSaga ({ type, payload } : Act<InitializePayload>) {
   // NOTE bring reducer to initial state before start initialization
   yield put(controller.action.clearCtrl());
-
-  const { initialized, data: { name } }: IInitial = yield select(controller.select);
-
+  const { initialized }: IInitial = yield select(controller.select);
   console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
-    , '\n payload:', payload
-    , '\n foo:', payload.foo
     , '\n initialized:', initialized
-    , '\n name:', name
+    , '\n payload:', payload
   );
+  // NOTE emulate request
+  yield delay(3e3);
+  const data = {
+    age: 30,
+    name: '',
+    the: 'initail',
+    request: 'data',
+  };
+  yield put(controller.action.updateCtrl({ data }));
+  // NOTE emulate request
+  yield delay(3e3);
   // NOTE update any property of entire controller reducer "IInitial"
-  yield put(controller.action.updateCtrl({ initialized: true }));
+  yield put(controller.action.updateCtrl({ initialized: true, disabled: false }));
 }
 
-function * getSelfSaga ({ type, payload } : { type: string, payload: GetSelfPayload }) {
-  const userData: UserData = { name: 'Bilbo', age: 130, id: payload.id };
+function * getSelfSaga ({ type, payload } : Act<GetSelfPayload>) {
+  yield put(controller.action.updateCtrl({ disabled: true }));
   console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
     , '\n let assume its request ;):', payload
-    , '\n userData:', userData
   );
-  // NOTE Type '{ q: number; }' is missing the following properties from type 'UserData': name, age
-  // yield put(controller.action.updateCtrl({ data: { q: 1 } }));
+  // NOTE emulate request
+  yield delay(3e3);
+  const data = {
+    id: payload.id,
+    name: 'John',
+    age: 30,
+  };
   // NOTE update any property of entire controller reducer
-  yield put(controller.action.updateCtrl({ data: userData }));
+  yield put(controller.action.updateCtrl({ data, disabled: false }));
 }
