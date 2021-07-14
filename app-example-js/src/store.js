@@ -4,8 +4,7 @@ import { fork } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 
-// import { ... } from 'redux-saga-controller';
-import { reducer, sagas, path } from '../src'; // Use line below
+import { reducer as controller, sagas as controllerSagas } from 'redux-saga-controller';
 
 // NOTE Build the middleware to run our Saga
 const saga = createSagaMiddleware();
@@ -13,7 +12,7 @@ export const middleware = compose(applyMiddleware(saga));
 
 // NOTE explain to ts what is it ;) to avoid type errors
 export const reducers = combineReducers({
-  [path]: reducer,
+  controller,
   // NOTE whatever what you may need
   anyOtherReducer: () => ({}),
 });
@@ -26,7 +25,7 @@ const store = createStore(reducers, middleware);
 // NOTE or controller with some thing else
 saga.run(function * () {
   // NOTE provide to "controller" separated saga process
-  yield fork(sagas);
+  yield fork(controllerSagas);
   // NOTE whatever what you may need
   // ... another code ...
 });
