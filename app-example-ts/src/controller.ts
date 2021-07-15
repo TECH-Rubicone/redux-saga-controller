@@ -2,7 +2,8 @@
 // outsource dependencies
 import { Action } from 'redux';
 import { takeEvery, put, select, delay } from 'redux-saga/effects';
-import createController, { Controller, ActionCreators, ActionCreator, create } from 'redux-saga-controller';
+import { Controller, ActionCreators, ActionCreator, create } from 'redux-saga-controller';
+// import createController, { Controller, ActionCreators, ActionCreator } from 'redux-saga-controller';
 
 // NOTE action shortcut
 interface Act<Payload> extends Action {
