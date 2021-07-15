@@ -2,7 +2,7 @@
 // outsource dependencies
 import { Action } from 'redux';
 import { takeEvery, put, select, delay } from 'redux-saga/effects';
-import createController, { Controller, ActionCreators, ActionCreator } from 'redux-saga-controller';
+import createController, { Controller, ActionCreators, ActionCreator, create } from 'redux-saga-controller';
 
 // NOTE action shortcut
 interface Act<Payload> extends Action {
@@ -39,23 +39,37 @@ interface IActions extends ActionCreators<IInitial> {
   getSelf: ActionCreator<GetSelfPayload>;
 }
 
-export const controller:Controller<IActions, IInitial> = createController(
-  {
-    initialize: 'init',
-    getSelf: 'test',
-    someAction: 'test',
-  },
-  function * () {
-    yield takeEvery(controller.action.initialize.TYPE, initializeSaga);
-    yield takeEvery(controller.action.getSelf.TYPE, getSelfSaga);
-  },
-  {
+// export const controller:Controller<IActions, IInitial> = createController(
+//   {
+//     initialize: 'init',
+//     getSelf: 'test',
+//     someAction: 'test',
+//   },
+//   function * () {
+//     yield takeEvery(controller.action.initialize.TYPE, initializeSaga);
+//     yield takeEvery(controller.action.getSelf.TYPE, getSelfSaga);
+//   },
+//   {
+//     initialized: false,
+//     disabled: true,
+//     data: null
+//   },
+//   '¯\\_(ツ)_/¯'
+// );
+
+export const controller:Controller<IActions, IInitial> = create({
+  prefix: '¯\\_(ツ)_/¯',
+  actions: ['initialize', 'getSelf'],
+  initial: {
     initialized: false,
     disabled: true,
     data: null
   },
-  '¯\\_(ツ)_/¯'
-);
+  subscriber: function * () {
+    yield takeEvery(controller.action.initialize.TYPE, initializeSaga);
+    yield takeEvery(controller.action.getSelf.TYPE, getSelfSaga);
+  },
+});
 
 // NOTE Example of usage redux sagas
 function * initializeSaga ({ type, payload } : Act<InitializePayload>) {
@@ -63,8 +77,8 @@ function * initializeSaga ({ type, payload } : Act<InitializePayload>) {
   yield put(controller.action.clearCtrl());
   const { initialized }: IInitial = yield select(controller.select);
   console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
+    , '\n let assume it`s initial request ;):', payload
     , '\n initialized:', initialized
-    , '\n payload:', payload
   );
   // NOTE emulate request
   yield delay(3e3);
@@ -84,7 +98,7 @@ function * initializeSaga ({ type, payload } : Act<InitializePayload>) {
 function * getSelfSaga ({ type, payload } : Act<GetSelfPayload>) {
   yield put(controller.action.updateCtrl({ disabled: true }));
   console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
-    , '\n let assume its request ;):', payload
+    , '\n let assume it`s getSlef request ;):', payload
   );
   // NOTE emulate request
   yield delay(3e3);

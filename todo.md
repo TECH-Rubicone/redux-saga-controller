@@ -23,9 +23,8 @@
 - [x] Add checking all arguments on the initialization
 - [x] Add debug mode
 - [x] Add Examples
-- [ ] Add tests
-- [ ] Update documentation
-- [ ] Extract to meta initial and connected
-- [ ] Use local storage to enable debug mode
-- [ ] Controller name should generate not only unique but new one each time
-- [ ] Add addition ability we may implement method to provide custom redux name for example
+- [x] Add tests
+- [x] Update documentation
+- [x] Extract to meta initial and connected
+- [x] Controller name should generate not only unique but new one each time
+- [ ] Improve typing suggestions for ES6

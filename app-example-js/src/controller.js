@@ -3,25 +3,44 @@
 import { takeEvery, put, select, delay } from 'redux-saga/effects';
 
 // local dependencies
-import prepareController from 'redux-saga-controller';
+import { create } from 'redux-saga-controller';
+// import prepareController from 'redux-saga-controller';
 
-export const controller = prepareController(
-  {
+// export const controller = prepareController(
+//   {
+//     initialize: 'init',
+//     getSelf: 'test',
+//     someAction: 'test',
+//   },
+//   function * () {
+//     yield takeEvery(controller.action.initialize.TYPE, initializeSaga);
+//     yield takeEvery(controller.action.getSelf.TYPE, getSelfSaga);
+//   },
+//   {
+//     initialized: false,
+//     disabled: true,
+//     data: null
+//   },
+//   '¯\\_(ツ)_/¯'
+// );
+
+export const controller = create({
+  prefix: '¯\\_(ツ)_/¯',
+  actions:   {
     initialize: 'init',
     getSelf: 'test',
     someAction: 'test',
   },
-  function * () {
-    yield takeEvery(controller.action.initialize.TYPE, initializeSaga);
-    yield takeEvery(controller.action.getSelf.TYPE, getSelfSaga);
-  },
-  {
+  initial: {
     initialized: false,
     disabled: true,
     data: null
   },
-  '¯\\_(ツ)_/¯'
-);
+  subscriber: function * () {
+    yield takeEvery(controller.action.initialize.TYPE, initializeSaga);
+    yield takeEvery(controller.action.getSelf.TYPE, getSelfSaga);
+  },
+});
 
 // NOTE Example of usage redux sagas
 function * initializeSaga ({ type, payload }) {
