@@ -2,7 +2,7 @@
 import { useActions } from './use-actions';
 import { useReducer } from './use-reducer';
 import { useSubscribe } from './use-subscribe';
-import { Controller, prepareController } from './prepare';
+import { Controller, prepareController, create } from './prepare';
 
 // NOTE required for examples
 export * from './outer-types';
@@ -28,7 +28,7 @@ export { reducer, path } from './reducer';
  * import { sagas as controllerSagas } from './services/controller.service';
  *
  */
-export { prepareController };
+export { prepareController, create };
 export default prepareController;
 
 /**

@@ -1,0 +1,74 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
+}
+
+.container {
+  text-align: center;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.btn {
+  opacity: 0.85;
+  width: 10vmin;
+  display: flex;
+  height: 10vmin;
+  color: #61DAFB;
+  cursor: pointer;
+  font-size: 3vmin;
+  flex-basis: 10vmin;
+  border-radius: 7px;
+  align-items: center;
+  font-weight: bolder;
+  border-color: #61DAFB;
+  justify-content: center;
+  background-color: transparent;
+}
+.btn:hover {
+  opacity: 1;
+  color: #61DAFB;
+  border-color: #61DAFB;
+}
+.btn:disabled {
+  opacity: 0.5;
+}
+
+.btn > .logo {
+  height: 7vmin;
+}
+
+.logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo {
+    animation: logo-spin infinite 2.4s linear;
+  }
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -8,6 +8,8 @@ import { Selector, createSelectorActualCSD } from './reducer';
 import { createClearCtrl, createUpdateCtrl, createAction } from './actions';
 import { ERROR, SECRET, forceCast, hash, isSubscriber, isPlainObject } from './constant';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ActAnnotation= Partial<any>;
 type PrivateData<Initial> = {
   channel?: Task;
   initial: Initial;
@@ -22,8 +24,7 @@ export type Controller<Actions = any, Initial = any> = {
 }
 export function prepareController<Actions, Initial> (
   // TODO how to implement type to say they useful ? typescript sucks ¯\_(ツ)_/¯
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  actions: any,
+  actions: ActAnnotation,
   subscriber: Subscriber, // *^ ...implicitly...,
   initial: Initial,
   prefix = ''
@@ -40,8 +41,7 @@ export function prepareController<Actions, Initial> (
   }
   const id = `${prefix ? `${prefix}-` : ''}${hash()}`;
 
-  /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
-  const action: Partial<any> = {};
+  const action: ActAnnotation = {};
   // NOTE use same names as in annotation to provide auto suggestions for pure js also
   for (const name in actions) {
     // NOTE provide ability to setup readable action names within redux devtools
@@ -61,4 +61,22 @@ export function prepareController<Actions, Initial> (
       subscriber,
     }
   };
+}
+
+export function create<Actions, Initial> ({ actions, subscriber, initial, prefix = 'c' } : {
+  actions: string[] | ActAnnotation,
+  prefix?: string
+  initial: Initial,
+  subscriber: Subscriber,
+}): Controller<Actions, Initial> {
+  if (Array.isArray(actions)) {
+    const tmp: ActAnnotation = {};
+    for (const name of actions) {
+      tmp[name] = name;
+    }
+    actions = tmp;
+  } else if (!actions || !isPlainObject(actions)) {
+    throw new Error(ERROR.PREPARE_ACTIONS_REQUIRED());
+  }
+  return prepareController(actions, subscriber, initial, prefix);
 }
