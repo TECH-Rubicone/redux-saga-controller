@@ -2,6 +2,7 @@
 // outsource dependencies
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { useController } from 'redux-saga-controller';
 import React, { useCallback, useEffect } from 'react';
 
 // local dependencies
@@ -9,7 +10,6 @@ import './index.css';
 import store from './store';
 import logo from './logo.svg';
 import { controller } from './controller';
-import { useController } from 'redux-saga-controller';
 
 
 function App() {
