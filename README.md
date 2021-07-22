@@ -99,13 +99,12 @@ export const Example1 = memo(() => {
   // NOTE Prefer way
   const [
     { data, disabled, initialized },
-    { initialize, getSelf },
-    isControllerConnected
+    { initialize, getSelf }
   ] = useController(controller);
 
   useEffect(() => { initialize(); }, [initialize]);
 
-  return !initialized || !isControllerConnected ? null : <div>
+  return !initialized ? null : <div>
     <h1>Hello {data.name}! Your age is {data.age}</h1>
     <button disabled={disabled} onClick={() => getSelf()}>Get Details</button>
   </div>;
