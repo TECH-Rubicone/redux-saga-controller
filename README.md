@@ -3,9 +3,9 @@
 [![npm version](https://img.shields.io/npm/v/redux-saga-controller.svg)](https://www.npmjs.com/package/redux-saga-controller)
 [![npm](https://img.shields.io/npm/dm/redux-saga-controller.svg)](https://www.npmjs.com/package/redux-saga-controller)
 
-- [Example JS](./tree/master/app-example-js)
-- [Example TS](./tree/master/app-example-ts)
-- [Release Notes](./releases)
+- [Example JS](https://github.com/TECH-Rubicone/redux-saga-controller/tree/master/app-example-js)
+- [Example TS](https://github.com/TECH-Rubicone/redux-saga-controller/tree/master/app-example-ts)
+- [Release Notes](https://github.com/TECH-Rubicone/redux-saga-controller/releases)
 - [License](#license)
 
 ## Getting Started
