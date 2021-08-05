@@ -21,7 +21,8 @@ export const createSelectorIsConnected = (id: string) => (
   state: GlobalState
 ): boolean => Boolean(selectMeta(state)?.[id]?.connected);
 export function createSelectorActualCSD<Initial> (id: string, initial: Initial) {
-  return (state: GlobalState): Initial => Object.assign({}, initial, select(state)?.[id]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  return (state: GlobalState, ...args: any[]): Initial => Object.assign({}, initial, select(state)?.[id]);
 }
 const initial = { [PATH.META]: {} };
 export const reducer: Reducer = (state: State = initial, action: AnyAction) => {

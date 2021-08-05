@@ -3,18 +3,10 @@
 [![npm version](https://img.shields.io/npm/v/redux-saga-controller.svg)](https://www.npmjs.com/package/redux-saga-controller)
 [![npm](https://img.shields.io/npm/dm/redux-saga-controller.svg)](https://www.npmjs.com/package/redux-saga-controller)
 
-##[CodeSandbox Demo](https://codesandbox.io/s/redux-saga-controller031-sjc5r)
-
-- [Getting Started](#getting-started)
-- [API](#api)
-- [Example JS](./tree/master/example-js)
+- [Example JS](./tree/master/app-example-js)
 - [Example TS](./tree/master/example-ts)
 - [Release Notes](./releases)
 - [License](#license)
-
-## TODO !!!
-[CodeSandbox Demo JS](https://codesandbox.io/s/redux-saga-controller031-sjc5r)
-[CodeSandbox Demo TS](https://codesandbox.io/s/redux-saga-controller031-sjc5r)
 
 ## Getting Started
 
@@ -107,13 +99,12 @@ export const Example1 = memo(() => {
   // NOTE Prefer way
   const [
     { data, disabled, initialized },
-    { initialize, getSelf },
-    isControllerConnected
+    { initialize, getSelf }
   ] = useController(controller);
 
   useEffect(() => { initialize(); }, [initialize]);
 
-  return !initialized || !isControllerConnected ? null : <div>
+  return !initialized ? null : <div>
     <h1>Hello {data.name}! Your age is {data.age}</h1>
     <button disabled={disabled} onClick={() => getSelf()}>Get Details</button>
   </div>;
