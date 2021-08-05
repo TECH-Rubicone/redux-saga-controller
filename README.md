@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dm/redux-saga-controller.svg)](https://www.npmjs.com/package/redux-saga-controller)
 
 - [Example JS](./tree/master/app-example-js)
-- [Example TS](./tree/master/example-ts)
+- [Example TS](./tree/master/app-example-ts)
 - [Release Notes](./releases)
 - [License](#license)
 
