@@ -44,7 +44,9 @@ export const reducer: Reducer = (state: State = initial, action: AnyAction) => {
   // );
 
   switch (type) {
-    default: return state;
+    default:
+      // NOTE handle extra actions
+      return !extraHandlers[type] ? state : extraHandlers[type](state, action);
     case removeCSDAction.TYPE:
       // NOTE remove dynamic reducer and it meta information
       return { ...state, [id]: null, [PATH.META]: { ...meta, [id]: null } };
@@ -61,4 +63,12 @@ export const reducer: Reducer = (state: State = initial, action: AnyAction) => {
       // NOTE internal controller information
       return { ...state, [PATH.META]: { ...meta, [id]: { ...ctrlMeta, ...data } } };
   }
+};
+
+// NOTE specific thing to handle HYDRATE action or similar for all controllers
+type ExtraHandler = { (state: State, action: AnyAction): State }
+type ExtraHandlers = { [key: string]: ExtraHandler; }
+const extraHandlers: ExtraHandlers = {};
+export const extraReducers = (handlers: ExtraHandlers) => {
+  Object.assign(extraHandlers, handlers);
 };

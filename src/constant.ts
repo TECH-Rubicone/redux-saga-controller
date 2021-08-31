@@ -24,7 +24,8 @@ export function forceCast<T> (any: any): T { return any; }
  *          CONSTANTS
  **************************************/
 // NOTE private things on public object
-export const SECRET = Symbol('¯\\_(ツ)_/¯');
+// export const SECRET = Symbol('¯\\_(ツ)_/¯');
+export const SECRET = '¯\\_(ツ)_/¯';
 
 export const PATH = {
   META: '@meta' as 'value',

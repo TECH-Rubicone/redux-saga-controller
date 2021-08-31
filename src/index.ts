@@ -17,7 +17,7 @@ export { subscribeAction, unsubscribeAction } from './actions';
  *
  */
 export { sagas } from './saga';
-export { reducer, path } from './reducer';
+export { reducer, path, extraReducers } from './reducer';
 
 /**
  * Controller require connection to react-redux and redux-saga

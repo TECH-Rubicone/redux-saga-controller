@@ -39,7 +39,7 @@ export function prepareController<Actions, Initial> (
   if (!initial || !isPlainObject(initial)) {
     throw new Error(ERROR.PREPARE_INITIAL_REQUIRED());
   }
-  const id = `${prefix ? `${prefix}-` : ''}${hash()}`;
+  const id = prefix ? `${prefix}-state` : `${hash()}-state`;
 
   const action: ActAnnotation = {};
   // NOTE use same names as in annotation to provide auto suggestions for pure js also
