@@ -48,11 +48,19 @@ describe('Controller subscription', () => {
     // NOTE lets assume the channel there means was subscribed before
     ctrl[SECRET].channel = createMockTask();
     // NOTE due to problems with throwing sagas within "redux-saga-test-plan"
-    try {
-      subscribeSaga(subscribeAction(ctrl)).next();
-    } catch (error) {
-      expect(error.message).toEqual(ERROR.SAGA_SUBSCRIBE_DUPLICATION(ctrl.id));
-    }
+    testSaga(subscribeSaga, subscribeAction(ctrl))
+      .next()
+
+      .call(unsubscribeSaga, unsubscribeAction(ctrl))
+      .next()
+
+      .fork(ctrl[SECRET].subscriber)
+      .next()
+
+      .put(updateCSDMetaAction({ id: ctrl.id, data: { connected: true } }))
+      .next()
+
+      .isDone();
   });
 
   it('should UNSUBSCRIBE controller', () => {
