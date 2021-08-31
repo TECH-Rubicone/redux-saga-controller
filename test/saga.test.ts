@@ -57,14 +57,14 @@ describe('Controller subscription', () => {
 
   it('should UNSUBSCRIBE controller', () => {
     // NOTE lets assume the channel there
-    ctrl[SECRET].channel = createMockTask();
+    const channel = ctrl[SECRET].channel = createMockTask();
     testSaga(unsubscribeSaga, unsubscribeAction(ctrl))
       .next()
 
       .put(updateCSDMetaAction({ id: ctrl.id, data: { connected: false } }))
       .next()
 
-      .cancel(forceCast(ctrl[SECRET].channel))
+      .cancel(channel)
       .next()
 
       .isDone();
