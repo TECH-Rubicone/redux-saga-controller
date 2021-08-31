@@ -39,8 +39,8 @@ export const PREFIX = {
  *          ERRORS
  **************************************/
 export const ERROR = {
-  PREPARE_ACTIONS_REQUIRED: () => '"Actions" is required and should be a plain object (first argument)',
-  PREPARE_INITIAL_REQUIRED: () => '"Initial" is required and should be a plain object (third argument)',
-  PREPARE_SUBSCRIBER_REQUIRED: () => '"Subscriber" is required and should be a saga generator (second argument)',
-  SAGA_SUBSCRIBE_DUPLICATION: (id:string) => `Duplicate controller subscription detected for "${id}"`,
+  PREPARE_ACTIONS_REQUIRED: () => 'redux-saga-controller:\n "Actions" is required and should be a plain object (first argument)',
+  PREPARE_INITIAL_REQUIRED: () => 'redux-saga-controller:\n "Initial" is required and should be a plain object (third argument)',
+  PREPARE_SUBSCRIBER_REQUIRED: () => 'redux-saga-controller:\n "Subscriber" is required and should be a saga generator (second argument)',
+  SAGA_SUBSCRIBE_DUPLICATION: (id:string) => `redux-saga-controller:\n Duplicate of controller subscription detected for "${id}" => subscription reassigned`,
 };

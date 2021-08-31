@@ -1,7 +1,7 @@
 
 // outsource dependencies
 import { Task } from 'redux-saga';
-import { fork, takeEvery, cancel, put } from 'redux-saga/effects';
+import { fork, takeEvery, cancel, put, call } from 'redux-saga/effects';
 
 // local dependencies
 import { Controller } from './prepare';
@@ -14,7 +14,11 @@ export function * subscribeSaga<Actions, Initial> ({
   const id = controller.id;
   const subscriber = controller[SECRET].subscriber;
   if (controller[SECRET].channel) {
-    throw new Error(ERROR.SAGA_SUBSCRIBE_DUPLICATION(id));
+    // NOTE no throwing error to avoid breakdown
+    const error = new Error(ERROR.SAGA_SUBSCRIBE_DUPLICATION(id));
+    console.error && console.error(error);
+    // NOTE unsubscribe channel in order to store last of them
+    yield call(unsubscribeSaga, unsubscribeAction(controller));
   }
   controller[SECRET].channel = yield fork(subscriber);
   // NOTE store mark in to redux to provide correct watching of changes
