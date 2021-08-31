@@ -4,8 +4,9 @@ import { useReducer } from './use-reducer';
 import { useSubscribe } from './use-subscribe';
 import { Controller, prepareController, create } from './prepare';
 
-// NOTE required for examples
+// NOTE required TS types
 export * from './outer-types';
+export { subscribeAction, unsubscribeAction } from './actions';
 /**
  * Controller require connection to react-redux and redux-saga
  * please make sure you connected to react-redux and setup saga subscriber
