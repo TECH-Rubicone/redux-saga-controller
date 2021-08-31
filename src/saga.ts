@@ -27,12 +27,14 @@ export function * unsubscribeSaga<Actions, Initial> ({
   const id = controller.id;
   // NOTE store mark in to redux to provide correct watching of changes
   yield put(updateCSDMetaAction({ id, data: { connected: false } }));
-  // NOTE important thing to prevent cancelation of subscribers channel
+  // NOTE important thing to prevent cancellation of subscribers channel
   const channel = forceCast<Task>(controller[SECRET].channel);
+  // NOTE delete channel from controller
+  controller[SECRET].channel = void(0);
+  // NOTE unsubscribe channel
   if (channel) {
     yield cancel(channel);
   }
-  delete controller[SECRET].channel;
 }
 
 export type Subscriber = () => IterableIterator<unknown>;
