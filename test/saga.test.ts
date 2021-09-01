@@ -1,11 +1,11 @@
 
 // outsource dependencies
-import { testSaga, expectSaga } from 'redux-saga-test-plan';
+import { testSaga } from 'redux-saga-test-plan';
 import { createMockTask } from '@redux-saga/testing-utils';
 
 // local dependencies
-import { ERROR, forceCast, SECRET } from '../src/constant';
-import { Controller, prepareController } from '../src/prepare';
+import { SECRET } from '../src/constant';
+import { Controller, prepareController } from '../src';
 import { sagas, subscribeSaga, unsubscribeSaga } from '../src/saga';
 import { subscribeAction, unsubscribeAction, updateCSDMetaAction } from '../src/actions';
 

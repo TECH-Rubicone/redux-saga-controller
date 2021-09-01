@@ -7,7 +7,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { createStore, applyMiddleware, combineReducers, compose, Reducer, AnyAction } from 'redux';
 
 // local dependencies
-import { reducer, sagas, State, prepareController, path } from '../src'; // Use line below
+import { reducer, sagas, State, path } from '../src'; // Use line below
 // NOTE Build the middleware to run our Saga
 const saga = createSagaMiddleware();
 const middleware = compose(applyMiddleware(saga));

@@ -1,6 +1,5 @@
 
 // outsource dependencies
-import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 
 // local dependencies

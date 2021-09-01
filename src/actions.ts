@@ -1,5 +1,5 @@
 
-//
+// outsource dependencies
 import { AnyAction } from 'redux';
 
 // local dependencies
