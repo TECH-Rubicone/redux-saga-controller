@@ -39,3 +39,5 @@ jobs:
         run: npm run editorconfig:checker # check code by .editorconfig
       - name: ESLint
         run: npm run lint # run eslint
+      - name: Jest Tests
+        run: npm run test # run tests
