@@ -39,13 +39,13 @@ export function prepareController<Actions, Initial> (
   if (!initial || !isPlainObject(initial)) {
     throw new Error(ERROR.PREPARE_INITIAL_REQUIRED());
   }
-  const id = `${prefix ? `${prefix}-` : ''}${hash()}`;
+  const id = prefix ? `${prefix}-state` : `${hash()}-state`;
 
   const action: ActAnnotation = {};
   // NOTE use same names as in annotation to provide auto suggestions for pure js also
   for (const name in actions) {
     // NOTE provide ability to setup readable action names within redux devtools
-    action[name] = createAction(`@${id}/${actions[name]}`);
+    action[name] = createAction(`@${id}/${actions[name]}` as const);
   }
   // NOTE setup system action
   action.clearCtrl = createClearCtrl<Initial>(id, initial);
@@ -79,4 +79,17 @@ export function create<Actions, Initial> ({ actions, subscriber, initial, prefix
     throw new Error(ERROR.PREPARE_ACTIONS_REQUIRED());
   }
   return prepareController(actions, subscriber, initial, prefix);
+}
+
+/**
+ * rules to selecting controller private data
+ */
+export function getControllerSubscriber<Actions, Initial> (controller: Controller<Actions, Initial>) {
+  return controller[SECRET].subscriber;
+}
+export function getControllerInitialState<Actions, Initial> (controller: Controller<Actions, Initial>) {
+  return controller[SECRET].initial;
+}
+export function getControllerChannel<Actions, Initial> (controller: Controller<Actions, Initial>) {
+  return controller[SECRET].channel;
 }

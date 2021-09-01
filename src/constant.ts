@@ -39,6 +39,7 @@ export const PREFIX = {
  *          ERRORS
  **************************************/
 export const ERROR = {
+  EXTRA_REDUCER_VALIDATION: () => 'redux-saga-controller:\n "ExtraReducers" should be an object with functions',
   PREPARE_ACTIONS_REQUIRED: () => 'redux-saga-controller:\n "Actions" is required and should be a plain object (first argument)',
   PREPARE_INITIAL_REQUIRED: () => 'redux-saga-controller:\n "Initial" is required and should be a plain object (third argument)',
   PREPARE_SUBSCRIBER_REQUIRED: () => 'redux-saga-controller:\n "Subscriber" is required and should be a saga generator (second argument)',
