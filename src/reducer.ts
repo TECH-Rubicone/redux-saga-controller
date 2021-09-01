@@ -3,7 +3,7 @@
 import { Reducer, AnyAction } from 'redux';
 
 // local dependencies
-import { PATH, ERROR } from './constant';
+import { PATH, ERROR, isPlainObject } from './constant';
 import { createCSDAction, removeCSDAction, clearCSDAction, updateCSDAction, updateCSDMetaAction } from './actions';
 
 export const path = PATH.REDUCER;
@@ -26,15 +26,19 @@ export function createSelectorActualCSD<Initial> (id: string, initial: Initial) 
 }
 const initial = { [PATH.META]: {} };
 export const reducer: Reducer = (state: State = initial, action: AnyAction) => {
-  // NOTE "id" it's required unique identifier for dynamic reducers
   const { type, payload } = action;
+  // NOTE ability to apply very specific an bed things for example "HYDRATE"
+  if (typeof extraHandlers[type] === 'function') {
+    return extraHandlers[type](state, action);
+  }
+  // NOTE "id" it's required unique identifier for dynamic reducers
   const id = payload?.id;
   // NOTE mostly impossible to simulate controller actions but just in case
   if (!id) { return state; }
-  const data = payload.data;
-  const ctrlData = state[id];
-  const meta = state[PATH.META];
-  const ctrlMeta = state[PATH.META][id];
+  const data = payload.data || {};
+  const ctrlData = state[id] || {};
+  const meta = state[PATH.META] || {};
+  const ctrlMeta = state[PATH.META][id] || {};
 
   // id && console.log(`${type} =>  ${id}`
   //   // , '\n state:', JSON.stringify(state, null, 4)
@@ -44,9 +48,7 @@ export const reducer: Reducer = (state: State = initial, action: AnyAction) => {
   // );
 
   switch (type) {
-    default:
-      // NOTE handle extra actions
-      return !extraHandlers[type] ? state : extraHandlers[type](state, action);
+    default: return state;
     case removeCSDAction.TYPE:
       // NOTE remove dynamic reducer and it meta information
       return { ...state, [id]: null, [PATH.META]: { ...meta, [id]: null } };
@@ -54,8 +56,8 @@ export const reducer: Reducer = (state: State = initial, action: AnyAction) => {
       // NOTE bring dynamic reducer initial state
       return { ...state, [id]: { ...data } };
     case createCSDAction.TYPE:
-      // NOTE create dynamic reducer with initial state and empty meta information
-      return { ...state, [id]: { ...data }, [PATH.META]: { ...meta, [id]: {} } };
+      // NOTE create dynamic reducer with initial state, but inherit old state if it was
+      return { ...state, [id]: { ...data, ...ctrlData }, [PATH.META]: { ...meta, [id]: {} } };
     case updateCSDAction.TYPE:
       // NOTE most used action for dynamic reducers
       return { ...state, [id]: { ...ctrlData, ...data } };
@@ -70,6 +72,9 @@ type ExtraHandler = { (state: State, action: AnyAction): State }
 type ExtraHandlers = { [key: string]: ExtraHandler; }
 const extraHandlers: ExtraHandlers = {};
 export const extraReducers = (handlers: ExtraHandlers) => {
+  if (!isPlainObject(handlers)) {
+    throw new Error(ERROR.EXTRA_REDUCER_VALIDATION());
+  }
   for (const name in handlers) {
     if (typeof handlers[name] !== 'function') {
       throw new Error(ERROR.EXTRA_REDUCER_VALIDATION());
