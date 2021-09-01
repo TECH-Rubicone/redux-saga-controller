@@ -3,9 +3,8 @@
 
 // local dependencies
 import { TestStore } from './test.mock';
-import { Controller } from '../src/prepare';
-import { prepareController, reducer, path } from '../src';
 import { createSelectorIsConnected } from '../src/reducer';
+import { Controller, prepareController, reducer, path } from '../src';
 import { createCSDAction, removeCSDAction, updateCSDAction, clearCSDAction, updateCSDMetaAction } from '../src/actions';
 
 // configure

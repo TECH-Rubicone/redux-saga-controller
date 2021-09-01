@@ -2,8 +2,7 @@
 // outsource dependencies
 
 // local dependencies
-import { Subscriber } from '../src/saga';
-import { prepareController } from '../src';
+import { prepareController, Subscriber } from '../src';
 import { ERROR, SECRET, forceCast } from '../src/constant';
 
 // configure
