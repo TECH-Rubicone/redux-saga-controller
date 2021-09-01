@@ -1,19 +1,18 @@
 
 // outsource dependencies
-import { Task } from 'redux-saga';
 import { fork, takeEvery, cancel, put, call } from 'redux-saga/effects';
 
 // local dependencies
-import { Controller } from './prepare';
 import { ERROR, SECRET, forceCast } from './constant';
 import { updateCSDMetaAction, subscribeAction, unsubscribeAction } from './actions';
+import { Controller, getControllerSubscriber, getControllerChannel } from './prepare';
 
 export function * subscribeSaga<Actions, Initial> ({
   payload: controller
 }: { payload: Controller<Actions, Initial> }) {
   const id = controller.id;
-  const subscriber = controller[SECRET].subscriber;
-  if (controller[SECRET].channel) {
+  const subscriber = getControllerSubscriber(controller);
+  if (getControllerChannel(controller)) {
     // NOTE no throwing error to avoid breakdown
     const error = new Error(ERROR.SAGA_SUBSCRIBE_DUPLICATION(id));
     console.error && console.error(error);
@@ -32,7 +31,7 @@ export function * unsubscribeSaga<Actions, Initial> ({
   // NOTE store mark in to redux to provide correct watching of changes
   yield put(updateCSDMetaAction({ id, data: { connected: false } }));
   // NOTE important thing to prevent cancellation of subscribers channel
-  const channel = forceCast<Task>(controller[SECRET].channel);
+  const channel = getControllerChannel(controller);
   // NOTE delete channel from controller
   controller[SECRET].channel = void(0);
   // NOTE unsubscribe channel

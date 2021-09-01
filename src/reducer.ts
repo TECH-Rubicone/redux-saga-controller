@@ -3,7 +3,7 @@
 import { Reducer, AnyAction } from 'redux';
 
 // local dependencies
-import { PATH } from './constant';
+import { PATH, ERROR } from './constant';
 import { createCSDAction, removeCSDAction, clearCSDAction, updateCSDAction, updateCSDMetaAction } from './actions';
 
 export const path = PATH.REDUCER;
@@ -70,5 +70,10 @@ type ExtraHandler = { (state: State, action: AnyAction): State }
 type ExtraHandlers = { [key: string]: ExtraHandler; }
 const extraHandlers: ExtraHandlers = {};
 export const extraReducers = (handlers: ExtraHandlers) => {
+  for (const name in handlers) {
+    if (typeof handlers[name] !== 'function') {
+      throw new Error(ERROR.EXTRA_REDUCER_VALIDATION());
+    }
+  }
   Object.assign(extraHandlers, handlers);
 };
