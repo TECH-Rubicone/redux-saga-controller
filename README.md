@@ -69,22 +69,22 @@ export const controller = createController(
 );
 
 function * initializeSaga ({ type, payload }) {
-    console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
-        , '\n payload:', payload
-    );
-    // NOTE each time bring to initial state
-    yield put(controller.action.clearCtrl());
-    // NOTE prepare view data
-    ...
-    // NOTE unblock view when will be done all preparations
-    yield put(controller.action.updateCtrl({ initialized: true }));
+  console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
+      , '\n payload:', payload
+  );
+  // NOTE each time bring to initial state
+  yield put(controller.action.clearCtrl());
+  // NOTE prepare view data
+  ...
+  // NOTE unblock view when will be done all preparations
+  yield put(controller.action.updateCtrl({ initialized: true }));
 }
 function * getSelfSaga ({ type, payload }) {
-    console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
-        , '\n payload:', payload
-    );
-    const data = yield call(getDataFromAPI);
-    yield put(controller.action.updateCtrl({ data }));
+  console.log(`%c ${type} `, 'color: #FF6766; font-weight: bolder; font-size: 12px;'
+      , '\n payload:', payload
+  );
+  const data = yield call(getDataFromAPI);
+  yield put(controller.action.updateCtrl({ data }));
 }
 ```
 
