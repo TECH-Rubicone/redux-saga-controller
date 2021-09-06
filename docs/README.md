@@ -1,16 +1,6 @@
-# redux-saga-controller
+# Getting Started
 
-[![npm version](https://img.shields.io/npm/v/redux-saga-controller.svg)](https://www.npmjs.com/package/redux-saga-controller)
-[![npm](https://img.shields.io/npm/dm/redux-saga-controller.svg)](https://www.npmjs.com/package/redux-saga-controller)
-
-- [Example JS](https://github.com/TECH-Rubicone/redux-saga-controller/tree/master/app-example-js)
-- [Example TS](https://github.com/TECH-Rubicone/redux-saga-controller/tree/master/app-example-ts)
-- [Release Notes](https://github.com/TECH-Rubicone/redux-saga-controller/releases)
-- [License](#license)
-
-## Getting Started
-
-### Step 1: Connect Controller to redux store
+## Step 1: Connect Controller to redux store
 
 ```js
 import createSagaMiddleware from 'redux-saga';
@@ -41,7 +31,7 @@ saga.run(function * () {
 export default store;
 ```
 
-### Step 2: Prepare controller annotation
+## Step 2: Prepare controller annotation
 
 ```js
 import createController from 'redux-saga-controller';
@@ -88,7 +78,7 @@ function * getSelfSaga ({ type, payload }) {
 }
 ```
 
-### Step 3: Use it inside your React Components
+## Step 3: Use it inside your React Components
 
 ```jsx harmony
 import React from 'react';
@@ -111,7 +101,7 @@ export const Example1 = memo(() => {
 });
 ```
 
-### React hooks 
+## React hooks 
 
 ```js
 // useController - to use you controller and you will get all data you need
@@ -123,8 +113,5 @@ const actions = useControllerActions(controller);
 const isControllerConnected = useControllerSubscribe(controller);
 ```
 
-## License
-
-redux-saga-controller is [MIT licensed](./LICENSE).
 
 
