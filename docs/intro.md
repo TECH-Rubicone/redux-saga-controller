@@ -1,3 +1,7 @@
+---
+sidebar_position: 0
+---
+
 # Getting Started
 
 ## Step 1: Connect Controller to redux store
@@ -80,7 +84,7 @@ function * getSelfSaga ({ type, payload }) {
 
 ## Step 3: Use it inside your React Components
 
-```jsx harmony
+```jsx
 import React from 'react';
 import { controller } from './controller';
 import { useController } from 'redux-saga-controller';
@@ -101,7 +105,7 @@ export const Example1 = memo(() => {
 });
 ```
 
-## React hooks 
+## React hooks
 
 ```js
 // useController - to use you controller and you will get all data you need
