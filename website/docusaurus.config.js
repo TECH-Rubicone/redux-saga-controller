@@ -13,6 +13,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
   favicon: 'img/favicon.ico',
   organizationName: 'TECH-Rubicone',
   projectName: 'redux-saga-controller',
+  trailingSlash: false,
 
   presets: [
     [
