@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Controller creation
+# Controller annotation
 
 ```js
 import createController from 'redux-saga-controller';
@@ -28,13 +28,4 @@ export const controller = createController(
     }
   }
 );
-```
-
-```ts
-declare function prepareController<Actions, Initial>(
-  actions: ActAnnotation,
-  subscriber: Subscriber,
-  initial: Initial,
-  prefix?: string
-): Controller<Actions, Initial>;
 ```

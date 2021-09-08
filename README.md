@@ -20,7 +20,6 @@ The redux-saga-controller docs are located at **https://redux-saga-controller.js
 - [Controller creation](https://redux-saga-controller.js.org/docs/create-controller)
 - [Hooks](https://redux-saga-controller.js.org/docs/hooks/useController)
 - [Release Notes](https://github.com/TECH-Rubicone/redux-saga-controller/releases)
-- [License](#license)
 
 ## License
 
