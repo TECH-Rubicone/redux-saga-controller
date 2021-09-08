@@ -16,7 +16,6 @@ A tool to simplify work with react, redux and redux-saga
 
 The redux-saga-controller docs are located at **https://redux-saga-controller.js.org**:
 
-
 - [Getting Started](https://redux-saga-controller.js.org/docs/readme)
 - [Controller creation](https://redux-saga-controller.js.org/docs/create-controller)
 - [Hooks](https://redux-saga-controller.js.org/docs/hooks/useController)
