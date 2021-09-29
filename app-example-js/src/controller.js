@@ -41,6 +41,7 @@ export const controller = create({
     yield takeEvery(controller.action.getSelf.TYPE, getSelfSaga);
   },
 });
+
 // NOTE Example of usage redux sagas
 function * initializeSaga ({ type, payload }) {
   // NOTE bring reducer to initial state before start initialization

@@ -1,6 +1,6 @@
 # Application example for `redux-saga-controller`
 
-## [CodeSandbox Demo](https://codesandbox.io/s/app-example-ts-tyvv5)
+[CodeSandbox Demo](https://codesandbox.io/s/app-example-ts-tyvv5)
 
 
 ## Link for local environments

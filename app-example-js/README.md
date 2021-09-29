@@ -1,6 +1,6 @@
 # Application example for `redux-saga-controller`
 
-## [CodeSandbox Demo](https://codesandbox.io/s/app-example-js-egbtz)
+[CodeSandbox Demo](https://codesandbox.io/s/app-example-js-egbtz)
 
 
 ## Link for local environments
