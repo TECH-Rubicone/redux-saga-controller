@@ -15,7 +15,7 @@ This is method that will help you get initial state from reducer.
 :::
 
 <Tabs defaultValue="ts">
-<TabItem value="ts" label="Type Script">
+<TabItem value="ts" label="TypeScript">
 
 #### controller.ts
 
@@ -55,7 +55,7 @@ function  User() {
 ```
 
 </TabItem>
-<TabItem value="js" label="Java Script">
+<TabItem value="js" label="JavaScript">
 
 #### controller.js
 
@@ -82,6 +82,4 @@ function  User() {
 
 </TabItem>
 </Tabs>
-
-
 

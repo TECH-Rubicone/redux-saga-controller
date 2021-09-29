@@ -2,7 +2,7 @@
 sidebar_position: 0
 ---
 
-# Type Script
+# TypeScript
 
 :::info
 
@@ -60,7 +60,7 @@ interface IActions extends ActionCreators<IInitial> {
 
 export const controller:Controller<IActions, IInitial> = create({
   // NOTE Prefix should be unique for each controller
-  prefix: 'test',
+  prefix: 'defaultPrefix',
   actions: ['initialize', 'getSelf'],
   initial: {
     initialized: false,

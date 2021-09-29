@@ -8,7 +8,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs defaultValue="ts">
-<TabItem value="ts" label="Type Script">
+<TabItem value="ts" label="TypeScript">
 
 ```tsx {40}
 import { Action } from 'redux';
@@ -51,7 +51,7 @@ interface IActions extends ActionCreators<IInitial> {
 }
 
 export const controller:Controller<IActions, IInitial> = create({
-  prefix: 'test',
+  prefix: 'defaultPrefix',
   actions: ['initialize', 'getSelf'],
   initial: {
     initialized: false,
@@ -109,7 +109,7 @@ function * getSelfSaga ({ type, payload } : Act<GetSelfPayload>) {
 ```
 
 </TabItem>
-<TabItem value="js" label="Java Script">
+<TabItem value="js" label="JavaScript">
 
 ```jsx {4}
 import { create } from 'redux-saga-controller';
@@ -117,7 +117,7 @@ import { takeEvery, put, select, delay } from 'redux-saga/effects';
 
 export const controller = create({
   // NOTE Prefix should be unique for each controller
-  prefix: 'test',
+  prefix: 'defaultPrefix',
   // NOTE Types for which action creators will be generated
   actions:   {
     initialize: 'init',
@@ -183,5 +183,4 @@ function * getSelfSaga ({ type, payload }) {
 
 </TabItem>
 </Tabs>
-
 

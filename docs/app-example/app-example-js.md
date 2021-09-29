@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 ---
-# Java Script
+# JavaScript
 
 :::info
 
@@ -22,12 +22,12 @@ import { takeEvery, put, select, delay } from 'redux-saga/effects';
 
 export const controller = create({
   // NOTE Prefix should be unique for each controller
-  prefix: 'test',
+  prefix: 'defaultPrefix',
   // NOTE Types for which action creators will be generated
   actions:   {
     initialize: 'init',
-    getSelf: 'test', 
-    someAction: 'test',
+    getSelf: 'getSelf', 
+    someAction: 'someAction',
   },
   // NOTE Initial data for your redux state
   initial: {

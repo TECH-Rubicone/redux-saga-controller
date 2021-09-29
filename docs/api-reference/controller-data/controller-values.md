@@ -16,14 +16,14 @@ import TabItem from '@theme/TabItem';
 ### How select works 
 
 <Tabs defaultValue="ts">
-<TabItem value="ts" label="Type Script">
+<TabItem value="ts" label="TypeScript">
 
 ```ts
 controller.select(state: ReduxState): Partial<ReduxState>
 ```
 
 </TabItem>
-<TabItem value="js" label="Java Script">
+<TabItem value="js" label="JavaScript">
 
 ```js
 controller.select(store.getState())
@@ -35,7 +35,7 @@ controller.select(store.getState())
 ### Action types
 
 <Tabs defaultValue="ts">
-<TabItem value="ts" label="Type Script">
+<TabItem value="ts" label="TypeScript">
 
 ```tsx title="ts" {11}
 import { Controller, create } from 'redux-saga-controller';
@@ -73,10 +73,10 @@ interface IInitial {
 }
 
 export const controller:Controller<IInitial> = create({
-  prefix: 'testController',
+  prefix: 'defaultPrefix',
   actions: {
-    initialize: 'INITIALIZE', // TYPE: "@testController-state/INITIALIZE"
-    getSelf: 'GET_SELF', // TYPE: "@testController-state/GET_SELF"
+    initialize: 'INITIALIZE', // TYPE: "@defaultPrefix-state/INITIALIZE"
+    getSelf: 'GET_SELF', // TYPE: "@defaultPrefix-state/GET_SELF"
   },
   initial: {
     initialized: false,
@@ -93,7 +93,7 @@ export const controller:Controller<IInitial> = create({
 ```
 
 </TabItem>
-<TabItem value="js" label="Java Script">
+<TabItem value="js" label="JavaScript">
 
 ```jsx title="js" {12,13,14,15,16}
 import { create } from 'redux-saga-controller';
@@ -109,11 +109,11 @@ export const controller = create(
         age: 30,
       }
     }, 
-    prefix: 'testController',
+    prefix: 'defaultPrefix',
     actions: {
-      data: 'DATA', // TYPE: "@testController-state/DATA"
-      initialize: 'INITIALIZE', // TYPE: "@testController-state/INITIALIZE"
-      updateData: 'UPDATE_DATA', // TYPE: "@testController-state/UPDATE_DATA"
+      data: 'DATA', // TYPE: "@defaultPrefix-state/DATA"
+      initialize: 'INITIALIZE', // TYPE: "@defaultPrefix-state/INITIALIZE"
+      updateData: 'UPDATE_DATA', // TYPE: "@defaultPrefix-state/UPDATE_DATA"
     },
     subscriber: function * () {
       // ...
@@ -136,8 +136,8 @@ export const controller = create(
         age: 30,
       }
     }, 
-    prefix: 'testController',
-    actions: ['initialize', 'updateData'], // TYPE: "@testController-state/initialize", TYPE: "@testController-state/updateData"
+    prefix: 'defaultPrefix',
+    actions: ['initialize', 'updateData'], // TYPE: "@defaultPrefix-state/initialize", TYPE: "@defaultPrefix-state/updateData"
     subscriber: function * () {
       // ...
     }
@@ -147,6 +147,4 @@ export const controller = create(
 
 </TabItem>
 </Tabs>
-
-
 

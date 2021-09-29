@@ -43,5 +43,3 @@ sidebar_position: 0
 - [Type Script](/docs/app-example/app-example-ts)
 - [Java Script](/docs/app-example/app-example-js)
 
-
-

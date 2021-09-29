@@ -16,7 +16,7 @@ controller actions outside of component subscriber.
 
 <Tabs defaultValue="ts">
 
-<TabItem value="ts" label="Type Script">
+<TabItem value="ts" label="TypeScript">
 
 ```jsx
 import { useControllerActions } from 'redux-saga-controller';
@@ -25,7 +25,7 @@ const actions = useControllerActions(controller);
 ```
 
 </TabItem>
-<TabItem value="js" label="Java Script">
+<TabItem value="js" label="JavaScript">
 
 ```jsx
 import { useControllerActions } from 'redux-saga-controller';
@@ -35,5 +35,4 @@ const actions = useControllerActions(controller);
 
 </TabItem>
 </Tabs>
-
 

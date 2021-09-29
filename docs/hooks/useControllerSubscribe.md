@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 <Tabs defaultValue="ts">
 
-<TabItem value="ts" label="Type Script">
+<TabItem value="ts" label="TypeScript">
 
 ```jsx
 import { useControllerSubscribe } from 'redux-saga-controller';
@@ -24,7 +24,7 @@ const isControllerConnected = useControllerSubscribe(controller);
 ```
 
 </TabItem>
-<TabItem value="js" label="Java Script">
+<TabItem value="js" label="JavaScript">
 
 ```jsx
 import { useControllerSubscribe } from 'redux-saga-controller';
@@ -34,5 +34,4 @@ const isControllerConnected = useControllerSubscribe(controller);
 
 </TabItem>
 </Tabs>
-
 

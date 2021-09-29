@@ -15,7 +15,7 @@ controller data outside component subscriber.
 
 <Tabs defaultValue="ts">
 
-<TabItem value="ts" label="Type Script">
+<TabItem value="ts" label="TypeScript">
 
 ```jsx
 import { useControllerData } from 'redux-saga-controller';
@@ -24,7 +24,7 @@ const controllerState = useControllerData(controller);
 ```
 
 </TabItem>
-<TabItem value="js" label="Java Script">
+<TabItem value="js" label="JavaScript">
 
 ```jsx
 import { useControllerData } from 'redux-saga-controller';

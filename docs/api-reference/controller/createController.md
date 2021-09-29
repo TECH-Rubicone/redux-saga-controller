@@ -8,7 +8,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs>
-<TabItem value="ts" label="Type Script" default>
+<TabItem value="ts" label="TypeScript" default>
 
 ```tsx {40}
 import { Action } from 'redux';
@@ -68,7 +68,7 @@ export const controller:Controller<IActions, IInitial> = createController(
       age: 30,
     }
   },
-  'test' // controller prefix
+  'defaultPrefix' // controller prefix
 );
 
 // NOTE Example of usage redux sagas
@@ -106,7 +106,7 @@ function * getSelfSaga ({ type, payload } : Act<GetSelfPayload>) {
 ```    
 
 </TabItem>
-<TabItem value="js" label="Java Script" default>
+<TabItem value="js" label="JavaScript" default>
 
 ```jsx {4}
 import createController from 'redux-saga-controller';
@@ -134,7 +134,7 @@ export const controller = createController(
     }
   },
   // NOTE Prefix should be unique for each controller
-  'test' // controller prefix
+  'defaultPrefix' // controller prefix
 );
 
 function * initializeSaga ({ type, payload }) {

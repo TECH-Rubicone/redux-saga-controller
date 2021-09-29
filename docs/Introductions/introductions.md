@@ -52,5 +52,3 @@ yarn add redux-saga-controller --save-dev
 - useControllerActions;
 - useControllerSubscribe;
 
-
-

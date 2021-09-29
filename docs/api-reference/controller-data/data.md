@@ -18,7 +18,7 @@ import TabItem from '@theme/TabItem';
 
 <Tabs defaultValue="ts">
 
-<TabItem value="ts" label="Type Script">
+<TabItem value="ts" label="TypeScript">
 
 ```tsx {13}
 import { takeEvery } from 'redux-saga/effects';
@@ -32,7 +32,7 @@ interface IActions extends ActionCreators<IInitial> {
 }
 
 export const controller:Controller<IActions, IInitial> = create({
-  prefix: 'test',
+  prefix: 'defaultPrefix',
   actions: ['initialize', 'getSelf'],
   initial: {
     initialized: false,
@@ -63,8 +63,8 @@ interface IActions extends ActionCreators<IInitial> {
 export const controller:Controller<IActions, IInitial> = createController(
   {
     initialize: 'init',
-    getSelf: 'test',
-    someAction: 'test',
+    getSelf: 'getSelf',
+    someAction: 'someAction',
   },
   function * () {
     yield takeEvery(controller.action.initialize.TYPE, initializeSaga);
@@ -78,18 +78,18 @@ export const controller:Controller<IActions, IInitial> = createController(
       age: 30,
     }
   },
-  'test' // controller prefix
+  'defaultPrefix' // controller prefix
 );
 ```
 </TabItem>
-<TabItem value="js" label="Java Script">
+<TabItem value="js" label="JavaScript">
 
 ```jsx {6}
 import { create } from 'redux-saga-controller';
 import { takeEvery } from 'redux-saga/effects';
 
 export const controller = create({
-  prefix: 'test',
+  prefix: 'defaultPrefix',
   actions: ['initialize', 'getSelf'],
   initial: {
     initialized: false,
@@ -114,8 +114,8 @@ export const controller = createController(
   // NOTE Types for which action creators will be generated
   {
     initialize: 'init',
-    getSelf: 'test',
-    someAction: 'test',
+    getSelf: 'getSelf',
+    someAction: 'someAction',
   },
   // NOTE root subscriber of controller
   function * () {
@@ -132,12 +132,10 @@ export const controller = createController(
     }
   },
   // NOTE Prefix should be unique for each controller
-  'test'
+  'defaultPrefix'
 );
 ```
 
 </TabItem>
 </Tabs>
-
-
 
