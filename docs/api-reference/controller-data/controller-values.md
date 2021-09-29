@@ -9,8 +9,8 @@ import TabItem from '@theme/TabItem';
 
 | Name        | Type            | Description                                                                                   | Default value  | 
 |:----------- | :-------------- | :----------------------------------------------------------------------------------           | :--------------| 
-| id          | `string`        | The id value will be equal to the prefix. Only dor reading.                                   |  'c-state'     |   
-| actions     | `object` `array`| Return the `object`  with default action creators and your additional action creators.        |       -        |    
+| id          | `string`        | The id value will be equal to the prefix. Only for reading.                                   |  'c-state'     |   
+| actions     | `object` `array`| Return the `object` with default action creators and your additional action creators.        |       -        |    
 | select      | `function`      | Method for get initial state of a particular controller.                                      |       -        |
 
 ### How select works 
