@@ -6,42 +6,42 @@ sidebar_position: 0
 
 > **Introductions** 
 
-- [`Info`](/docs/Introductions/introductions) 
-- [`Getting Started`](/docs/Introductions/gettingStarted)
+- [Info](/docs/Introductions/introductions) 
+- [Getting Started](/docs/Introductions/gettingStarted)
 
 > **Api Reference/Action** 
  
-- [`clearCtrl`](/docs/api-reference/action-creators/clearCtrl)
-- [`updateCtrl`](/docs/api-reference/action-creators/updateCtrl)
+- [clearCtrl](/docs/api-reference/action-creators/clearCtrl)
+- [updateCtrl](/docs/api-reference/action-creators/updateCtrl)
 
 
 
-- [`select`](/docs/api-reference/action-creators/select)
+- [select](/docs/api-reference/action-creators/select)
 
 > **Api Reference/Controller**
 
-- [`Controller object annotation using create`](/docs/api-reference/controller/create)
-- [`Controller function annotation using createController`](/docs/api-reference/controller/createController)
+- [Controller object annotation using create](/docs/api-reference/controller/create)
+- [Controller function annotation using createController](/docs/api-reference/controller/createController)
 
 > **Api Reference/Controller data**
 
-- [`Controller data`](/docs/api-reference/controller-data/data)
-- [`Output controller values`](/docs/api-reference/controller-data/controller-values)
+- [Controller data](/docs/api-reference/controller-data/data)
+- [Output controller values](/docs/api-reference/controller-data/controller-values)
 
 
-- [`Controller annotation`](/docs/create-annotation)
+- [Controller annotation](/docs/create-annotation)
 
 > **Hooks**
 
-- [`useController`](/docs/hooks/useController)
-- [`useControllerData`](/docs/hooks/useControllerData)
-- [`useControllerActions`](/docs/hooks/useControllerActions)
-- [`useControllerSubscribe`](/docs/hooks/useControllerSubscribe)
+- [useController](/docs/hooks/useController)
+- [useControllerData](/docs/hooks/useControllerData)
+- [useControllerActions](/docs/hooks/useControllerActions)
+- [useControllerSubscribe](/docs/hooks/useControllerSubscribe)
 
 > **Example**
 
-- [`Type-Script`](/docs/app-example/app-example-ts)
-- [`Java-Script`](/docs/app-example/app-example-js)
+- [Type Script](/docs/app-example/app-example-ts)
+- [Java Script](/docs/app-example/app-example-js)
 
 
 
