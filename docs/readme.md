@@ -4,19 +4,20 @@ sidebar_position: 0
 
 # Welcome to redux-saga-controller
 
-> **Introductions** 
+> **Introductions**
 
 - [Info](/docs/Introductions/introductions) 
 - [Getting Started](/docs/Introductions/gettingStarted)
 
-> **Api Reference/Action** 
- 
+> **Api Reference/Action**
+
 - [clearCtrl](/docs/api-reference/action-creators/clearCtrl)
 - [updateCtrl](/docs/api-reference/action-creators/updateCtrl)
 
-
+> **Api Reference**
 
 - [select](/docs/api-reference/action-creators/select)
+- [Controller annotation](/docs/create-annotation)
 
 > **Api Reference/Controller**
 
@@ -27,9 +28,6 @@ sidebar_position: 0
 
 - [Controller data](/docs/api-reference/controller-data/data)
 - [Output controller values](/docs/api-reference/controller-data/controller-values)
-
-
-- [Controller annotation](/docs/create-annotation)
 
 > **Hooks**
 

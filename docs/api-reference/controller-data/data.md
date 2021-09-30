@@ -7,12 +7,12 @@ import TabItem from '@theme/TabItem';
 
 # Controller data
 
-| Name        | Type            | Description                                                                                                                   | Default value  | Required      |
-| :---------- | :-------------  | :------------------------------------------------------------------                                                           | :------------- | :-------------|
-| prefix      | `string`        | Prefix should be unique for each controller.                                                                             &nbsp|   'c-state'    | **Optional**  |
-| actions     | `object` `array`| The `object` in which the action creators will be generated.&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp |       -        | **Required**  |
-| initial     | `object`        | Initial data for your redux state.                                                                                            |       -        | **Required**  |
-| subscriber  | `function`      | Root watcher saga of controller.                                                                                              |       -        | **Required**  |
+|Name      |Type            |Description                                                        |Default value|Required|
+|:---------| :-------------  | :------------------------------------------------------      |:------------|:-----------|
+|prefix    | `string`        | Prefix should be unique for each controller.                 |  'c-state'  |**Optional**|
+|actions   | `object` `array`| The `object` in which the action creators will be generated.      |    -   |**Required**|
+|initial   | `object`        | Initial data for your redux state.                              |       - | **Required**|
+|subscriber| `function`      | Root watcher saga of controller.                                 |       - |**Required**|
 
 ### Example action.
 
