@@ -9,8 +9,8 @@ import TabItem from '@theme/TabItem';
 
 :::info
 
-`useControllerData` - to use you controller, and you will get all initial data you need. Provide ability to use 
-controller data outside component subscriber.
+`useControllerData` - hook to get  data from redux store. Provides ability to use 
+controller data outside component where controller is subscribed.
 :::
 
 <Tabs defaultValue="ts">

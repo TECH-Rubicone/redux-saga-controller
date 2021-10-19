@@ -9,8 +9,7 @@ import TabItem from '@theme/TabItem';
 
 :::info
 
-You can only use it if you have prepared controller.
-This is an action creator that will help you update any property of entire controller reducer.
+This is an action creator which helps you to update controller reducer.
 
 :::
 

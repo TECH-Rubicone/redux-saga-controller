@@ -21,7 +21,7 @@ interface Act<Payload> extends Action {
 }
 
 // NOTE IMPORTANT!
-// You should add interface only of you will use select effect from redux-saga
+// You should add interface only if you will use select effect from redux-saga
 // In all cases except select effect you don't need it
 // It because redux-saga effect select return "any" in all cases
 type UserData = {

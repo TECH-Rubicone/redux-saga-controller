@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 0
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,8 +9,7 @@ import TabItem from '@theme/TabItem';
 
 :::info
 
-You can use it inside your saga.
-This is method that will help you get initial state from reducer.
+Selector function to get data from reducer.
 
 :::
 

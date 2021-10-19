@@ -10,9 +10,7 @@ import TabItem from '@theme/TabItem';
 
 :::info
 
-This is an action creator that will help you to bring reducer to initial state
-before start initialization.
-You can only use it if you have prepared a controller.
+This is an action creator which helps you to bring reducer to initial state.
 
 :::
 

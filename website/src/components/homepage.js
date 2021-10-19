@@ -21,7 +21,7 @@ const list = [
     Svg: require('../../static/img/target.svg').default,
     description: (
       <>
-        Lets you focus on develop, and and keep your code and file structure simple.
+        Lets you focus on develop, and keep your code and file structure simple.
       </>
     ),
   },
