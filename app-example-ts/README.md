@@ -1,7 +1,6 @@
 # Application example for `redux-saga-controller`
 
-## TODO TS !!!
-## [CodeSandbox Demo](https://codesandbox.io/s/redux-saga-controller031-sjc5r)
+[CodeSandbox Demo](https://codesandbox.io/s/app-example-ts-tyvv5)
 
 
 ## Link for local environments
