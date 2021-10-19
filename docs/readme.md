@@ -16,7 +16,7 @@ sidebar_position: 0
 
 > **Api Reference**
 
-- [select](/docs/api-reference/action-creators/select)
+- [select](/docs/api-reference/select)
 - [Controller annotation](/docs/create-annotation)
 
 > **Api Reference/Controller**
