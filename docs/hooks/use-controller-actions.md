@@ -9,8 +9,8 @@ import TabItem from '@theme/TabItem';
 
 :::info
 
-`useControllerActions` - to use you controller, and you will get all action creators you need. Provide ability to use 
-controller actions outside of component subscriber.
+`useControllerActions` - hook to get all actions *(action creators are already wrapped with dispatch)* from your controller. Provides ability to use 
+controller actions outside of component where controller is subscribed.
 
 :::
 

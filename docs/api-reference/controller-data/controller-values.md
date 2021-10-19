@@ -2,16 +2,16 @@
 sidebar_position: 1
 ---
 
-# Output controller values
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-|Name   | Type            | Description                                                                  |Default value| 
-|:------| :-------------- | :-----------------------------------------------------------------------          | :------| 
-|id     | `string`        | The id value will be equal to the prefix. Only for reading.                      |'c-state'|   
-|actions| `object` `array`| Return the `object` with default action creators and your additional action creators. |  - |    
-|select | `function`      | Method for get initial state of a particular controller.                              |-   |
+# Output controller values
+
+|Name   | Type            | Description                                                                | Default value | 
+|:------| :-------------- | :------------------------------------------------------------------------- | :------------ | 
+|id     | `string`        | The id value will be equal to the prefix. Readonly.                        |'c-state'      |   
+|actions| `object`        | Return the `object` with default action creators and your action creators. | -             |    
+|select | `function`      | Method to get state of a particular controller.                            | -             |
 
 ### How select works 
 

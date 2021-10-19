@@ -7,22 +7,21 @@ sidebar_position: 0
 > **Introductions**
 
 - [Info](/docs/Introductions/introductions) 
-- [Getting Started](/docs/Introductions/gettingStarted)
+- [Getting Started](/docs/Introductions/getting-started)
 
 > **Api Reference/Action**
 
-- [clearCtrl](/docs/api-reference/action-creators/clearCtrl)
-- [updateCtrl](/docs/api-reference/action-creators/updateCtrl)
+- [clearCtrl](/docs/api-reference/action-creators/clear-ctrl)
+- [updateCtrl](/docs/api-reference/action-creators/update-ctrl)
 
 > **Api Reference**
 
 - [select](/docs/api-reference/select)
-- [Controller annotation](/docs/create-annotation)
 
 > **Api Reference/Controller**
 
 - [Controller object annotation using create](/docs/api-reference/controller/create)
-- [Controller function annotation using createController](/docs/api-reference/controller/createController)
+- [Controller function annotation using createController](/docs/api-reference/controller/create-controller)
 
 > **Api Reference/Controller data**
 
@@ -31,10 +30,10 @@ sidebar_position: 0
 
 > **Hooks**
 
-- [useController](/docs/hooks/useController)
-- [useControllerData](/docs/hooks/useControllerData)
-- [useControllerActions](/docs/hooks/useControllerActions)
-- [useControllerSubscribe](/docs/hooks/useControllerSubscribe)
+- [useController](/docs/hooks/use-controller)
+- [useControllerData](/docs/hooks/use-controller-data)
+- [useControllerActions](/docs/hooks/use-controller-actions)
+- [useControllerSubscribe](/docs/hooks/use-controller-subscribe)
 
 > **Example**
 

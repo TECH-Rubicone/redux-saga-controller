@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 :::info
 
-`useControllerSubscribe` - provide ability to connect controller without passing data or actions.
+`useControllerSubscribe` - hook to get  information about controller outside of  component  where controller is subscribed.
 
 ::: 
 

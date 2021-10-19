@@ -9,19 +9,19 @@ import TabItem from '@theme/TabItem';
 
 :::info
 
-`useController` - to use you controller, and you will get all data you need.
+`useController` - hook to initialize you controller.
 
-**IMPORTANT** in one time in the DOM `useController` can subscribe not more than one time for one controller.
+**IMPORTANT** `useController` can be subscribed not more than ones in the same time.
 
 :::
 
 <Tabs defaultValue="ts">
 <TabItem value="ts" label="TypeScript">
 
-```jsx
+```tsx
 import { useController } from 'redux-saga-controller';
 
-const [controllerState, actions] = useController(controller);
+const [state, actions, isControllerConnected] = useController(controller);
 ```
 
 </TabItem>
@@ -30,7 +30,7 @@ const [controllerState, actions] = useController(controller);
 ```jsx
 import { useController } from 'redux-saga-controller';
 
-const [controllerState, actions] = useController(controller);
+const [state, actions, isControllerConnected] = useController(controller);
 ```
 </TabItem>
 </Tabs>
