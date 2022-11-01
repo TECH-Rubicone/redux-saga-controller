@@ -1,7 +1,7 @@
 
 // outsource dependencies
-import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import ReactDOM from 'react-dom/client';
 import React, { useEffect, useCallback} from 'react';
 import { useController } from 'redux-saga-controller';
 
@@ -32,11 +32,13 @@ function App() {
   </div>;
 }
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
+root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
+      <Provider store={store}>
+          <App />
+      </Provider>
+  </React.StrictMode>
 );
