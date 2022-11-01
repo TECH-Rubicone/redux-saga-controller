@@ -85,11 +85,11 @@
     "@babel/runtime": "^7.12.5"
   },
   "peerDependencies": {
-    "@types/react": ">= 16.8 < 18",
+    "@types/react": ">= 16.8",
     "@types/react-redux": "7.x",
     "@types/redux": ">= 3 < 5",
-    "react": ">= 16.8 < 18",
-    "react-dom": ">= 16.8 < 18",
+    "react": ">= 16.8",
+    "react-dom": ">= 16.8",
     "react-redux": "7.x",
     "redux": ">= 3 < 5",
     "redux-saga": "1.x"
