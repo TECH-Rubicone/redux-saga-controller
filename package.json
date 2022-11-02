@@ -24,12 +24,12 @@
     "lint:fix": "eslint src --fix",
     "install:peers": "install-peers -f",
     "clean": "rimraf lib dist es types coverage",
-    "build": "npm run install:peers && rollup -c",
+    "build": "rollup -c",
     "test": "jest --collectCoverage --passWithNoTests",
-    "check:types": "npm run install:peers && tsc --noEmit",
+    "check:types": "tsc --noEmit",
     "prepublishOnly": "npm run clean && npm run check:code && npm run build",
     "editorconfig:checker": "editorconfig-checker --exclude '.git|node_modules|dist|lib|es|types'",
-    "check:code": "npm run editorconfig:checker && npm run check:types && npm run lint && npm test"
+    "check:code": "npm run editorconfig:checker && npm run check:types && npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
