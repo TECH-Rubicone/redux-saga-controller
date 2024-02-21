@@ -1,4 +1,6 @@
-import { themes as prismThemes } from 'prism-react-renderer';
+const lightCodeTheme = require('prism-react-renderer/themes/github');
+const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+
 
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
@@ -109,8 +111,8 @@ import { themes as prismThemes } from 'prism-react-renderer';
         copyright: `Copyright © ${new Date().getFullYear()} TECH-Rubicone`,
       },
       prism: {
-        theme: prismThemes.github,
-        darkTheme: prismThemes.dracula,
+        theme: lightCodeTheme,
+        darkTheme: darkCodeTheme,
       },
     }),
 });
