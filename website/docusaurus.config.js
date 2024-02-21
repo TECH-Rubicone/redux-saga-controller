@@ -15,7 +15,6 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
   organizationName: 'TECH-Rubicone',
   projectName: 'redux-saga-controller',
   trailingSlash: false,
-
   presets: [
     [
       '@docusaurus/preset-classic',

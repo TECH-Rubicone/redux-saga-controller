@@ -1,6 +1,6 @@
 {
   "name": "redux-saga-controller",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A tool to simplify work with react, redux and redux-saga",
   "license": "MIT",
   "main": "lib/index.js",
