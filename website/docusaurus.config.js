@@ -9,12 +9,26 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
   tagline: 'A tool to simplify work with react, redux and redux-saga',
   url: 'https://redux-saga-controller.js.org',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  trailingSlash: false,
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'TECH-Rubicone',
   projectName: 'redux-saga-controller',
-  trailingSlash: false,
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+    path: 'i18n',
+    localeConfigs: {
+      en: {
+        label: 'English',
+        direction: 'ltr',
+        htmlLang: 'en-US',
+        calendar: 'gregory',
+        path: 'en'
+      }
+    },
+  },
   presets: [
     [
       '@docusaurus/preset-classic',
@@ -22,6 +36,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
       ({
         docs: {
           path: '../docs',
+          routeBasePath: '/docs', // Serve the docs at the site's root
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl: 'https://github.com/TECH-Rubicone/redux-saga-controller/edit/master/docs/intro.md',
@@ -70,7 +85,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             items: [
               {
                 label: 'Tutorial',
-                to: '/docs/readme',
+                to: '/docs',
               },
             ],
           },

@@ -48,11 +48,11 @@ yarn add redux-saga-controller --save
 - [clearCtrl](/docs/api-reference/action-creators/clear-ctrl)
 - [updateCtrl](/docs/api-reference/action-creators/update-ctrl)
 
-> ** Controller annotation:**
+> **Controller annotation:**
 - [create](/docs/api-reference/controller/create)
 - [createController](/docs/api-reference/controller/create-controller)
 
-> ** Hooks:**
+> **Hooks:**
 - [useController](/docs/hooks/use-controller)
 - [useControllerData](/docs/hooks/use-controller-data)
 - [useControllerActions](/docs/hooks/use-controller-actions)
