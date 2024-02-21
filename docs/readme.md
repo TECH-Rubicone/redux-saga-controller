@@ -6,7 +6,7 @@ sidebar_position: 0
 
 > **Introductions**
 
-- [Info](/docs/Introductions/introductions) 
+- [Info](/docs/Introductions) 
 - [Getting Started](/docs/Introductions/getting-started)
 
 > **Api Reference/Action**
