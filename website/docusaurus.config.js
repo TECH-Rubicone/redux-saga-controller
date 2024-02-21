@@ -13,7 +13,6 @@ import { themes as prismThemes } from 'prism-react-renderer';
   organizationName: 'TECH-Rubicone',
   projectName: 'redux-saga-controller',
   trailingSlash: false,
-
   presets: [
     [
       '@docusaurus/preset-classic',
