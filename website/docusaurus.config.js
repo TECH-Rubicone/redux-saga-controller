@@ -1,10 +1,15 @@
 import { themes as prismThemes } from 'prism-react-renderer';
 
+const metadataConfig = {
+  title: 'Tutorial for redux-saga-controller',
+  description: 'A tool to simplify work with react, redux and redux-saga'
+};
+
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (module.exports = {
   title: 'redux-saga-controller',
-  tagline: 'A tool to simplify work with react, redux and redux-saga',
+  tagline: metadataConfig.description,
   url: 'https://redux-saga-controller.js.org',
   baseUrl: '/',
   trailingSlash: false,
@@ -50,6 +55,12 @@ import { themes as prismThemes } from 'prism-react-renderer';
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       image: 'img/meta.png',
+      metadata: [
+        { name: 'og:type', content: 'website' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: `${metadataConfig.title}` },
+        { name: 'twitter:description', content: `${metadataConfig.description}` },
+      ],
       navbar: {
         title: 'redux-saga-controller',
         logo: {
