@@ -49,7 +49,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      image: 'img/meta.svg',
+      image: 'img/meta.png',
       navbar: {
         title: 'redux-saga-controller',
         logo: {
